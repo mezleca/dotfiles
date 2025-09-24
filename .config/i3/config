@@ -193,7 +193,6 @@ for_window [class="Gnome-calculator"] floating enable
 for_window [class="Kcalc"] floating enable
 for_window [class="Galculator"] floating enable
 for_window [class="Pavucontrol"] floating enable
-for_window [class="Nm-connection-editor"] floating enable
 
 # ---- OSU! (WINE) ----
 for_window [class="osu!.exe" title="^osu!"] floating disable, fullscreen enable

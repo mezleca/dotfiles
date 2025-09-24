@@ -1,0 +1,129 @@
+/* -----------------------------------------------------
+ *                      Config
+ * ----------------------------------------------------- */
+@define-color bg-1 rgb(20, 20, 20);
+@define-color bg-2 #fcfcfc;
+@define-color bg-3 #282726;
+@define-color bg-4 #343331;
+@define-color text-1 #b5b5b5;
+@define-color text-2 #a8cbed;
+@define-color text-3 #6a8299;
+@define-color red #de554e;
+@define-color purple #b53fcc;
+@define-color cyan #40dbd6;
+
+* {
+  font-family: "CommitMono Nerd Font";
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  transition: none;
+}
+
+/* -----------------------------------------------------
+ *                        Bar
+ * ----------------------------------------------------- */
+ 
+window#waybar {
+  color: @text-1;
+  background-color: transparent;
+}
+
+/* -----------------------------------------------------
+ *                      Tooltip
+ * ----------------------------------------------------- */
+ 
+tooltip {
+  background: @bg-1;
+  border: solid 1px @bg-3;
+}
+
+tooltip label {
+  color: @text-1;
+}
+
+button:hover {
+  background: @bg-2;
+}
+
+/* -----------------------------------------------------
+ *                     Modules
+ * ----------------------------------------------------- */
+ 
+#workspaces {
+  	background-color: @bg-1;
+  	padding: 4px 6px;
+	border: 2px solid rgb(60, 85, 130);
+  	border-radius: 10%;
+	margin-right: 0px;
+}
+
+#workspaces button {
+  color: @text-1;
+  font-weight: normal;
+  margin: 0px 5px;
+  border-radius: 0px;
+}
+
+#workspaces button.focused {
+  color: @cyan;
+  font-weight: normal;
+  border: solid 1px @bg-3;
+}
+
+#workspaces button.urgent {
+  color: @purple;
+  border: solid 1px @bg-1;
+}
+
+#mode {
+  color: @cyan;
+  padding: 0 10px;
+  margin: 1px 0px;
+  border: solid 1px @bg-3;
+}
+
+#window {
+  color: @text-1;
+  padding: 0 5px;
+}
+
+#window.selected {
+	border: 1px solid red;
+}
+
+/* -----------------------------------------------------
+ *                      Modules
+ * ----------------------------------------------------- */
+
+#battery,
+#custom-pipewire,
+#custom-mic,
+#custom-swayidle,
+#cpu,
+#memory,
+#tray,
+#network {
+  color: @text-1;
+  padding: 0 10px;
+}
+
+#tray menu {
+  background-color: @bg-1;
+  border: solid 1px @bg-3;
+}
+
+#custom-sep,
+#custom-markl,
+#custom-markr {
+  color: @text-1;
+  padding: 0 4px;
+}
+
+#custom-clock,
+#clockers {
+  color: @text-2;
+  padding: 0 10px;
+}
