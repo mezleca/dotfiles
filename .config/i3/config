@@ -25,7 +25,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # gaps
-gaps inner 10
+gaps inner 0
 gaps outer 0
 
 # super
@@ -48,10 +48,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
-set $up l
-set $down k
-set $left j
-set $right semicolon
+set $up bracketleft
+set $down bracketright
+set $left semicolon
+set $right apostrophe
 
 # terminal
 bindsym $mod+Return exec $term
@@ -166,7 +166,10 @@ bindsym $mod+Shift+minus move scratchpad
 
 # ---- STEAM ----
 for_window [class="steam"] floating disable
-for_window [class="steam" instance="steamwebhelper"] floating enable
+for_window [class="steam" title="Friends List"] floating enable
+for_window [class="steam" title="Steam Settings"] floating enable
+for_window [class="steam" title="Sign in to Steam"] floating enable
+for_window [class="steam" title="^(?!.*Steam).*"] floating enable
 for_window [class="steam_proton" title="^$"] move scratchpad
 for_window [class="steam_proton" title="BakkesMod"] floating enable
 for_window [class="steam_proton" title="BakkesModInjectorCpp"] floating enable
@@ -188,11 +191,10 @@ for_window [class="Google-chrome" title="Picture in picture"] floating enable
 # ---- SYSTEM APPS ----
 for_window [class="Thunar" title="File Operation Progress"] floating enable
 for_window [class="Nautilus" window_role="dialog"] floating enable
-for_window [class="Dolphin" window_role="dialog"] floating enable
-for_window [class="Gnome-calculator"] floating enable
-for_window [class="Kcalc"] floating enable
+for_window [class="dolphin" window_role="dialog"] floating enable
+for_window [class="kcalc"] floating enable
 for_window [class="Galculator"] floating enable
-for_window [class="Pavucontrol"] floating enable
+for_window [class="pavucontrol"] floating enable
 
 # ---- OSU! (WINE) ----
 for_window [class="osu!.exe" title="^osu!"] floating disable, fullscreen enable
@@ -211,19 +213,15 @@ for_window [class="Gimp" window_role="gimp-toolbox"] floating enable
 for_window [class="Gimp" window_role="gimp-dock"] floating enable
 for_window [class="Gimp" title="GIMP Startup"] floating enable
 
-# ---- GENERAL RULES ----
+# ---- RANDOM STUFF ----
 for_window [window_role="dialog"] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [window_type="menu"] floating enable
 for_window [window_role="transient"] floating enable
-
 for_window [title="About"] floating enable
 for_window [title="Preferences"] floating enable
 for_window [title="Settings"] floating enable
-
-for_window [class="Pavucontrol"] floating enable, resize set 800 600
-for_window [class="Gnome-calculator"] floating enable, resize set 300 400
 
 # -- ------ ----- -- 
 
@@ -264,31 +262,4 @@ bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
-
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym $left       resize shrink width 10 px or 10 ppt
-        bindsym $down       resize grow height 10 px or 10 ppt
-        bindsym $up         resize shrink height 10 px or 10 ppt
-        bindsym $right      resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left        resize shrink width 10 px or 10 ppt
-        bindsym Down        resize grow height 10 px or 10 ppt
-        bindsym Up          resize shrink height 10 px or 10 ppt
-        bindsym Right       resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
-}
-
-bindsym $mod+r mode "resize"
+bindsym $mod+Shift+0 move container to workspace number $ws1
