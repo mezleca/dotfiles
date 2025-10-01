@@ -25,7 +25,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # gaps
-gaps inner 0
+gaps inner 10
 gaps outer 0
 
 # super
@@ -93,12 +93,12 @@ exec_always for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 
 floating_modifier $mod
 
 # no windows tiles
-for_window [class="^.*"] border pixel 1
+for_window [class=".*"] border pixel 3
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4F4F4F #272727 #ffffff #4F4F4F   #4F4F4F
-client.focused_inactive #4F4F4F #272727 #ffffff #4F4F4F   #000000
-client.unfocused        #4F4F4F #272727 #888888 #4F4F4F   #000000
+client.focused          #4F4F4F #272727 #ffffff #4F4F4F   #3d466b
+client.focused_inactive #4F4F4F #272727 #ffffff #4F4F4F   #212121
+client.unfocused        #4F4F4F #272727 #888888 #4F4F4F   #212121
 client.urgent           #4F4F4F #272727 #ffffff #4F4F4F   #FFFFFF
 client.placeholder      #4F4F4F #0c0c0c #ffffff #000000   #FFFFFF
 client.background       #4F4F4F
@@ -222,8 +222,6 @@ for_window [window_role="transient"] floating enable
 for_window [title="About"] floating enable
 for_window [title="Preferences"] floating enable
 for_window [title="Settings"] floating enable
-
-# -- ------ ----- -- 
 
 bindsym $mod+minus scratchpad show
 
