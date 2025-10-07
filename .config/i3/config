@@ -30,6 +30,8 @@ gaps outer 0
 
 # super
 set $mod Mod4
+
+# alt
 set $mod1 Mod1
 
 # default apps
@@ -70,8 +72,8 @@ bindsym $mod+Shift+d exec $run_script
 bindsym $mod+Shift+q exec $power_menu
 
 # screenshot
-bindsym $mod1+s exec $HOME/.config/i3/scripts/screenshot.sh --window
-bindsym $mod1+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh 
+bindsym $mod+s exec $HOME/.config/i3/scripts/screenshot.sh
+bindsym $mod+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh --selection 
 
 # wallpaper
 exec --no-startup-id nitrogen --restore
