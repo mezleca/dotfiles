@@ -30,12 +30,13 @@ gaps outer 0
 
 # super
 set $mod Mod4
+set $mod1 Mod1
 
 # default apps
 set $term kitty
 set $file_manager dolphin
-set $launcher $SHELL -ic "rofi -show drun"
-set $run_script $SHELL -ic "rofi -show run"
+set $launcher $SHELL -ic "rofi --lazy-grab -show drun"
+set $run_script $SHELL -ic "rofi --lazy-grab -show run"
 set $power_menu $HOME/.config/rofi/rofi-sleep.sh
 set $bar $HOME/.config/polybar/launch.sh
 
@@ -70,13 +71,16 @@ bindsym $mod+Shift+q exec $power_menu
 
 # screenshot
 bindsym $mod+s exec $HOME/.config/i3/scripts/screenshot.sh --window
-bindsym $mod+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh 
+bindsym $mod1+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh 
 
 # wallpaper
-exec --no-startup-id feh --bg-fill $HOME/Documents/images/wallpaper/1.jpg
+exec --no-startup-id nitrogen --restore
 
 # bar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# compositor
+exec_always --no-startup-id picom
 
 # other
 exec --no-startup-id $HOME/.config/i3/scripts/watch_windows.sh

@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 
+get_icon() {
+    muted=$(is_muted)
+    if [ "$muted" = "true" ]; then
+        echo ""
+        return
+    fi
+
+    vol=$(get_volume)
+    vol=${vol:-0}
+    vol=${vol%.*}
+
+    if [ "$vol" -le 0 ]; then
+        echo "   "
+    elif [ "$vol" -lt 30 ]; then
+        echo "   "
+    elif [ "$vol" -lt 70 ]; then
+        echo "   "
+    else
+        echo "   "
+    fi
+}
+
 get_volume() {
     pamixer --get-volume
 }
@@ -10,13 +32,9 @@ is_muted() {
 
 print_status() {
     volume=$(get_volume)
-    muted=$(is_muted)
-    
-    if [ "$muted" = "true" ]; then
-        echo "MUTED"
-    else
-        echo "VOL ${volume}%"
-    fi
+    icon=$(get_icon)
+
+    echo "$icon $volume%"
 }
 
 case $1 in

@@ -1,0 +1,179 @@
+# ---------- Shadows ----------
+shadow = false;
+shadow-radius = 20;
+shadow-offset-x = -20;
+shadow-offset-y = -20;
+shadow-opacity = 1;
+shadow-color = "#000000";
+crop-shadow-to-monitor = false;
+
+# ---------- Fading ----------
+fading = true;
+fade-in-step = 0.06;
+fade-out-step = 0.06;
+fade-delta = 9
+no-fading-openclose = true
+no-fading-destroyed-argb = false
+
+# ---------- Animations ----------
+animations = ({
+    triggers = ["open"];
+    preset = "slide-in";
+    direction = "up";
+    duration = 0.15;
+    easing = "ease-out-cubic";
+}, {
+    triggers = ["show"];
+    preset = "appear";
+    duration = 0.08;
+}, {
+    triggers = ["close"];
+    preset = "slide-out";
+    direction = "down";
+    duration = 0.12;
+    easing = "ease-in-cubic";
+}, {
+    triggers = ["hide"];
+    preset = "disappear";
+    duration = 0.08;
+}, {
+    triggers = ["geometry"];
+    preset = "geometry-change";
+    duration = 0.2;
+    easing = "ease-out-cubic";
+})
+
+# ---------- Opacity ----------
+frame-opacity = 0.9;
+
+# ---------- Corners ----------
+corner-radius = 4
+
+# ---------- Blur ----------
+blur: {
+    method = "dual_kawase";
+    size = 10 # for box, gaussian
+    deviation = 1;
+    strength = 2; # for dual_kawase
+    background = false;
+    background-frame = false;
+    background-fixed = false;
+}
+
+# ---------- General ----------
+dbus = false
+daemon = true
+backend = "glx"
+glx-no-stencil = true;
+glx-no-rebind-pixmap = true;
+dithered-present = false
+vsync = false;
+detect-rounded-corners = true
+detect-client-opacity = true
+use-ewmh-active-win = true
+unredir-if-possible = true
+unredir-if-possible-delay = 0
+detect-transient = true
+detect-client-leader = false
+use-damage = true
+xrender-sync-fence = false
+force-win-blend = false
+no-ewmh-fullscreen = false
+max-brightness = 1
+transparent-clipping = false
+log-level = "warn";
+
+window-shader-fg = "default";
+
+rules: (
+    # default rule for everything else
+    {
+        opacity = 0.9;
+        blur-background = true;
+    },
+    # tooltip rules
+    {
+        match = "window_type = 'tooltip'";
+        fade = false;
+        shadow = false;
+        full-shadow = false;
+        opacity = 1.0;
+    },
+    # dock and desktop
+    {
+        match = "window_type = 'dock' || "
+                "window_type = 'desktop' || "
+                "_GTK_FRAME_EXTENTS@";
+        blur-background = true;
+        shadow = false;
+        opacity = 1.0;
+    },
+    # polybar
+    {
+        match = "class_g = 'Polybar'";
+        corner-radius = 0;
+        opacity = 1.0;
+    },
+    # notifications
+    {
+        match = "name = 'Notification' || "
+                "class_g = 'Conky' || "
+                "class_g ?= 'Notify-osd' || "
+                "class_g = 'Cairo-clock' || "
+                "_GTK_FRAME_EXTENTS@";
+        opacity = 1.0;
+    },
+    # browsers and apps with 100% opacity
+    {
+        match = "class_g = 'firefox' || "
+                "class_g = 'Firefox' || "
+                "class_g = 'floorp' || "
+                "class_g = 'Floorp' || "
+                "class_g = 'Chromium' || "
+                "class_g = 'Brave-browser' || "
+                "class_g = 'zen' || "
+                "class_g = 'Steam' || "
+                "class_g = 'steam' || "
+                "class_g = 'gamescope' || "
+                "class_g = 'bottles' || "
+                "window_type = 'utility' || "
+                "window_type = 'dialog'";
+        opacity = 1.0;
+        blur-background = false;
+        shadow = false;
+    },
+    # disable everything for these
+    {
+        match = "class_g *= 'game' || "
+                "class_g *= 'Game' || "
+                "name *= 'Media' ||"
+                "class_g = 'osu!.exe'"
+        opacity = 1.0;
+        blur-background = false;
+        shadow = false;
+        corner-radius = 0;
+    },
+    {
+        match = "window_type = 'menu' || "
+                "window_type = 'popup_menu' || "
+                "window_type = 'dropdown_menu' || "
+                "class_g = 'slop' || "
+                "class_g = 'gnome-calculator' || "
+                "class_g = 'TelegramDesktop' || "
+                "class_g = 'kdeconnect.daemon'";
+        blur-background = false;
+        shadow = false;
+        opacity = 0.85;
+    },
+    # screenshot tools
+    {
+        match = "class_g = 'slop'";
+        animation = false;
+        opacity = 1.0;
+    },
+    # code editors
+    {
+    	match = "class_g = 'dev.zed.Zed'"
+    	opacity = 0.95;
+    }
+)
