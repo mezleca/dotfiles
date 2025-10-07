@@ -167,13 +167,15 @@ rules: (
     },
     # screenshot tools
     {
-        match = "class_g = 'slop'";
+        match = "class_g = 'slop' ||";
+        match = "class_g = maim";
         animation = false;
         opacity = 1.0;
     },
-    # code editors
+    # code/text editors
     {
-    	match = "class_g = 'dev.zed.Zed'"
+    	match = "class_g = 'dev.zed.Zed' ||";
+    	match = "class_g = 'Code'";
     	opacity = 0.95;
     }
 )
