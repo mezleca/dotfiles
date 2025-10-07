@@ -1,5 +1,5 @@
-## currently using
-- i3
-- mpv
-- polybar
-- rofi
+## dotfiles
+
+<p align="center">
+    <img src=""https://github.com/mezleca/dotfiles/blob/main/showcase.png"">
+</p>
