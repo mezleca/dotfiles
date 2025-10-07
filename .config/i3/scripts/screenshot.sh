@@ -2,11 +2,13 @@
 ARGS=""
 DELAY_MS=0
 
+# optional: -i $(xdotool getactivewindow)
+
 # parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --window)
-            ARGS="-i $(xdotool getactivewindow)"
+        --selection)
+            ARGS="-s"
             shift
             ;;
         --delay)
@@ -18,11 +20,6 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
-# fallback to default
-if [[ $ARGS == "" ]]; then
-    ARGS="-s"
-fi
 
 # apply delay if specified
 if [[ $DELAY_MS -gt 0 ]]; then
