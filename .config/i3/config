@@ -70,7 +70,7 @@ bindsym $mod+Shift+d exec $run_script
 bindsym $mod+Shift+q exec $power_menu
 
 # screenshot
-bindsym $mod+s exec $HOME/.config/i3/scripts/screenshot.sh --window
+bindsym $mod1+s exec $HOME/.config/i3/scripts/screenshot.sh --window
 bindsym $mod1+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh 
 
 # wallpaper
