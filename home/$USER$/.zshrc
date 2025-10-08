@@ -115,6 +115,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH=/home/rel/.local/bin:/home/rel/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
 export PATH=/home/rel/.local/bin:/home/rel/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
 
+# dotfiles script
+alias @syncdots="bun run $HOME/.config/sync.ts -c"
+alias @restoredots="bun run $HOME/.config/sync.ts -r"
 
 # cd to personal folder
 alias @ps="cd ~/stuff/personal/"

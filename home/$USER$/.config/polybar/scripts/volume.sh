@@ -3,7 +3,7 @@
 get_icon() {
     muted=$(is_muted)
     if [ "$muted" = "true" ]; then
-        echo ""
+        echo "   "
         return
     fi
 
