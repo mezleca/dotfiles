@@ -36,7 +36,7 @@ set $mod1 Mod1
 
 # default apps
 set $term kitty
-set $file_manager dolphin
+set $file_manager nemo
 set $launcher $SHELL -ic "rofi --lazy-grab -show drun"
 set $run_script $SHELL -ic "rofi --lazy-grab -show run"
 set $power_menu $HOME/.config/rofi/rofi-sleep.sh
@@ -73,7 +73,7 @@ bindsym $mod+Shift+q exec $power_menu
 
 # screenshot
 bindsym $mod+s exec $HOME/.config/i3/scripts/screenshot.sh
-bindsym $mod+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh --selection 
+bindsym $mod+Shift+s exec $HOME/.config/i3/scripts/screenshot.sh --selection
 
 # wallpaper
 exec --no-startup-id nitrogen --restore
@@ -169,6 +169,11 @@ bindsym $mod+Shift+minus move scratchpad
 
 # disable everything floating by default
 # for_window [window_role=".*"] floating disable
+
+# start portal
+exec_always --no-startup-id killall xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk
+exec_always --no-startup-id sleep 1 && /usr/lib/xdg-desktop-portal-kde &
+exec_always --no-startup-id sleep 2 && /usr/lib/xdg-desktop-portal &
 
 # ---- STEAM ----
 for_window [class="steam"] floating disable

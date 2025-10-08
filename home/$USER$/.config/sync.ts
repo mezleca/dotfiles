@@ -26,7 +26,7 @@ const TARGET_FOLDERS = [
     `${HOME}/.config/kitty`,
     `${HOME}/.config/tmux`,
     `${HOME}/.config/zsh`,
-    `${HOME}/.config/fish`,
+    `${HOME}/.config/Kvantum`,
     `${HOME}/.config/starship`,
     `${HOME}/.config/git`,
     `${HOME}/.config/gtk-3.0`,
@@ -39,6 +39,7 @@ const TARGET_FOLDERS = [
     `${HOME}/.vimrc`,
     `${HOME}/.xinitrc`,
     `${HOME}/.xprofile`,
+    `${HOME}/.profile`,
 ];
 
 const copy_files = async () => {
@@ -59,7 +60,7 @@ const copy_files = async () => {
         }
 
         console.log(`copying ${t} -> ${full_path}`);
-        
+
         // use -r for dirs
         if (fs.statSync(t).isDirectory()) {
             await $`cp -r ${t} ${dir_path}`.quiet();
@@ -71,7 +72,7 @@ const copy_files = async () => {
     console.log("done");
 };
 
-// @TODO: link instead of cp 
+// @TODO: link instead of cp
 const restore_files = async () => {
     if (!fs.existsSync(TARGET_PATH)) {
         console.log("target path doesnt exist");
@@ -79,7 +80,7 @@ const restore_files = async () => {
     }
 
     const placeholder_home = `/home/${USER_PLACEHOLDER}`;
-    
+
     for (const t of TARGET_FOLDERS) {
         const relative_path = t.replace(HOME, placeholder_home);
         const source_path = path.join(TARGET_PATH, relative_path);
@@ -96,7 +97,7 @@ const restore_files = async () => {
         }
 
         console.log(`restoring ${source_path} -> ${t}`);
-        
+
         if (fs.statSync(source_path).isDirectory()) {
             await $`cp -r ${source_path} ${target_dir}`.quiet();
         } else {
