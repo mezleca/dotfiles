@@ -1,0 +1,54 @@
+* {
+    bg: #14171bff;
+    fg: #ffffff;
+    fg-dim: #888888ff;
+    font: "Roboto Medium 13";
+}
+
+window {
+    background-color: @bg;
+    padding: 12px;
+    border: 2px;
+    border-color: rgba(255,255,255, 15%);
+    border-radius: 6px;
+    width: 400px;
+}
+
+mainbox {
+    background-color: @bg;
+    children: [ listview ];
+}
+
+listview {
+    background-color: @bg;
+    lines: 1;
+    columns: 5;
+    cycle: false;
+    spacing: 10px;
+}
+
+element {
+    children: [ element-icon, element-text ];
+    background-color: transparent;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+}
+
+element-icon {
+    background-color: transparent;
+}
+
+element-text {
+    text-color: inherit;
+    background-color: transparent;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color: @fg-dim;
+}
+
+element selected.normal {
+    background-color: transparent; 
+    text-color: @fg;
+}

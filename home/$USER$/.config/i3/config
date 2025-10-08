@@ -37,9 +37,8 @@ set $mod1 Mod1
 # default apps
 set $term kitty
 set $file_manager nemo
-set $launcher $SHELL -ic "rofi --lazy-grab -show drun"
-set $run_script $SHELL -ic "rofi --lazy-grab -show run"
-set $power_menu $HOME/.config/rofi/rofi-sleep.sh
+set $launcher $HOME/.config/rofi/scripts/launcher.sh
+set $power_menu $HOME/.config/rofi/scripts/power_menu.sh
 set $bar $HOME/.config/polybar/launch.sh
 
 # reload / restart
@@ -65,11 +64,8 @@ bindsym $mod+e exec $file_manager
 # launcher
 bindsym $mod+d exec $launcher
 
-# run scripts
-bindsym $mod+Shift+d exec $run_script
-
 # power menu
-bindsym $mod+Shift+q exec $power_menu
+bindsym $mod+p exec $power_menu
 
 # screenshot
 bindsym $mod+s exec $HOME/.config/i3/scripts/screenshot.sh
