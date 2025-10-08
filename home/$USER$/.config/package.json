@@ -1,0 +1,13 @@
+{
+  "name": ".config",
+  "private": true,
+  "scripts": {
+    "start": "bun run sync.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

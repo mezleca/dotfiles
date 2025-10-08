@@ -1,4 +1,4 @@
-## dotfiles
+# dotfiles
 minimal i3 / hyprland dotfiles
 
 ## i3
