@@ -3,6 +3,9 @@ import path from "path";
 
 import { $ } from "bun";
 
+// temp script to sync my dotfiles
+// should be replaced with https://github.com/mezleca/sync-dotfiles/ soon
+
 const HOME = process.env.HOME;
 const ARG = process.argv[2];
 const USER_PLACEHOLDER = "$USER$";
@@ -34,12 +37,13 @@ const TARGET_FOLDERS = [
     `${HOME}/.config/gtk-4.0`,
     `${HOME}/.config/sync.ts`,
     `${HOME}/.config/package.json`,
+    `${HOME}/.config/mimeapps.list`,
+    `${HOME}/.local/share/applications/mimeapps.list`,
     `${HOME}/.bashrc`,
     `${HOME}/.zshrc`,
     `${HOME}/.vimrc`,
     `${HOME}/.xinitrc`,
-    `${HOME}/.xprofile`,
-    `${HOME}/.profile`,
+    `${HOME}/.xprofile`
 ];
 
 const copy_files = async () => {
