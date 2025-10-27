@@ -106,18 +106,16 @@ source $ZSH/oh-my-zsh.sh
 alias zed="zeditor"
 #alias code="ELECTRON_OZONE_PLATFORM_HINT=auto code"
 
-# bun completions
-[ -s "/home/rel/.bun/_bun" ] && source "/home/rel/.bun/_bun"
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH=/home/rel/.local/bin:/home/rel/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
-export PATH=/home/rel/.local/bin:/home/rel/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
 
-# dotfiles script
-alias @syncdots="bun run $HOME/.config/sync.ts -c"
-alias @restoredots="bun run $HOME/.config/sync.ts -r"
+# rest
+export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.spicetify:$(go env GOBIN):$(go env GOPATH)/bin:$HOME/.local/share/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
 
-# cd to personal folder
+# bun completions
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
+# aliases
 alias @ps="cd ~/stuff/personal/"
+
+unsetopt xtrace
