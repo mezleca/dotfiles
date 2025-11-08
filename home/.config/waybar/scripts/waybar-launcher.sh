@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Fix1
+killall kded6
+
 # Terminate already running bar instances
 killall -q waybar
 
@@ -7,4 +10,5 @@ killall -q waybar
 while pgrep -x waybar >/dev/null; do sleep 1; done
 
 # Launch Waybar
+snixembed --fork &
 waybar &
