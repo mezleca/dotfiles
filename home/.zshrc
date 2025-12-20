@@ -80,7 +80,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -103,8 +103,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias zed="zeditor"
-#alias code="ELECTRON_OZONE_PLATFORM_HINT=auto code"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -115,7 +113,55 @@ export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.spicetify:$(go env GOBIN):
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
-# aliases
-alias @ps="cd ~/stuff/personal/"
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+cd_or_create() {
+    if [ ! -d "$1" ]; then
+        mkdir -p "$1"
+    fi
+    cd "$1"
+}
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+# paths with auto creation if not avaialbel
+alias @other="cd_or_create ~/stuff/other/"
+alias @personal="cd_or_create ~/stuff/personal/"
+
+alias ls="ls -al"
+alias la="ls -lah"
+alias l="ls -lh"
+alias ll="ls -lh"
+
+alias c="clear"
+alias h="history"
+alias grep="grep --color=auto"
+alias df="df -h"
+alias du="du -h"
+
+alias zed="zeditor"
+alias py="python3"
+alias pip="pip3"
+alias vim="nvim"
+
+# reload zsh config
+alias reload="source ~/.zshrc"
+
+# quick edit zshrc
+alias zshconfig="$EDITOR ~/.zshrc"
+
+# find process by name
+alias pgrep="ps aux | grep"
+
+# get current ip
+alias myip="curl -s ifconfig.me"
+
+# copy to clipboard (if xclip is installed)
+alias clip="xclip -selection clipboard"
 
 unsetopt xtrace
