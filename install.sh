@@ -1,22 +1,20 @@
 #!/bin/bash
 
 DEST="$HOME"
-DOT_FOLDER="./home/"
-
-echo "adding perms..."
+DOT_FOLDER="./home"
 
 # ensure perms
-for script in $(find . -iname "*.sh"); do
-    chmod +x "$script"
-done
+echo "adding perms..."
+find . -iname "*.sh" -exec chmod +x {} \;
 
 echo "copying files..."
 
 # create directories
 find "$DOT_FOLDER" -type d | while read -r dir; do
     REL="${dir#$DOT_FOLDER/}"
+    
     # skip root folder
-    [ "$REL" = "$DOT_FOLDER" ] && continue
+    [ -z "$REL" ] && continue
     
     TARGET="$HOME/$REL"
     [ ! -d "$TARGET" ] && mkdir -p "$TARGET"
