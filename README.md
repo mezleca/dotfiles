@@ -7,5 +7,12 @@ minimal i3 / hyprland dotfiles
     <img src="https://github.com/mezleca/dotfiles/blob/main/images/1.png">
 </p>
 
+### dependencies
+pacman -S i3 rofi picom kitty nemo dunst network-manager-applet
+paru -S nitrogen
+
 ## hyprland
+wip
+
+## dependencies
 wip
