@@ -1,7 +1,14 @@
 # dotfiles
 minimal i3 / hyprland dotfiles
 
----
+## i3
+<p align="center">
+    <img src="https://github.com/mezleca/dotfiles/blob/main/images/2.png" width="45%">
+    <img src="https://github.com/mezleca/dotfiles/blob/main/images/1.png" width="45%">
+</p>
+
+## hyprland
+work in progress
 
 ## installation
 
@@ -21,19 +28,6 @@ paru -S --noconfirm otf-commit-mono-nerd
 ```bash
 git clone https://github.com/mezleca/dotfiles && cd dotfiles && chmod +x ./install.sh && ./install.sh
 ```
-
----
-
-## i3
-<p align="center">
-    <img src="https://github.com/mezleca/dotfiles/blob/main/images/2.png" width="45%">
-    <img src="https://github.com/mezleca/dotfiles/blob/main/images/1.png" width="45%">
-</p>
-
-## hyprland
-work in progress
-
----
 
 ## using
 - **terminal**: kitty
