@@ -99,7 +99,7 @@ floating_modifier $mod
 for_window [class=".*"] border pixel 3
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4F4F4F #272727 #ffffff #4F4F4F   #3d466b
+client.focused          #4F4F4F #272727 #ffffff #4F4F4F   #78b0ff
 client.focused_inactive #4F4F4F #272727 #ffffff #4F4F4F   #212121
 client.unfocused        #4F4F4F #272727 #888888 #4F4F4F   #212121
 client.urgent           #4F4F4F #272727 #ffffff #4F4F4F   #FFFFFF
