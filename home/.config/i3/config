@@ -144,7 +144,9 @@ bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+f floating toggle, \
+    resize set width 100 ppt height 100 ppt, \
+    move position center
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym Mod1+e layout toggle split

@@ -1,23 +1,50 @@
 #!/bin/bash
 
-lock=""
-logout="logout"
-shutdown="shutdown"
-reboot="reboot"
-sleep=""
+detect_de() {
+  case "${XDG_CURRENT_DESKTOP,,}:${DESKTOP_SESSION,,}" in
+    *xfce*)     echo xfce ;;
+    *i3*)       echo i3 ;;
+    *openbox*)  echo openbox ;;
+    *hyprland*) echo hyprland ;;
+    *)
+      pgrep -x Hyprland >/dev/null  && echo hyprland  && return
+      pgrep -x i3        >/dev/null && echo i3        && return
+      pgrep -x xfwm4     >/dev/null && echo xfce      && return
+      pgrep -x openbox   >/dev/null && echo openbox   && return
+      echo ""
+      ;;
+  esac
+}
 
-OPTIONS="$logout\n$reboot\n$shutdown"
+DE="$(detect_de)"
 
-SELECTED=$(echo -e "$OPTIONS" | rofi -dmenu -p "" -theme ~/.config/rofi/themes/power.rasi)
+logout() {
+  case "$DE" in
+    xfce)     xfce4-session-logout --logout ;;
+    i3)       i3-msg quit ;;
+    openbox)  openbox --exit 2>/dev/null || loginctl terminate-user "$USER" ;;
+    hyprland) hyprctl dispatch exit 2>/dev/null || loginctl terminate-user "$USER" ;;
+    *)        loginctl terminate-user "$USER" ;;
+  esac
+}
 
-case $SELECTED in
-    "$logout")
-        i3-msg exit
-        ;;
-    "$reboot")
-        systemctl reboot
-        ;;
-    "$shutdown")
-        systemctl poweroff
-        ;;
+reboot() {
+  systemctl reboot
+}
+
+shutdown() {
+  systemctl poweroff
+}
+
+OPTIONS="logout\nreboot\nshutdown"
+
+SELECTED=$(printf "%b" "$OPTIONS" | rofi -dmenu -p "" -theme ~/.config/rofi/themes/power.rasi)
+
+# cancelled
+[[ -z "$SELECTED" ]] && exit 0
+
+case "$SELECTED" in
+  logout)   logout ;;
+  reboot)  reboot ;;
+  shutdown) shutdown ;;
 esac

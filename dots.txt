@@ -5,6 +5,7 @@
 .config/hypr/**
 .config/hyprshell/**
 .config/i3/**
+.config/awesome/**
 .config/kitty/**
 .config/Kvantum/**
 .config/picom/**
