@@ -1,0 +1,58 @@
+* {
+    bg: #1e1e1e;
+    fg: #ffffff;
+    border: #404040;
+    selected: #0078d4;
+    
+    background-color: transparent;
+    text-color: @fg;
+    font: "Roboto Medium 14";
+}
+
+window {
+    background-color: @bg;
+    border: 1px solid;
+    border-color: @border;
+    border-radius: 8px;
+    padding: 16px;
+    width: 500px;
+}
+
+mainbox {
+    background-color: transparent;
+    children: [listview];
+}
+
+listview {
+    background-color: transparent;
+    lines: 1;
+    columns: 4;
+    spacing: 10px;
+    cycle: true;
+    scrollbar: false;
+}
+
+element {
+    background-color: #2d2d2d;
+    padding: 30px 20px;
+    border-radius: 6px;
+    orientation: vertical;
+    children: [element-icon, element-text];
+}
+
+element selected {
+    background-color: @selected;
+}
+
+element-icon {
+    background-color: transparent;
+    size: 48px;
+    horizontal-align: 0.5;
+    margin: 0 0 12px 0;
+}
+
+element-text {
+    background-color: transparent;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+}

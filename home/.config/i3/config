@@ -99,7 +99,7 @@ floating_modifier $mod
 for_window [class=".*"] border pixel 3
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4F4F4F #272727 #ffffff #4F4F4F   #78b0ff
+client.focused          #4F4F4F #272727 #ffffff #4F4F4F   #3d466b
 client.focused_inactive #4F4F4F #272727 #ffffff #4F4F4F   #212121
 client.unfocused        #4F4F4F #272727 #888888 #4F4F4F   #212121
 client.urgent           #4F4F4F #272727 #ffffff #4F4F4F   #FFFFFF
@@ -164,74 +164,69 @@ bindsym $mod+a focus parent
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
 
-# disable everything floating by default
-# for_window [window_role=".*"] floating disable
+# enable floating for all windows
+for_window [window_role=".*"] floating enable
 
-# start portal
-exec_always --no-startup-id killall xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk
-exec_always --no-startup-id sleep 1 && /usr/lib/xdg-desktop-portal-kde &
-exec_always --no-startup-id sleep 2 && /usr/lib/xdg-desktop-portal &
-
-# ---- STEAM ----
-for_window [class="steam"] floating disable
-for_window [class="steam" title="Friends List"] floating enable
-for_window [class="steam" title="Steam Settings"] floating enable
-for_window [class="steam" title="Sign in to Steam"] floating enable
-for_window [class="steam" title="^(?!.*Steam).*"] floating enable
-for_window [class="steam_proton" title="^$"] move scratchpad
-for_window [class="steam_proton" title="BakkesMod"] floating enable
-for_window [class="steam_proton" title="BakkesModInjectorCpp"] floating enable
-
-# ---- DISCORD ----
-for_window [class="discord"] floating disable
-for_window [class="discord" title="Discord Updater"] floating enable
-for_window [class="discord" window_role="pop-up"] floating enable
-
-# ---- BROWSERS ----
-for_window [class="firefox" instance="Navigator"] floating disable
-for_window [class="firefox" instance="Toolkit"] floating enable
-for_window [class="firefox" instance="Places"] floating enable
-for_window [class="firefox" instance="Alert"] floating enable
-for_window [class="Google-chrome" window_role="pop-up"] floating enable
-for_window [class="Chromium" window_role="pop-up"] floating enable
-for_window [class="Google-chrome" title="Picture in picture"] floating enable
-
-# ---- SYSTEM APPS ----
-for_window [class="Thunar" title="File Operation Progress"] floating enable
-for_window [class="Nautilus" window_role="dialog"] floating enable
-for_window [class="dolphin" window_role="dialog"] floating enable
-for_window [class="kcalc"] floating enable
-for_window [class="Galculator"] floating enable
-for_window [class="pavucontrol"] floating enable
-
-# ---- OSU! (WINE) ----
-for_window [class="osu!.exe" title="^osu!"] floating disable, fullscreen enable
-for_window [title="Timing and Control Points"] floating enable
-
-# ---- OTHER LAUNCHERS ----
-for_window [class="epicgameslauncher"] floating enable
-for_window [class="battle.net.exe"] floating enable
-
-# ---- MULTIMEDIA APPS ----
-for_window [class="mpv"] floating enable
-for_window [class="Vlc" title="Preferences"] floating enable
-
-# ---- IMAGE EDITORS ----
-for_window [class="Gimp" window_role="gimp-toolbox"] floating enable
-for_window [class="Gimp" window_role="gimp-dock"] floating enable
-for_window [class="Gimp" title="GIMP Startup"] floating enable
-
-# ---- RANDOM STUFF ----
-for_window [window_role="dialog"] floating enable
-for_window [window_role="pop-up"] floating enable
-for_window [window_role="task_dialog"] floating enable
-for_window [window_type="menu"] floating enable
-for_window [window_role="transient"] floating enable
-for_window [title="About"] floating enable
-for_window [title="Preferences"] floating enable
-for_window [title="Settings"] floating enable
-for_window [title="ark"] floating enable
-for_window [title="Ark"] floating enable
+# # ---- STEAM ----
+# for_window [class="steam"] floating disable
+# for_window [class="steam" title="Friends List"] floating enable
+# for_window [class="steam" title="Steam Settings"] floating enable
+# for_window [class="steam" title="Sign in to Steam"] floating enable
+# for_window [class="steam" title="^(?!.*Steam).*"] floating enable
+# for_window [class="steam_proton" title="^$"] move scratchpad
+# for_window [class="steam_proton" title="BakkesMod"] floating enable
+# for_window [class="steam_proton" title="BakkesModInjectorCpp"] floating enable
+# 
+# # ---- DISCORD ----
+# for_window [class="discord"] floating disable
+# for_window [class="discord" title="Discord Updater"] floating enable
+# for_window [class="discord" window_role="pop-up"] floating enable
+# 
+# # ---- BROWSERS ----
+# for_window [class="firefox" instance="Navigator"] floating disable
+# for_window [class="firefox" instance="Toolkit"] floating enable
+# for_window [class="firefox" instance="Places"] floating enable
+# for_window [class="firefox" instance="Alert"] floating enable
+# for_window [class="Google-chrome" window_role="pop-up"] floating enable
+# for_window [class="Chromium" window_role="pop-up"] floating enable
+# for_window [class="Google-chrome" title="Picture in picture"] floating enable
+# 
+# # ---- SYSTEM APPS ----
+# for_window [class="Thunar" title="File Operation Progress"] floating enable
+# for_window [class="Nautilus" window_role="dialog"] floating enable
+# for_window [class="dolphin" window_role="dialog"] floating enable
+# for_window [class="kcalc"] floating enable
+# for_window [class="Galculator"] floating enable
+# for_window [class="pavucontrol"] floating enable
+# 
+# # ---- OSU! (WINE) ----
+# for_window [class="osu!.exe" title="^osu!"] floating disable, fullscreen enable
+# for_window [title="Timing and Control Points"] floating enable
+# 
+# # ---- OTHER LAUNCHERS ----
+# for_window [class="epicgameslauncher"] floating enable
+# for_window [class="battle.net.exe"] floating enable
+# 
+# # ---- MULTIMEDIA APPS ----
+# for_window [class="mpv"] floating enable
+# for_window [class="Vlc" title="Preferences"] floating enable
+# 
+# # ---- IMAGE EDITORS ----
+# for_window [class="Gimp" window_role="gimp-toolbox"] floating enable
+# for_window [class="Gimp" window_role="gimp-dock"] floating enable
+# for_window [class="Gimp" title="GIMP Startup"] floating enable
+# 
+# # ---- RANDOM STUFF ----
+# for_window [window_role="dialog"] floating enable
+# for_window [window_role="pop-up"] floating enable
+# for_window [window_role="task_dialog"] floating enable
+# for_window [window_type="menu"] floating enable
+# for_window [window_role="transient"] floating enable
+# for_window [title="About"] floating enable
+# for_window [title="Preferences"] floating enable
+# for_window [title="Settings"] floating enable
+# for_window [title="ark"] floating enable
+# for_window [title="Ark"] floating enable
 
 bindsym $mod+minus scratchpad show
 
