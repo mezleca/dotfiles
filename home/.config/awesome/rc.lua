@@ -1,7 +1,18 @@
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
+local naughty = require("naughty")
+local testbox = require("test")
 require("awful.autofocus")
+
+-- catch errors and display them as notifications instead of crashing
+naughty.connect_signal("request::display_error", function(message, startup)
+    naughty.notification({
+        urgency = "critical",
+        title = "Error" .. (startup and " during startup" or ""),
+        message = message
+    })
+end)
 
 modkey = "Mod4"
 altkey = "Mod1"
@@ -22,9 +33,7 @@ end
 
 autostart("dunst")
 autostart("dex --autostart --environment awesome")
--- autostart("xss-lock --transfer-sleep-lock -- i3lock --nofork")
 autostart("nm-applet")
--- autostart("picom --config ~/.config/picom/picom.conf")
 autostart("~/.config/polybar/launch.sh")
 autostart("feh --bg-fill ~/wallpapers/7.jpg")
 
@@ -39,7 +48,8 @@ awful.layout.layouts = {
 }
 
 awful.screen.connect_for_each_screen(function(s)
-    awful.tag({ "1","2","3","4","5","6","7","8","9","10" }, s, awful.layout.suit.floating)
+    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.suit.floating)
+    testbox.load(s)
 end)
 
 clientbuttons = gears.table.join(
@@ -61,7 +71,6 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "e", function() awful.spawn(file_manager) end),
     awful.key({ modkey }, "d", function() awful.spawn(launcher) end),
     awful.key({ modkey }, "p", function() awful.spawn(power_menu) end),
-
     awful.key({ modkey, "Shift" }, "r", awesome.restart),
 
     awful.key({ modkey }, "q", function()
@@ -102,6 +111,7 @@ globalkeys = gears.table.join(
         function() awful.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end)
 )
 
+-- set up keybindings for tags (workspaces)
 for i = 1, 10 do
     globalkeys = gears.table.join(globalkeys,
         awful.key({ modkey }, "#" .. i + 9, function()
@@ -119,6 +129,7 @@ end
 
 root.keys(globalkeys)
 
+-- connect signals
 client.connect_signal("manage", function(c)
     if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
         awful.placement.no_offscreen(c)
@@ -135,10 +146,11 @@ end)
 
 local polybar_hidden = false
 
+-- hack to prevent polybar from showing up when a fullscreen window is open (works 50% of the time...)
 local function update_polybar()
     local current_tag = awful.screen.focused().selected_tag
     if not current_tag then return end
-    
+
     local should_hide = false
     for _, c in ipairs(current_tag:clients()) do
         if c.fullscreen and c:isvisible() then
@@ -146,7 +158,7 @@ local function update_polybar()
             break
         end
     end
-    
+
     if should_hide and not polybar_hidden then
         awful.spawn.with_shell("polybar-msg cmd hide")
         polybar_hidden = true
@@ -180,6 +192,7 @@ awful.rules.rules = {
             border_width = beautiful.border_width,
             border_color = beautiful.border_normal,
             focus        = awful.client.focus.filter,
+            placement    = awful.placement.centered,
             raise        = true,
             floating     = true,
             maximized    = false,
