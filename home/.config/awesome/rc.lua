@@ -11,7 +11,7 @@ MODKEY = "Mod4"
 ALTKEY = "Mod1"
 
 TERMINAL        = "kitty"
-FILE_MANAGER    = "nemo"
+FILE_MANAGER    = "nautilus"
 LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/scripts/launcher.sh"
 POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/scripts/power_menu.sh"
 SCREENSHOT      = os.getenv("HOME") .. "/.config/i3/scripts/screenshot.sh"

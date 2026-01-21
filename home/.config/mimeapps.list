@@ -1,4 +1,5 @@
 [Added Associations]
+# web
 x-scheme-handler/http=firefox.desktop;
 x-scheme-handler/https=firefox.desktop;
 x-scheme-handler/chrome=firefox.desktop;
@@ -10,8 +11,61 @@ application/xhtml+xml=firefox.desktop;
 application/x-extension-xhtml=firefox.desktop;
 application/x-extension-xht=firefox.desktop;
 
+# images
+image/jpeg=org.gnome.eog.desktop;feh.desktop;
+image/png=org.gnome.eog.desktop;feh.desktop;
+image/gif=org.gnome.eog.desktop;feh.desktop;
+image/bmp=org.gnome.eog.desktop;feh.desktop;
+image/webp=org.gnome.eog.desktop;feh.desktop;
+image/svg+xml=org.gnome.eog.desktop;inkscape.desktop;
+image/x-xcf=gimp.desktop;
+
+# pdf / docs
+application/pdf=firefox.desktop;
+application/vnd.oasis.opendocument.text=firefox.desktop;libreoffice-writer.desktop;
+application/vnd.oasis.opendocument.spreadsheet=firefox.desktop;libreoffice-calc.desktop;
+application/vnd.oasis.opendocument.presentation=firefox.desktop;libreoffice-impress.desktop;
+application/msword=firefox.desktop;libreoffice-writer.desktop;
+application/vnd.ms-excel=firefox.desktop;libreoffice-calc.desktop;
+application/vnd.ms-powerpoint=firefox.desktop;libreoffice-impress.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop;libreoffice-writer.desktop;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=firefox.desktop;libreoffice-calc.desktop;
+application/vnd.openxmlformats-officedocument.presentationml.presentation=firefox.desktop;libreoffice-impress.desktop;
+
+# videos
+video/mp4=mpv.desktop;vlc.desktop;
+video/x-matroska=mpv.desktop;vlc.desktop;
+video/webm=mpv.desktop;vlc.desktop;
+video/mpeg=mpv.desktop;vlc.desktop;
+video/x-msvideo=mpv.desktop;vlc.desktop;
+
+# audio
+audio/mpeg=mpv.desktop;vlc.desktop;
+audio/x-wav=mpv.desktop;vlc.desktop;
+audio/ogg=mpv.desktop;vlc.desktop;
+audio/flac=mpv.desktop;vlc.desktop;
+audio/x-m4a=mpv.desktop;vlc.desktop;
+
+# text
+text/plain=micro.desktop;
+text/x-c=micro.desktop;
+text/x-c++=micro.desktop;
+text/x-python=micro.desktop;
+text/x-shellscript=micro.desktop;
+text/x-makefile=micro.desktop;
+text/markdown=micro.desktop;
+application/json=micro.desktop;
+application/xml=micro.desktop;
+
+# archives
+application/zip=org.gnome.FileRoller.desktop;
+application/x-tar=org.gnome.FileRoller.desktop;
+application/x-7z-compressed=org.gnome.FileRoller.desktop;
+application/x-rar=org.gnome.FileRoller.desktop;
+application/gzip=org.gnome.FileRoller.desktop;
+
 [Default Applications]
-x-scheme-handler/discord-1216669957799018608=discord-1216669957799018608.desktop
+# web
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/chrome=firefox.desktop
@@ -22,4 +76,62 @@ application/x-extension-shtml=firefox.desktop
 application/xhtml+xml=firefox.desktop
 application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
-inode/directory=org.kde.dolphin.desktop
+
+# file Manager
+inode/directory=org.gnome.Nautilus.desktop
+
+# images
+image/jpeg=org.gnome.eog.desktop
+image/png=org.gnome.eog.desktop
+image/gif=org.gnome.eog.desktop
+image/bmp=org.gnome.eog.desktop
+image/webp=org.gnome.eog.desktop
+image/svg+xml=org.gnome.eog.desktop
+image/x-xcf=gimp.desktop
+
+# pdf / docs
+application/pdf=firefox.desktop
+application/vnd.oasis.opendocument.text=firefox.desktop
+application/vnd.oasis.opendocument.spreadsheet=firefox.desktop
+application/vnd.oasis.opendocument.presentation=firefox.desktop
+application/msword=firefox.desktop
+application/vnd.ms-excel=firefox.desktop
+application/vnd.ms-powerpoint=firefox.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=firefox.desktop
+application/vnd.openxmlformats-officedocument.presentationml.presentation=firefox.desktop
+
+# videos
+video/mp4=mpv.desktop
+video/x-matroska=mpv.desktop
+video/webm=mpv.desktop
+video/mpeg=mpv.desktop
+video/x-msvideo=mpv.desktop
+
+# audio
+audio/mpeg=mpv.desktop
+audio/x-wav=mpv.desktop
+audio/ogg=mpv.desktop
+audio/flac=mpv.desktop
+audio/x-m4a=mpv.desktop
+
+# text
+text/plain=micro.desktop
+text/x-c=micro.desktop
+text/x-c++=micro.desktop
+text/x-python=micro.desktop
+text/x-shellscript=micro.desktop
+text/x-makefile=micro.desktop
+text/markdown=micro.desktop
+application/json=micro.desktop
+application/xml=micro.desktop
+
+# archives
+application/zip=org.gnome.FileRoller.desktop
+application/x-tar=org.gnome.FileRoller.desktop
+application/x-7z-compressed=org.gnome.FileRoller.desktop
+application/x-rar=org.gnome.FileRoller.desktop
+application/gzip=org.gnome.FileRoller.desktop
+
+# terminal
+x-scheme-handler/terminal=kitty.desktop

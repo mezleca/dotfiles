@@ -37,7 +37,7 @@ set $mod1 Mod1
 
 # default apps
 set $term kitty
-set $file_manager nemo
+set $file_manager nautilus
 set $launcher $HOME/.config/rofi/scripts/launcher.sh
 set $power_menu $HOME/.config/rofi/scripts/power_menu.sh
 set $bar $HOME/.config/polybar/launch.sh

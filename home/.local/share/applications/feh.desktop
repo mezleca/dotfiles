@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=feh
+GenericName=Image Viewer
+Comment=Image viewer
+Exec=feh --scale-down --auto-zoom %F
+Icon=image-viewer
+Terminal=false
+Categories=Graphics;Viewer;
+MimeType=image/jpeg;image/png;image/gif;image/bmp;image/x-bmp;image/x-MS-bmp;image/webp;image/svg+xml;image/tiff;
+NoDisplay=false

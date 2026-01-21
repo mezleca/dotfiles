@@ -1,3 +1,5 @@
+wallpapers/**
+.themes/**
 .config/dunst/**
 .config/gtk-2.0/**
 .config/gtk-3.0/**
@@ -12,7 +14,8 @@
 .config/polybar/**
 .config/rofi/**
 .config/waybar/**
-wallpapers/**
+.local/share/applications/feh.desktop
+.local/share/applications/micro.desktop
 .local/share/applications/mimeapps.list
 .config/mimeapps.list
 .xprofile
