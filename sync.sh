@@ -60,6 +60,29 @@ process_entry() {
     done < <(find "$user_path" $find_opts)
 }
 
+cleanup_deleted() {
+    echo ""
+    echo "cleaning deleted source files..."
+    
+    while IFS= read -r dot_path; do
+        [ ! -f "$dot_path" ] && continue
+        
+        rel_path="${dot_path#$DOT_FOLDER/}"
+        user_path="$DEST/$rel_path"
+        
+        if [ ! -f "$user_path" ]; then
+            echo "  remove: $rel_path (source deleted)"
+            rm -f "$dot_path"
+            ((REMOVED++))
+        fi
+    done < <(find "$DOT_FOLDER" -type f)
+    
+    # remove empty directories after file cleanup
+    while IFS= read -r dot_dir; do
+        [ -z "$(ls -A "$dot_dir")" ] && rmdir "$dot_dir" 2>/dev/null
+    done < <(find "$DOT_FOLDER" -mindepth 1 -type d -depth)
+}
+
 cleanup_orphans() {
     echo ""
     echo "cleaning orphaned entries..."
@@ -136,6 +159,7 @@ while IFS= read -r entry; do
     process_entry "$entry"
 done < "$DOTS_FILE"
 
+cleanup_deleted
 cleanup_orphans
 
 echo ""
