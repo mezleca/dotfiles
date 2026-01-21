@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/mezleca/dotfiles/blob/main/images/awesome.png" width="70%">
+    <img src="https://github.com/mezleca/dotfiles/blob/main/images/awesome.png" width="95%">
 </p>
 
 ```bash
