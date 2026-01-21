@@ -2,7 +2,7 @@ local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local bar = require("bar")
+local bar = require("widgets.bar")
 
 require("awful.autofocus")
 
@@ -15,11 +15,11 @@ LAUNCHER     = os.getenv("HOME") .. "/.config/rofi/scripts/launcher.sh"
 POWER_MENU   = os.getenv("HOME") .. "/.config/rofi/scripts/power_menu.sh"
 
 -- setup theme
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")
 awful.layout.layouts = { awful.layout.suit.floating }
 
-local function autostart(cmd) 
-    awful.spawn.with_shell(cmd) 
+local function autostart(cmd)
+    awful.spawn.with_shell(cmd)
 end
 
 -- autostart apps
@@ -34,11 +34,6 @@ awful.spawn.with_shell([[
 for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
   xinput --set-prop $id 'libinput Accel Profile Enabled' 0, 1
 done
-]])
-
-awful.spawn.with_shell([[
-mkdir -p /tmp/awesome_errors
-exec 2>/tmp/awesome_errors/log
 ]])
 
 -- simple error notifications
@@ -70,13 +65,13 @@ end
 -- mouse binds
 local client_buttons = gears.table.join(
     awful.button({}, 1, function(c) c:activate({ context = "mouse_click", raise = true }) end),
-    awful.button({ MODKEY }, 1, function(c) 
+    awful.button({ MODKEY }, 1, function(c)
         c:activate({ context = "mouse_click" })
-        awful.mouse.client.move(c) 
+        awful.mouse.client.move(c)
     end),
-    awful.button({ MODKEY }, 3, function(c) 
+    awful.button({ MODKEY }, 3, function(c)
         c:activate({ context = "mouse_click" })
-        awful.mouse.client.resize(c) 
+        awful.mouse.client.resize(c)
     end)
 )
 
@@ -88,21 +83,21 @@ local global_keys = gears.table.join(
     awful.key({ MODKEY }, "p", function() awful.spawn.with_shell(POWER_MENU) end),
     awful.key({ MODKEY, "Shift" }, "r", awesome.restart),
 
-    awful.key({ MODKEY }, "q", function() 
-        if client.focus then client.focus:kill() end 
+    awful.key({ MODKEY }, "q", function()
+        if client.focus then client.focus:kill() end
     end),
 
     awful.key({ MODKEY }, "f", function()
-        if client.focus then 
+        if client.focus then
             client.focus.maximized = not client.focus.maximized
-            client.focus:raise() 
+            client.focus:raise()
         end
     end),
 
     awful.key({ MODKEY, "Shift" }, "f", function()
-        if client.focus then 
+        if client.focus then
             client.focus.fullscreen = not client.focus.fullscreen
-            client.focus:raise() 
+            client.focus:raise()
         end
     end),
 
@@ -178,12 +173,63 @@ client.connect_signal("manage", function(c)
     end
 end)
 
-client.connect_signal("focus", function(c) 
-    c.border_color = beautiful.border_focus 
+-- dont allow windows to move / resize past workarea
+client.connect_signal("property::geometry", function(c)
+    if not c.floating or c.fullscreen or c.maximized then return end
+    
+    local screen_geo = awful.screen.focused().workarea
+    local c_geo = c:geometry()
+    local border = beautiful.border_width * 2
+    
+    local clamped = false
+    local new_geo = {
+        x = c_geo.x,
+        y = c_geo.y,
+        width = c_geo.width,
+        height = c_geo.height
+    }
+    
+    -- clamp position
+    if new_geo.x < screen_geo.x then
+        new_geo.x = screen_geo.x
+        clamped = true
+    end
+    if new_geo.y < screen_geo.y then
+        new_geo.y = screen_geo.y
+        clamped = true
+    end
+    
+    -- clamp size
+    if new_geo.width + border > screen_geo.width then
+        new_geo.width = screen_geo.width - border
+        clamped = true
+    end
+    if new_geo.height + border > screen_geo.height then
+        new_geo.height = screen_geo.height - border
+        clamped = true
+    end
+    
+    -- prevent going offscreen right/bottom
+    if new_geo.x + new_geo.width + border > screen_geo.x + screen_geo.width then
+        new_geo.x = screen_geo.x + screen_geo.width - new_geo.width - border
+        clamped = true
+    end
+    if new_geo.y + new_geo.height + border > screen_geo.y + screen_geo.height then
+        new_geo.y = screen_geo.y + screen_geo.height - new_geo.height - border
+        clamped = true
+    end
+    
+    if clamped then
+        c:geometry(new_geo)
+    end
 end)
 
-client.connect_signal("unfocus", function(c) 
-    c.border_color = beautiful.border_normal 
+client.connect_signal("focus", function(c)
+    c.border_color = beautiful.border_focus
+end)
+
+client.connect_signal("unfocus", function(c)
+    c.border_color = beautiful.border_normal
 end)
 
 client.connect_signal("property::fullscreen", function(c)
