@@ -3,7 +3,6 @@ ARGS=""
 DELAY_MS=0
 
 # optional: -i $(xdotool getactivewindow)
-
 # parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -28,5 +27,12 @@ if [[ $DELAY_MS -gt 0 ]]; then
     sleep $DELAY_SECONDS
 fi
 
-maim $ARGS | xclip -selection clipboard -t image/png
-mpv "$HOME/.config/i3/stuff/iphone.mp3"
+TEMP=$(mktemp --suffix=.png)
+maim $ARGS "$TEMP"
+
+if [[ $? -eq 0 ]]; then
+    cat "$TEMP" | xclip -selection clipboard -t image/png
+    mpv "$HOME/.config/i3/stuff/iphone.mp3"
+fi
+
+rm -f "$TEMP"

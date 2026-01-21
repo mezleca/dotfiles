@@ -6,13 +6,16 @@ local bar = require("widgets.bar")
 
 require("awful.autofocus")
 
+-- modifier keys
 MODKEY = "Mod4"
 ALTKEY = "Mod1"
 
-TERMINAL     = "kitty"
-FILE_MANAGER = "nemo"
-LAUNCHER     = os.getenv("HOME") .. "/.config/rofi/scripts/launcher.sh"
-POWER_MENU   = os.getenv("HOME") .. "/.config/rofi/scripts/power_menu.sh"
+TERMINAL        = "kitty"
+FILE_MANAGER    = "nemo"
+LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/scripts/launcher.sh"
+POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/scripts/power_menu.sh"
+SCREENSHOT      = os.getenv("HOME") .. "/.config/i3/scripts/screenshot.sh"
+SCREENSHOT_AREA = os.getenv("HOME") .. "/.config/i3/scripts/screenshot.sh --selection"
 
 -- setup theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")
@@ -83,17 +86,26 @@ local global_keys = gears.table.join(
     awful.key({ MODKEY }, "p", function() awful.spawn.with_shell(POWER_MENU) end),
     awful.key({ MODKEY, "Shift" }, "r", awesome.restart),
 
+	-- screenshot
+	awful.key({ MODKEY }, "s", function() awful.spawn.with_shell(SCREENSHOT) end),
+
+	-- screenshot area (selection)
+	awful.key({ MODKEY, "Shift" }, "s", function() awful.spawn.with_shell(SCREENSHOT_AREA) end),
+
+	-- kill current window
     awful.key({ MODKEY }, "q", function()
         if client.focus then client.focus:kill() end
     end),
 
+	-- maximize
     awful.key({ MODKEY }, "f", function()
         if client.focus then
             client.focus.maximized = not client.focus.maximized
             client.focus:raise()
         end
     end),
-
+    
+	-- actual fullscreen
     awful.key({ MODKEY, "Shift" }, "f", function()
         if client.focus then
             client.focus.fullscreen = not client.focus.fullscreen
