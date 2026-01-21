@@ -3,6 +3,6 @@
 </p>
 
 ```bash
-pacman -S --noconfirm --needed mpv xclip maim rofi kitty nautilus dunst network-manager-applet ttf-jetbrains-mono-nerd
+pacman -S --noconfirm --needed mpv eog xclip maim rofi kitty nautilus dunst network-manager-applet ttf-jetbrains-mono-nerd
 paru -S --noconfirm kora-icon-theme picom-git awesome-git otf-commit-mono-nerd
 ```
