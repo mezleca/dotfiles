@@ -17,8 +17,8 @@ TERMINAL        = "kitty"
 FILE_MANAGER    = "nautilus"
 LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/scripts/launcher.sh"
 POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/scripts/power_menu.sh"
-SCREENSHOT      = os.getenv("HOME") .. "/.config/i3/scripts/screenshot.sh"
-SCREENSHOT_AREA = os.getenv("HOME") .. "/.config/i3/scripts/screenshot.sh --selection"
+SCREENSHOT      = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh"
+SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selection"
 
 -- setup theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")

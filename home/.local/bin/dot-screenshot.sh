@@ -32,7 +32,7 @@ maim $ARGS "$TEMP"
 
 if [[ $? -eq 0 ]]; then
     cat "$TEMP" | xclip -selection clipboard -t image/png
-    mpv "$HOME/.config/i3/stuff/iphone.mp3"
+    mpv "$HOME/sound_effects/iphone.mp3"
 fi
 
 rm -f "$TEMP"

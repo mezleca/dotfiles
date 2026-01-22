@@ -1,4 +1,5 @@
 wallpapers/**
+sound_effects/**
 .themes/**
 .config/dunst/**
 .config/gtk-2.0/**
@@ -6,7 +7,6 @@ wallpapers/**
 .config/gtk-4.0/**
 .config/hypr/**
 .config/hyprshell/**
-.config/i3/**
 .config/awesome/**
 .config/kitty/**
 .config/Kvantum/**
@@ -14,6 +14,7 @@ wallpapers/**
 .config/polybar/**
 .config/rofi/**
 .config/waybar/**
+.local/bin/dot-screenshot.sh
 .local/share/applications/feh.desktop
 .local/share/applications/micro.desktop
 .local/share/applications/mimeapps.list
