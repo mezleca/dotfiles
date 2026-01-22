@@ -6219,3 +6219,9 @@ window.thunar toolbar#location-toolbar > toolitem > widget > widget.linked.path-
     box-shadow: none; }
 
 /*# sourceMappingURL=gtk-dark.css.map */
+
+/* custom overrides */
+    columnview > listitem {
+        padding-left: 12px;
+    }
+/* */

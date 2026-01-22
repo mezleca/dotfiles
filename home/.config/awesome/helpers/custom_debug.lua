@@ -18,9 +18,9 @@ local function dump(o, indent)
     return s .. pad .. "}"
 end
 
-function M.notify(title, text, timeout)
+function M.notify(text, timeout)
     naughty.notification({
-        title = title or "",
+        title = "debug",
         message = text or "",
         timeout = timeout or 5
     })

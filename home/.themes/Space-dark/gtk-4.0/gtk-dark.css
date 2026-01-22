@@ -6095,3 +6095,9 @@ ConversationListView .view .cell, ConversationListView iconview .cell {
   padding: 10px; }
 
 /*# sourceMappingURL=gtk-dark.css.map */
+
+/* custom overrides */
+    columnview > listitem {
+        padding-left: 12px;
+    }
+/* */

@@ -31,12 +31,12 @@ local function create_cpu_widget()
         font = beautiful.font,
         widget = wibox.widget.textbox
     }
-    
+
     awful.widget.watch("sh -c \"top -bn1 | grep 'Cpu(s)' | awk '{print $2}' | cut -d'%' -f1\"", REFRESH_INTERVAL_SEC, function(widget, stdout)
         local cpu = tonumber(stdout) or 0
         widget.markup = string.format("<span foreground='%s'>󰻠  %.0f%%</span>", beautiful.color_label, cpu)
     end, cpu_widget)
-    
+
     return cpu_widget
 end
 
@@ -46,12 +46,12 @@ local function create_memory_widget()
         font = beautiful.font,
         widget = wibox.widget.textbox
     }
-    
+
     awful.widget.watch("sh -c \"free | grep Mem | awk '{print ($3/$2) * 100.0}'\"", REFRESH_INTERVAL_SEC, function(widget, stdout)
         local mem = tonumber(stdout) or 0
         widget.markup = string.format("<span foreground='%s'>󰍛  %.0f%%</span>", beautiful.color_label, mem)
     end, mem_widget)
-    
+
     return mem_widget
 end
 
@@ -61,11 +61,11 @@ local function create_volume_widget()
         font = beautiful.font,
         widget = wibox.widget.textbox
     }
-    
+
     local function update_volume()
         awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+%' | head -1", function(stdout)
             local vol = stdout:match("(%d+)%%") or "0"
-            
+
             awful.spawn.easy_async_with_shell("pactl get-sink-mute @DEFAULT_SINK@", function(mute_out)
                 local is_muted = mute_out:match("yes") ~= nil
                 local icon = is_muted and "󰖁" or "󰕾"
@@ -73,14 +73,16 @@ local function create_volume_widget()
             end)
         end)
     end
-    
+
     update_volume()
+
+    -- update volume every 500ms
     gears.timer {
         timeout = 0.5,
         autostart = true,
         callback = update_volume
     }
-    
+
     vol_widget:buttons(gears.table.join(
         awful.button({}, 1, function()
             awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
@@ -98,7 +100,7 @@ local function create_volume_widget()
             gears.timer.start_new(0.1, function() update_volume() return false end)
         end)
     ))
-    
+
     return vol_widget
 end
 
@@ -115,17 +117,17 @@ function bar.create(s)
     local function taglist_filter(t)
         local screen_tags = s.tags
         local last_occupied = 0
-        
+
         for i, tag in ipairs(screen_tags) do
             if #tag:clients() > 0 or tag.selected then
                 last_occupied = i
             end
         end
-        
+
         local show_until = math.max(TAGLIST_MIN_WORKSPACES, last_occupied)
         return t.index <= show_until
     end
-    
+
     -- taglist widget
     local taglist = awful.widget.taglist {
         screen = s,
@@ -154,33 +156,33 @@ function bar.create(s)
             widget = wibox.container.background,
             create_callback = function(self, tag, index, objects)
                 local icon_index = index <= #WORKSPACE_ICONS and index or #WORKSPACE_ICONS
-                self:get_children_by_id('text_role')[1].markup = 
+                self:get_children_by_id('text_role')[1].markup =
                     "<span foreground='" .. beautiful.color_inactive .. "'>" .. WORKSPACE_ICONS[icon_index] .. "</span>"
                 self:get_children_by_id('text_role')[1].font = beautiful.taglist_font
             end,
             update_callback = function(self, tag, index, objects)
                 local icon_index = index <= #WORKSPACE_ICONS and index or #WORKSPACE_ICONS
                 local color = beautiful.color_inactive
-                
+
                 if tag.selected then
                     color = beautiful.color_active
                 elseif #tag:clients() > 0 then
                     color = beautiful.color_accent
                 end
-                
-                self:get_children_by_id('text_role')[1].markup = 
+
+                self:get_children_by_id('text_role')[1].markup =
                     "<span foreground='" .. color .. "'>" .. WORKSPACE_ICONS[icon_index] .. "</span>"
             end
         }
     }
-    
+
     -- window title widget
     local window_title = wibox.widget {
         markup = "<span foreground='" .. beautiful.color_label .. "'>Desktop</span>",
         font = beautiful.font,
         widget = wibox.widget.textbox
     }
-    
+
     local function update_title(c)
         local title = (c and c.name) or "Desktop"
         if #title > TITLE_MAX_LENGTH then
@@ -192,11 +194,11 @@ function bar.create(s)
     client.connect_signal("focus", function(c) update_title(c) end)
     client.connect_signal("unfocus", function() if not client.focus then update_title() end end)
     client.connect_signal("property::name", function(c) if client.focus == c then update_title(c) end end)
-    
+
     -- systray with rounded box
     local systray = wibox.widget.systray()
     systray:set_base_size(SYSTRAY_ICON_SIZE)
-    
+
     local systray_container = wibox.widget {
         {
             {
@@ -219,7 +221,7 @@ function bar.create(s)
         bottom = SYSTRAY_VERTICAL_MARGIN,
         widget = wibox.container.margin
     }
-    
+
     -- create the wibar
     s.mywibox = awful.wibar({
         position = "bottom",
@@ -230,7 +232,7 @@ function bar.create(s)
         ontop = false,
         restrict_workarea = true
     })
-    
+
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         {

@@ -2,7 +2,10 @@ local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
+
+-- custom widgets
 local bar = require("widgets.bar")
+local tab = require("widgets.tab_switcher")
 
 require("awful.autofocus")
 
@@ -104,7 +107,7 @@ local global_keys = gears.table.join(
             client.focus:raise()
         end
     end),
-    
+
 	-- actual fullscreen
     awful.key({ MODKEY, "Shift" }, "f", function()
         if client.focus then
@@ -113,14 +116,9 @@ local global_keys = gears.table.join(
         end
     end),
 
+    -- show tab switcher
     awful.key({ ALTKEY }, "Tab", function()
-        awful.client.focus.byidx(1)
-        if client.focus then client.focus:raise() end
-    end),
-
-    awful.key({ ALTKEY, "Shift" }, "Tab", function()
-        awful.client.focus.byidx(-1)
-        if client.focus then client.focus:raise() end
+        tab:show(awful.screen.focused())
     end),
 
     -- audio keys
@@ -134,6 +132,7 @@ local global_keys = gears.table.join(
 awful.screen.connect_for_each_screen(function(s)
     awful.tag({ "1","2","3","4","5" }, s, awful.layout.suit.floating)
     bar.create(s)
+    tab:create(s)
 end)
 
 for i = 1, 5 do
@@ -188,11 +187,11 @@ end)
 -- dont allow windows to move / resize past workarea
 client.connect_signal("property::geometry", function(c)
     if not c.floating or c.fullscreen or c.maximized then return end
-    
+
     local screen_geo = awful.screen.focused().workarea
     local c_geo = c:geometry()
     local border = beautiful.border_width * 2
-    
+
     local clamped = false
     local new_geo = {
         x = c_geo.x,
@@ -200,7 +199,7 @@ client.connect_signal("property::geometry", function(c)
         width = c_geo.width,
         height = c_geo.height
     }
-    
+
     -- clamp position
     if new_geo.x < screen_geo.x then
         new_geo.x = screen_geo.x
@@ -210,7 +209,7 @@ client.connect_signal("property::geometry", function(c)
         new_geo.y = screen_geo.y
         clamped = true
     end
-    
+
     -- clamp size
     if new_geo.width + border > screen_geo.width then
         new_geo.width = screen_geo.width - border
@@ -220,7 +219,7 @@ client.connect_signal("property::geometry", function(c)
         new_geo.height = screen_geo.height - border
         clamped = true
     end
-    
+
     -- prevent going offscreen right/bottom
     if new_geo.x + new_geo.width + border > screen_geo.x + screen_geo.width then
         new_geo.x = screen_geo.x + screen_geo.width - new_geo.width - border
@@ -230,7 +229,7 @@ client.connect_signal("property::geometry", function(c)
         new_geo.y = screen_geo.y + screen_geo.height - new_geo.height - border
         clamped = true
     end
-    
+
     if clamped then
         c:geometry(new_geo)
     end
