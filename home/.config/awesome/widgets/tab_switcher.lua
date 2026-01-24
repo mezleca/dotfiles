@@ -1,8 +1,9 @@
 local awful = require("awful")
 local gears = require("gears")
-local dbg = require("helpers.custom_debug")
+local colors = require("helpers.colors")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local cairo = require("lgi").cairo
 
 local CARD_WIDTH = 180
 local CARD_HEIGHT = 100
@@ -16,16 +17,16 @@ function Tab.new()
     local self = setmetatable({}, Tab)
     self.visible = false
     self.box = nil
-    self.clients = {}
     self.selected_idx = 1
     self.keygrabber = nil
+    self.snapshot_clients = {}
     return self
 end
 
 function Tab:create(s)
     -- create popup box
     self.box = wibox({
-        width = 1, -- calculated on :update
+        width = 1,  -- calculated on :update
         height = 1, -- calculated on :update
         ontop = true,
         visible = false,
@@ -40,14 +41,14 @@ function Tab:create(s)
     self.keygrabber = awful.keygrabber {
         keybindings = {
             awful.key {
-                modifiers = {"Mod1"},
+                modifiers = { "Mod1" },
                 key = "Tab",
                 on_press = function()
                     self:next()
                 end
             },
             awful.key {
-                modifiers = {"Mod1", "Shift"},
+                modifiers = { "Mod1", "Shift" },
                 key = "Tab",
                 on_press = function()
                     self:prev()
@@ -78,43 +79,96 @@ function Tab:create(s)
     }
 end
 
+local function create_fallback_icon(c, size)
+    local surface = cairo.ImageSurface(cairo.Format.ARGB32, size, size)
+    local cr = cairo.Context(surface)
+
+    local color = colors.hash_color(c.name or c.class)
+    local r, g, b = gears.color.parse_color(color)
+
+    cr:set_source_rgb(r, g, b)
+    cr:paint()
+
+    -- draw first letter if available
+    local text = ""
+
+    if c.name then
+        text = c.name:sub(1, 1):upper()
+    end
+
+    if c.class and text == "" then
+        text = c.class:sub(1, 1):upper()
+    end
+
+    if text ~= "" then
+        cr:select_font_face(beautiful.taglist_font, cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
+        cr:set_font_size(size * 0.5)
+
+        local extents = cr:text_extents(text)
+        local x = (size - extents.width) / 2 - extents.x_bearing
+        local y = (size - extents.height) / 2 - extents.y_bearing
+
+        cr:set_source_rgb(1, 1, 1)
+        cr:move_to(x, y)
+        cr:show_text(text)
+    end
+
+    return surface
+end
+
+local function get_client_icon_widget(c, size)
+    local icon = c.icon
+
+    if icon then
+        return awful.widget.clienticon(c)
+    else
+        -- use fallback
+        local img = wibox.widget.imagebox()
+        img:set_image(create_fallback_icon(c, size or 64))
+        return img
+    end
+end
+
 function Tab:show(screen)
     if not self.box then
         self:create(screen)
     end
 
-    -- get current tag clients
+    -- get current tag
     local tag = awful.screen.focused().selected_tag
     if not tag then return end
 
-    self.clients = tag:clients()
+    local tag_clients = tag:clients()
+    if #tag_clients < 2 then return end
 
-    -- if we dont have enough clients, ignore
-    if #self.clients < 2 then return end
+    -- snapshot focus.history for current tag
+    -- index starts at 0 (current focus), 1 (previous), etc
+    self.snapshot_clients = {}
 
-    -- default to first one
-    self.selected_idx = 1
+    for idx = 0, 50 do
+        local c = awful.client.focus.history.get(screen, idx)
+        if not c then break end
 
-    local focused = client.focus
-
-    if focused then
-        for i, c in ipairs(self.clients) do
-            if c == focused then
-                -- get next client relative to focused
-                self.selected_idx = i + 1
-                if self.selected_idx > #self.clients then
-                    self.selected_idx = 1
-                end
+        -- filter: must be on current tag
+        local in_tag = false
+        for _, tc in ipairs(tag_clients) do
+            if tc == c then
+                in_tag = true
                 break
             end
         end
+
+        if in_tag then
+            table.insert(self.snapshot_clients, c)
+        end
     end
 
-    if #self.clients < 2 then
+    if #self.snapshot_clients < 2 then return end
+
+    self.selected_idx = 2
+    if self.selected_idx > #self.snapshot_clients then
         self.selected_idx = 1
     end
-
-    -- dbg.notify("tab: using idx " .. self.selected_idx, 10)
 
     self:update()
     self.box.visible = true
@@ -132,12 +186,12 @@ function Tab:update()
     local layout = wibox.layout.flex.horizontal()
     layout.spacing = 10
 
-    for i, c in ipairs(self.clients) do
+    for i, c in ipairs(self.snapshot_clients) do
         local is_selected = (i == self.selected_idx)
 
         local client_widget = wibox.widget {
             {
-                awful.widget.clienticon(c),
+                get_client_icon_widget(c, 64),
                 forced_width = 64,
                 forced_height = 64,
                 widget = wibox.container.place
@@ -172,7 +226,7 @@ function Tab:update()
         )
     end
 
-    local count = #self.clients
+    local count = #self.snapshot_clients
 
     local content_width =
         (count * CARD_WIDTH) +
@@ -203,7 +257,7 @@ function Tab:next()
     if not self.visible then return end
 
     self.selected_idx = self.selected_idx + 1
-    if self.selected_idx > #self.clients then
+    if self.selected_idx > #self.snapshot_clients then
         self.selected_idx = 1
     end
 
@@ -215,7 +269,7 @@ function Tab:prev()
 
     self.selected_idx = self.selected_idx - 1
     if self.selected_idx < 1 then
-        self.selected_idx = #self.clients
+        self.selected_idx = #self.snapshot_clients
     end
 
     self:update()
@@ -224,7 +278,7 @@ end
 function Tab:select()
     if not self.visible then return end
 
-    local c = self.clients[self.selected_idx]
+    local c = self.snapshot_clients[self.selected_idx]
     if c then
         c:activate({ context = "tab-switcher", raise = true })
     end
@@ -237,7 +291,7 @@ function Tab:hide()
 
     self.box.visible = false
     self.visible = false
-    self.clients = {}
+    self.snapshot_clients = {}
     self.selected_idx = 1
 
     -- stop keygrabber

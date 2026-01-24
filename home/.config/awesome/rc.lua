@@ -184,9 +184,14 @@ client.connect_signal("manage", function(c)
     end
 end)
 
+local clamping_clients = {}
+
 -- dont allow windows to move / resize past workarea
 client.connect_signal("property::geometry", function(c)
     if not c.floating or c.fullscreen or c.maximized then return end
+
+    -- ignore if we're already clamping that client
+    if clamping_clients[c] then return end
 
     local screen_geo = awful.screen.focused().workarea
     local c_geo = c:geometry()
@@ -231,12 +236,22 @@ client.connect_signal("property::geometry", function(c)
     end
 
     if clamped then
+        clamping_clients[c] = true
         c:geometry(new_geo)
+
+        -- clear after we clamp it
+        gears.timer.delayed_call(function()
+            clamping_clients[c] = nil
+        end)
     end
 end)
 
 client.connect_signal("focus", function(c)
     c.border_color = beautiful.border_focus
+end)
+
+client.connect_signal("unmanage", function(c)
+    clamping_clients[c] = nil
 end)
 
 client.connect_signal("unfocus", function(c)
