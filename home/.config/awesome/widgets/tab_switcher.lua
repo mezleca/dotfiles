@@ -5,6 +5,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local cairo = require("lgi").cairo
 
+local MIN_CLIENT_AMT = 1
 local CARD_WIDTH = 180
 local CARD_HEIGHT = 100
 local CARD_SPACING = 10
@@ -139,7 +140,7 @@ function Tab:show(screen)
     if not tag then return end
 
     local tag_clients = tag:clients()
-    if #tag_clients < 2 then return end
+    if #tag_clients < MIN_CLIENT_AMT then return end
 
     -- snapshot focus.history for current tag
     -- index starts at 0 (current focus), 1 (previous), etc
@@ -163,7 +164,7 @@ function Tab:show(screen)
         end
     end
 
-    if #self.snapshot_clients < 2 then return end
+    if #self.snapshot_clients < MIN_CLIENT_AMT then return end
 
     self.selected_idx = 2
     if self.selected_idx > #self.snapshot_clients then
