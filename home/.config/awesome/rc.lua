@@ -182,6 +182,18 @@ client.connect_signal("manage", function(c)
         c.floating = false
         return
     end
+
+    -- auto maximize if client takes up more than 80% of screen width or height
+    local screen_geo = c.screen.workarea
+    local c_geo = c:geometry()
+    local border = beautiful.border_width * 2
+
+    local width_percent = (c_geo.width + border) / screen_geo.width
+    local height_percent = (c_geo.height + border) / screen_geo.height
+
+    if width_percent > 0.8 or height_percent > 0.8 then
+        c.maximized = true
+    end
 end)
 
 local clamping_clients = {}
