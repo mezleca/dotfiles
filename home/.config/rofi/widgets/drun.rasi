@@ -14,7 +14,7 @@ inputbar {
 
 textbox-icon {
     content: "";
-    font: "Roboto Medium 18";
+    font: "Roboto Medium 16";
     text-color: @fg-dim;
     expand: false;
     str: "󰍉";
@@ -22,7 +22,6 @@ textbox-icon {
 
 listview {
     background-color: @bg;
-    spacing: 4px;
     cycle: true;
 }
 
