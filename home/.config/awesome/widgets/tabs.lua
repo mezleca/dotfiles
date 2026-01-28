@@ -269,6 +269,7 @@ function Tab:prev()
     if not self.visible then return end
 
     self.selected_idx = self.selected_idx - 1
+
     if self.selected_idx < 1 then
         self.selected_idx = #self.snapshot_clients
     end
@@ -280,6 +281,7 @@ function Tab:select()
     if not self.visible then return end
 
     local c = self.snapshot_clients[self.selected_idx]
+
     if c then
         c:activate({ context = "tab-switcher", raise = true })
     end
@@ -301,4 +303,4 @@ function Tab:hide()
     end
 end
 
-return Tab
+return Tab.new()

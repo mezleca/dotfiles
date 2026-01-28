@@ -5,7 +5,8 @@ local naughty = require("naughty")
 
 -- custom widgets
 local bar = require("widgets.bar")
-local tab = require("widgets.tab_switcher")
+local tab = require("widgets.tabs")
+local wallpapers = require("widgets.wallpapers")
 
 require("awful.autofocus")
 
@@ -34,7 +35,11 @@ autostart("dunst")
 autostart("picom")
 autostart("dex --autostart --environment awesome")
 autostart("nm-applet")
-autostart("feh --bg-fill ~/wallpapers/7.jpg")
+
+-- load wallpapers then apply the default one
+wallpapers:scan_directory()
+wallpapers.selected_idx = 4
+wallpapers:apply_wallpaper()
 
 awful.spawn.with_shell([[
 for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
@@ -42,7 +47,6 @@ for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
 done
 ]])
 
--- simple error notifications
 naughty.connect_signal("request::display_error", function(message, startup)
     local title = "awesome error" .. (startup and " (startup)" or "")
     awful.spawn.with_shell(string.format(
@@ -116,6 +120,11 @@ local global_keys = gears.table.join(
         end
     end),
 
+    -- wallpapers widget
+    awful.key({ MODKEY, "Shift" }, "p", function ()
+       wallpapers:show(awful.screen.focused())
+    end),
+
     -- show tab switcher
     awful.key({ ALTKEY }, "Tab", function()
         tab:show(awful.screen.focused())
@@ -133,6 +142,10 @@ awful.screen.connect_for_each_screen(function(s)
     awful.tag({ "1","2","3","4","5" }, s, awful.layout.suit.floating)
     bar.create(s)
     tab:create(s)
+
+    -- create / preload wallpaper stuff
+    wallpapers:create(s)
+    wallpapers:build_ui()
 end)
 
 for i = 1, 5 do
