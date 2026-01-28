@@ -4,7 +4,7 @@ theme="dark"
 wall_folder="$HOME/wallpapers"
 cache_dir="$HOME/.cache/rofi-wallpapers"
 thumb_width=400
-thumb_height=225
+thumb_height=245
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -32,6 +32,19 @@ get_thumb_path() {
 }
 
 gen_thumbnails() {
+    local needs_processing=0
+
+    while IFS= read -r img; do
+        thumb=$(get_thumb_path "$img")
+        if [ ! -f "$thumb" ] || [ "$img" -nt "$thumb" ]; then
+            needs_processing=1
+            break
+        fi
+    done < <(find "$wall_folder" -maxdepth 1 -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \))
+
+    # notify so i know the script is not broken
+    [ $needs_processing -eq 1 ] && notify-send "wallpaper switcher" "processing new wallpapers..."
+
     while IFS= read -r img; do
         thumb=$(get_thumb_path "$img")
         if [ ! -f "$thumb" ] || [ "$img" -nt "$thumb" ]; then
@@ -40,6 +53,7 @@ gen_thumbnails() {
                 "$thumb" 2>/dev/null &
         fi
     done < <(find "$wall_folder" -maxdepth 1 -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \))
+
     wait
 }
 
@@ -62,10 +76,8 @@ selected=$(gen_list | rofi -dmenu -p "" \
 
 if [ -n "$selected" ]; then
     full_path="${wall_folder}/${selected}"
-    
+
     if [ -f "$full_path" ]; then
         "$HOME/.config/rofi/scripts/set_wallpaper.sh" "$full_path"
     fi
 fi
-
-
