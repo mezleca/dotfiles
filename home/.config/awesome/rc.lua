@@ -6,7 +6,6 @@ local naughty = require("naughty")
 -- custom widgets
 local bar = require("widgets.bar")
 local tab = require("widgets.tabs")
-local wallpapers = require("widgets.wallpapers")
 
 require("awful.autofocus")
 
@@ -16,8 +15,9 @@ ALTKEY = "Mod1"
 
 TERMINAL        = "kitty"
 FILE_MANAGER    = "nautilus"
-LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/scripts/launcher.sh"
-POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/scripts/power_menu.sh"
+LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/launch.sh launcher"
+POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/launch.sh powermenu"
+WALLPAPER		= os.getenv("HOME") .. "/.config/rofi/launch.sh wallpaper"
 SCREENSHOT      = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh"
 SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selection"
 
@@ -25,21 +25,19 @@ SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selectio
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")
 awful.layout.layouts = { awful.layout.suit.floating }
 
-local function autostart(cmd)
+local function sh(cmd)
     awful.spawn.with_shell(cmd)
 end
 
--- autostart apps
-autostart("otd-daemon")
-autostart("dunst")
-autostart("picom")
-autostart("dex --autostart --environment awesome")
-autostart("nm-applet")
+-- autostart stuff
+sh("otd-daemon")
+sh("dunst")
+sh("picom")
+sh("dex --autostart --environment awesome")
+sh("nm-applet")
 
--- load wallpapers then apply the default one
-wallpapers:scan_directory()
-wallpapers.selected_idx = 4
-wallpapers:apply_wallpaper()
+-- load last wallpaper
+sh(os.getenv("HOME") .. ".config/rofi/scripts/set-wallpaper.sh --restore")
 
 awful.spawn.with_shell([[
 for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
@@ -87,17 +85,17 @@ local client_buttons = gears.table.join(
 
 -- keybindings
 local global_keys = gears.table.join(
-    awful.key({ MODKEY }, "Return", function() awful.spawn(TERMINAL) end),
-    awful.key({ MODKEY }, "e", function() awful.spawn(FILE_MANAGER) end),
-    awful.key({ MODKEY }, "d", function() awful.spawn.with_shell(LAUNCHER) end),
-    awful.key({ MODKEY }, "p", function() awful.spawn.with_shell(POWER_MENU) end),
+    awful.key({ MODKEY }, "Return", function() sh(TERMINAL) end),
+    awful.key({ MODKEY }, "e", function() sh(FILE_MANAGER) end),
+    awful.key({ MODKEY }, "d", function() sh(LAUNCHER) end),
+    awful.key({ MODKEY }, "p", function() sh(POWER_MENU) end),
     awful.key({ MODKEY, "Shift" }, "r", awesome.restart),
 
 	-- screenshot
-	awful.key({ MODKEY }, "s", function() awful.spawn.with_shell(SCREENSHOT) end),
+	awful.key({ MODKEY }, "s", function() sh(SCREENSHOT) end),
 
 	-- screenshot area (selection)
-	awful.key({ MODKEY, "Shift" }, "s", function() awful.spawn.with_shell(SCREENSHOT_AREA) end),
+	awful.key({ MODKEY, "Shift" }, "s", function() sh(SCREENSHOT_AREA) end),
 
 	-- kill current window
     awful.key({ MODKEY }, "q", function()
@@ -112,6 +110,11 @@ local global_keys = gears.table.join(
         end
     end),
 
+    -- wallpaper widget
+    awful.key({ MODKEY, "Shift" }, "p", function()
+       awful.spawn.with_shell(WALLPAPER) 
+    end),
+
 	-- actual fullscreen
     awful.key({ MODKEY, "Shift" }, "f", function()
         if client.focus then
@@ -120,21 +123,16 @@ local global_keys = gears.table.join(
         end
     end),
 
-    -- wallpapers widget
-    awful.key({ MODKEY, "Shift" }, "p", function ()
-       wallpapers:show(awful.screen.focused())
-    end),
-
     -- show tab switcher
     awful.key({ ALTKEY }, "Tab", function()
         tab:show(awful.screen.focused())
     end),
 
     -- audio keys
-    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +10%") end),
-    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -10%") end),
-    awful.key({}, "XF86AudioMute", function() awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle") end),
-    awful.key({}, "XF86AudioMicMute", function() awful.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end)
+    awful.key({}, "XF86AudioRaiseVolume", function() sh("pactl set-sink-volume @DEFAULT_SINK@ +10%") end),
+    awful.key({}, "XF86AudioLowerVolume", function() sh("pactl set-sink-volume @DEFAULT_SINK@ -10%") end),
+    awful.key({}, "XF86AudioMute", function() sh("pactl set-sink-mute @DEFAULT_SINK@ toggle") end),
+    awful.key({}, "XF86AudioMicMute", function() sh("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end)
 )
 
 -- setup workspaces and bar
@@ -142,10 +140,6 @@ awful.screen.connect_for_each_screen(function(s)
     awful.tag({ "1","2","3","4","5" }, s, awful.layout.suit.floating)
     bar.create(s)
     tab:create(s)
-
-    -- create / preload wallpaper stuff
-    wallpapers:create(s)
-    wallpapers:build_ui()
 end)
 
 for i = 1, 5 do

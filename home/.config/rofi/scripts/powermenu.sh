@@ -1,8 +1,18 @@
 #!/bin/bash
 
+theme="dark"
+
+while [ "$1" != "" ]; do
+    case $1 in
+        --theme | -t ) shift
+                       theme=$1
+                       ;;
+    esac
+    shift
+done
+
 detect_de() {
   case "${XDG_CURRENT_DESKTOP,,}:${DESKTOP_SESSION,,}" in
-    *xfce*)     echo xfce ;;
     *i3*)       echo i3 ;;
     *openbox*)  echo openbox ;;
     *hyprland*) echo hyprland ;;
@@ -43,7 +53,10 @@ shutdown() {
 
 OPTIONS="logout\nreboot\nshutdown"
 
-SELECTED=$(printf "%b" "$OPTIONS" | rofi -dmenu -p "" -theme ~/.config/rofi/themes/power.rasi)
+SELECTED=$(printf "%b" "$OPTIONS" | rofi -dmenu -p "" \
+    -theme-str "@import \"$HOME/.config/rofi/themes/${theme}.rasi\"" \
+    -theme-str "@import \"$HOME/.config/rofi/themes/common.rasi\"" \
+    -theme-str "@import \"$HOME/.config/rofi/widgets/power.rasi\"")
 
 # cancelled
 [[ -z "$SELECTED" ]] && exit 0

@@ -1,0 +1,73 @@
+* {
+    font: "Roboto Medium 14";
+}
+
+window {
+    background-color: @bg;
+    border: 2px;
+    border-color: rgba(255,255,255, 15%);
+    border-radius: 6px;
+    padding: 12px;
+}
+
+mainbox {
+    background-color: @bg;
+}
+
+listview {
+    border: 0;
+    scrollbar: false;
+}
+
+element {
+    background-color: transparent;
+    text-color: @fg-dim;
+    border: 0;
+    padding: 2px;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color: @fg-dim;
+}
+
+element selected {
+    text-color: @fg;
+}
+
+element selected.normal {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    vertical-align: 0.5;
+    highlight: none;
+}
+
+element-icon {
+    background-color: transparent;
+}
+
+inputbar {
+    background-color: transparent;
+    spacing: 6px;
+    children: [prompt, entry];
+    padding: 5px;
+    border: 0;
+}
+
+prompt {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+entry {
+    background-color: transparent;
+    text-color: @fg;
+    placeholder: "Search";
+    placeholder-color: @fg-dim;
+    cursor: text;
+}

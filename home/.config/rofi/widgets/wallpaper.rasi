@@ -1,0 +1,41 @@
+window {
+    width: 800px;
+    height: 330px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing: 0px;
+}
+
+listview {
+    columns: 3;
+    lines: 1;
+    cycle: true;
+    flow: horizontal;
+    spacing: 10px;
+    border: 0;
+    fixed-columns: true;
+}
+
+element {
+    orientation: vertical;
+    children: [ element-icon, element-text ];
+    padding: 2px;
+    spacing: 0px;
+}
+
+element-icon {
+    size: 400px 225px;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    background-color: transparent;
+}
+
+element-text {
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    font: "Roboto Medium 10";
+    background-color: transparent;
+    text-color: inherit;
+}

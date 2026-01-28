@@ -1,0 +1,51 @@
+window {
+    width: 500px;
+    height: 600px;
+}
+
+mainbox {
+    spacing: 10px;
+}
+
+inputbar {
+    children: [textbox-icon, entry];
+    spacing: 10px;
+}
+
+textbox-icon {
+    content: "";
+    font: "Roboto Medium 18";
+    text-color: @fg-dim;
+    expand: false;
+    str: "󰍉";
+}
+
+listview {
+    background-color: @bg;
+    spacing: 4px;
+    cycle: true;
+}
+
+element {
+    orientation: horizontal;
+    children: [ element-icon, element-text ];
+}
+
+element-text {
+    font: "Roboto Medium 13";
+}
+
+element normal.normal, element alternate.normal {
+    padding: 8px 12px;
+    spacing: 12px;
+}
+
+element selected.normal {
+    padding: 8px 12px;
+    spacing: 12px;
+}
+
+element-icon {
+    size: 24px;
+    padding: 8px;
+}
