@@ -9,7 +9,6 @@ detect_de() {
     *)
       pgrep -x Hyprland >/dev/null  && echo hyprland  && return
       pgrep -x i3        >/dev/null && echo i3        && return
-      pgrep -x xfwm4     >/dev/null && echo xfce      && return
       pgrep -x openbox   >/dev/null && echo openbox   && return
       echo ""
       ;;
@@ -20,7 +19,6 @@ DE="$(detect_de)"
 
 logout() {
   case "$DE" in
-    xfce)     xfce4-session-logout --logout ;;
     i3)       i3-msg quit ;;
     openbox)  openbox --exit 2>/dev/null || loginctl terminate-user "$USER" ;;
     hyprland) hyprctl dispatch exit 2>/dev/null || loginctl terminate-user "$USER" ;;
@@ -28,11 +26,18 @@ logout() {
   esac
 }
 
+kill_x() {
+	pkill -15 X 2>/dev/null || pkill -15 Xorg 2>/dev/null
+	sleep 1
+}
+
 reboot() {
+  kill_x
   systemctl reboot
 }
 
 shutdown() {
+  kill_x
   systemctl poweroff
 }
 
