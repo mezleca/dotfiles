@@ -37,7 +37,7 @@ sh("dex --autostart --environment awesome")
 sh("nm-applet")
 
 -- load last wallpaper
-sh(os.getenv("HOME") .. ".config/rofi/scripts/set-wallpaper.sh --restore")
+sh(os.getenv("HOME") .. ".config/rofi/scripts/set_wallpaper.sh --restore")
 
 awful.spawn.with_shell([[
 for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
