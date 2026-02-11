@@ -1,9 +1,13 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-export PATH=$HOME/go/bin:$PATH
+export PATH=$HOME/go/bin:$PATH 
+export PATH=/usr/lib/emscripten/:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# set vcpkg root
+export VCPKG_ROOT=~/vcpkg
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
@@ -82,12 +86,12 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
+Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='micro'
+else
+  export EDITOR='micro'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
@@ -108,7 +112,7 @@ export LANG=en_US.UTF-8
 export BUN_INSTALL="$HOME/.bun"
 
 # rest
-export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.spicetify:$(go env GOBIN):$(go env GOPATH)/bin:$HOME/.local/share/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
+export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.spicetify:$(go env GOBIN):$(go env GOPATH)/bin:$HOME/.local/share/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/usr/lib/emscripten"
 
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
@@ -126,10 +130,8 @@ cd_or_create() {
 
 alias ..="cd .."
 alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
 
-# paths with auto creation if not avaialbel
+# paths with auto creation if not available
 alias @other="cd_or_create ~/stuff/other/"
 alias @personal="cd_or_create ~/stuff/personal/"
 

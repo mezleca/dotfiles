@@ -38,7 +38,7 @@ logout() {
 
 kill_x() {
 	pkill -15 X 2>/dev/null || pkill -15 Xorg 2>/dev/null
-	sleep 1
+	sleep 2
 }
 
 reboot() {

@@ -14,21 +14,31 @@ local BOX_MARGIN = 10
 local Tab = {}
 Tab.__index = Tab
 
+local function is_client_valid(c)
+    -- client valid guard: https://awesomewm.org/apidoc/core_components/client.html
+    if not c then
+        return false
+    end
+    local ok, valid = pcall(function() return c.valid end)
+    return ok and valid
+end
+
 function Tab.new()
     local self = setmetatable({}, Tab)
     self.visible = false
     self.box = nil
     self.selected_idx = 1
     self.keygrabber = nil
+    self.history_tracking_paused = false
+    self.in_stop_callback = false
     self.snapshot_clients = {}
     return self
 end
 
 function Tab:create(s)
-    -- create popup box
     self.box = wibox({
-        width = 1,  -- calculated on :update
-        height = 1, -- calculated on :update
+        width = 1,
+        height = 1,
         ontop = true,
         visible = false,
         screen = s,
@@ -38,7 +48,6 @@ function Tab:create(s)
         end
     })
 
-    -- add keygrabber to handle navigation
     self.keygrabber = awful.keygrabber {
         keybindings = {
             awful.key {
@@ -70,12 +79,22 @@ function Tab:create(s)
                 end
             }
         },
-        stop_key = "Mod1",
+        stop_key = { "Alt_L", "Alt_R" },
         stop_event = "release",
-        keypressed_callback = function() end,
-        keyreleased_callback = function() end,
+        start_callback = function()
+            if not self.history_tracking_paused then
+                awful.client.focus.history.disable_tracking()
+                self.history_tracking_paused = true
+            end
+        end,
         stop_callback = function()
+            if self.history_tracking_paused then
+                pcall(awful.client.focus.history.enable_tracking)
+                self.history_tracking_paused = false
+            end
+            self.in_stop_callback = true
             self:select()
+            self.in_stop_callback = false
         end
     }
 end
@@ -90,16 +109,7 @@ local function create_fallback_icon(c, size)
     cr:set_source_rgb(r, g, b)
     cr:paint()
 
-    -- draw first letter if available
-    local text = ""
-
-    if c.name then
-        text = c.name:sub(1, 1):upper()
-    end
-
-    if c.class and text == "" then
-        text = c.class:sub(1, 1):upper()
-    end
+    local text = ((c.name or c.class or ""):sub(1, 1)):upper()
 
     if text ~= "" then
         cr:select_font_face(beautiful.taglist_font, cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
@@ -118,49 +128,60 @@ local function create_fallback_icon(c, size)
 end
 
 local function get_client_icon_widget(c, size)
+    if not is_client_valid(c) then
+        local img = wibox.widget.imagebox()
+        img:set_image(create_fallback_icon({}, size or 64))
+        return img
+    end
+
     local icon = c.icon
 
     if icon then
-        return awful.widget.clienticon(c)
-    else
-        -- use fallback
-        local img = wibox.widget.imagebox()
-        img:set_image(create_fallback_icon(c, size or 64))
-        return img
+        local ok, widget = pcall(awful.widget.clienticon, c)
+        if ok and widget then
+            return widget
+        end
     end
+
+    local img = wibox.widget.imagebox()
+    img:set_image(create_fallback_icon(c, size or 64))
+    return img
 end
 
 function Tab:show(screen)
+    local s = screen or awful.screen.focused()
+
     if not self.box then
-        self:create(screen)
+        self:create(s)
     end
 
-    -- get current tag
-    local tag = awful.screen.focused().selected_tag
+    if self.box.screen ~= s then
+        self.box.screen = s
+    end
+
+    local tag = s.selected_tag
     if not tag then return end
 
     local tag_clients = tag:clients()
     if #tag_clients < MIN_CLIENT_AMT then return end
 
-    -- snapshot focus.history for current tag
-    -- index starts at 0 (current focus), 1 (previous), etc
+    local by_tag = {}
+    for _, tc in ipairs(tag_clients) do
+        if is_client_valid(tc) then
+            by_tag[tc] = true
+        end
+    end
+
     self.snapshot_clients = {}
+    local seen = {}
 
     for idx = 0, 50 do
-        local c = awful.client.focus.history.get(screen, idx)
+        local c = awful.client.focus.history.get(s, idx)
         if not c then break end
 
-        -- filter: must be on current tag
-        local in_tag = false
-        for _, tc in ipairs(tag_clients) do
-            if tc == c then
-                in_tag = true
-                break
-            end
-        end
-
-        if in_tag then
+        if is_client_valid(c) and by_tag[c] and not seen[c] then
             table.insert(self.snapshot_clients, c)
+            seen[c] = true
         end
     end
 
@@ -184,8 +205,27 @@ end
 function Tab:update()
     if not self.box then return end
 
+    local valid_clients = {}
+    for _, c in ipairs(self.snapshot_clients) do
+        if is_client_valid(c) then
+            table.insert(valid_clients, c)
+        end
+    end
+    self.snapshot_clients = valid_clients
+
+    if #self.snapshot_clients < MIN_CLIENT_AMT then
+        self:hide()
+        return
+    end
+
+    if self.selected_idx < 1 then
+        self.selected_idx = 1
+    elseif self.selected_idx > #self.snapshot_clients then
+        self.selected_idx = #self.snapshot_clients
+    end
+
     local layout = wibox.layout.flex.horizontal()
-    layout.spacing = 10
+    layout.spacing = CARD_SPACING
 
     for i, c in ipairs(self.snapshot_clients) do
         local is_selected = (i == self.selected_idx)
@@ -199,7 +239,7 @@ function Tab:update()
             },
             {
                 {
-                    text = c.name or "Unknown",
+                    text = c.name or c.class or "Unknown",
                     align = "center",
                     widget = wibox.widget.textbox
                 },
@@ -256,6 +296,10 @@ end
 
 function Tab:next()
     if not self.visible then return end
+    if #self.snapshot_clients < MIN_CLIENT_AMT then
+        self:hide()
+        return
+    end
 
     self.selected_idx = self.selected_idx + 1
     if self.selected_idx > #self.snapshot_clients then
@@ -267,6 +311,10 @@ end
 
 function Tab:prev()
     if not self.visible then return end
+    if #self.snapshot_clients < MIN_CLIENT_AMT then
+        self:hide()
+        return
+    end
 
     self.selected_idx = self.selected_idx - 1
 
@@ -279,11 +327,17 @@ end
 
 function Tab:select()
     if not self.visible then return end
+    if #self.snapshot_clients < MIN_CLIENT_AMT then
+        self:hide()
+        return
+    end
 
     local c = self.snapshot_clients[self.selected_idx]
 
-    if c then
-        c:activate({ context = "tab-switcher", raise = true })
+    if is_client_valid(c) then
+        pcall(function()
+            c:activate({ context = "tab-switcher", raise = true })
+        end)
     end
 
     self:hide()
@@ -297,8 +351,7 @@ function Tab:hide()
     self.snapshot_clients = {}
     self.selected_idx = 1
 
-    -- stop keygrabber
-    if self.keygrabber then
+    if self.keygrabber and not self.in_stop_callback then
         self.keygrabber:stop()
     end
 end

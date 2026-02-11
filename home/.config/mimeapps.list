@@ -106,3 +106,4 @@ application/x-7z-compressed=org.gnome.FileRoller.desktop
 application/x-rar=org.gnome.FileRoller.desktop
 application/gzip=org.gnome.FileRoller.desktop
 x-scheme-handler/terminal=kitty.desktop
+x-scheme-handler/discord-1216669957799018608=discord-1216669957799018608.desktop
