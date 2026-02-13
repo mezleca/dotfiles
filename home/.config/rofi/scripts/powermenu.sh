@@ -12,17 +12,30 @@ while [ "$1" != "" ]; do
 done
 
 detect_de() {
-  case "${XDG_CURRENT_DESKTOP,,}:${DESKTOP_SESSION,,}" in
-    *i3*)       echo i3 ;;
-    *openbox*)  echo openbox ;;
-    *hyprland*) echo hyprland ;;
-    *)
-      pgrep -x Hyprland >/dev/null  && echo hyprland  && return
-      pgrep -x i3        >/dev/null && echo i3        && return
-      pgrep -x openbox   >/dev/null && echo openbox   && return
-      echo ""
-      ;;
-  esac
+  pgrep -x awesome   >/dev/null && echo awesome  && return
+  pgrep -x i3        >/dev/null && echo i3       && return
+  pgrep -x openbox   >/dev/null && echo openbox  && return
+  pgrep -x Hyprland  >/dev/null && echo hyprland && return
+  echo ""
+}
+
+wait_process_death() {
+  local process_name="$1"
+  local timeout_seconds="${2:-5}"
+  local check_interval=0.1
+  local elapsed=0
+  
+  while pgrep -x "$process_name" >/dev/null 2>&1; do
+    sleep "$check_interval"
+    elapsed=$(echo "$elapsed + $check_interval" | bc)
+    
+    if (( $(echo "$elapsed >= $timeout_seconds" | bc -l) )); then
+      notify-send -u critical "Power Menu" "Failed to close $process_name (timeout after ${timeout_seconds}s)"
+      return 1
+    fi
+  done
+  
+  return 0
 }
 
 DE="$(detect_de)"
@@ -32,22 +45,38 @@ logout() {
     i3)       i3-msg quit ;;
     openbox)  openbox --exit 2>/dev/null || loginctl terminate-user "$USER" ;;
     hyprland) hyprctl dispatch exit 2>/dev/null || loginctl terminate-user "$USER" ;;
+    awesome)  echo 'awesome.quit()' | awesome-client || pkill awesome ;;
     *)        loginctl terminate-user "$USER" ;;
   esac
 }
 
-kill_x() {
-	pkill -15 X 2>/dev/null || pkill -15 Xorg 2>/dev/null
-	sleep 2
+exit_gracefully() {
+  # kill menu first
+  pkill -9 rofi dmenu wofi 2>/dev/null
+  
+  # give rofi a moment to die
+  wait_process_death rofi 1
+  
+  # exit window manager
+  logout
+  
+  # wait for WM to die (3 second timeout)
+  if ! wait_process_death "$DE" 3; then
+    # force kill if timeout
+    pkill -9 "$DE" 2>/dev/null
+    sleep 0.2
+  fi
+  
+  sync
 }
 
-reboot() {
-  kill_x
+safe_reboot() {
+  exit_gracefully
   systemctl reboot
 }
 
-shutdown() {
-  kill_x
+safe_shutdown() {
+  exit_gracefully
   systemctl poweroff
 }
 
@@ -58,11 +87,10 @@ SELECTED=$(printf "%b" "$OPTIONS" | rofi -dmenu -p "" \
     -theme-str "@import \"$HOME/.config/rofi/themes/common.rasi\"" \
     -theme-str "@import \"$HOME/.config/rofi/widgets/power.rasi\"")
 
-# cancelled
 [[ -z "$SELECTED" ]] && exit 0
 
 case "$SELECTED" in
   logout)   logout ;;
-  reboot)  reboot ;;
-  shutdown) shutdown ;;
+  reboot)   safe_reboot ;;
+  shutdown) safe_shutdown ;;
 esac
