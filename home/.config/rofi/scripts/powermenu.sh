@@ -19,25 +19,6 @@ detect_de() {
   echo ""
 }
 
-wait_process_death() {
-  local process_name="$1"
-  local timeout_seconds="${2:-5}"
-  local check_interval=0.1
-  local elapsed=0
-  
-  while pgrep -x "$process_name" >/dev/null 2>&1; do
-    sleep "$check_interval"
-    elapsed=$(echo "$elapsed + $check_interval" | bc)
-    
-    if (( $(echo "$elapsed >= $timeout_seconds" | bc -l) )); then
-      notify-send -u critical "Power Menu" "Failed to close $process_name (timeout after ${timeout_seconds}s)"
-      return 1
-    fi
-  done
-  
-  return 0
-}
-
 DE="$(detect_de)"
 
 logout() {
@@ -45,39 +26,35 @@ logout() {
     i3)       i3-msg quit ;;
     openbox)  openbox --exit 2>/dev/null || loginctl terminate-user "$USER" ;;
     hyprland) hyprctl dispatch exit 2>/dev/null || loginctl terminate-user "$USER" ;;
-    awesome)  echo 'awesome.quit()' | awesome-client || pkill awesome ;;
+    awesome)  echo 'awesome.quit()' | awesome-client || pkill -x awesome ;;
     *)        loginctl terminate-user "$USER" ;;
   esac
 }
 
-exit_gracefully() {
-  # kill menu first
-  pkill -9 rofi dmenu wofi 2>/dev/null
-  
-  # give rofi a moment to die
-  wait_process_death rofi 1
-  
-  # exit window manager
-  logout
-  
-  # wait for WM to die (3 second timeout)
-  if ! wait_process_death "$DE" 3; then
-    # force kill if timeout
-    pkill -9 "$DE" 2>/dev/null
-    sleep 0.2
-  fi
-  
-  sync
+close_launcher() {
+  pkill -x rofi 2>/dev/null
+  pkill -x dmenu 2>/dev/null
+  pkill -x wofi 2>/dev/null
 }
 
 safe_reboot() {
-  exit_gracefully
-  systemctl reboot
+  close_launcher
+
+  if ! systemctl --no-block reboot; then
+    if ! reboot; then
+      notify-send -u critical "power menu" "failed to reboot (systemctl/reboot)."
+    fi
+  fi
 }
 
 safe_shutdown() {
-  exit_gracefully
-  systemctl poweroff
+  close_launcher
+
+  if ! systemctl --no-block poweroff; then
+    if ! poweroff; then
+      notify-send -u critical "power menu" "failed to power off (systemctl/poweroff)."
+    fi
+  fi
 }
 
 OPTIONS="logout\nreboot\nshutdown"

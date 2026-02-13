@@ -10,6 +10,7 @@ local CARD_WIDTH = 180
 local CARD_HEIGHT = 100
 local CARD_SPACING = 10
 local BOX_MARGIN = 10
+local HISTORY_SCAN_LIMIT = 200
 
 local Tab = {}
 Tab.__index = Tab
@@ -162,6 +163,11 @@ function Tab:show(screen)
     local tag = s.selected_tag
     if not tag then return end
 
+    if not awful.client.focus.history.is_enabled() then
+        pcall(awful.client.focus.history.enable_tracking)
+        self.history_tracking_paused = false
+    end
+
     local tag_clients = tag:clients()
     if #tag_clients < MIN_CLIENT_AMT then return end
 
@@ -175,11 +181,18 @@ function Tab:show(screen)
     self.snapshot_clients = {}
     local seen = {}
 
-    for idx = 0, 50 do
+    for idx = 0, HISTORY_SCAN_LIMIT do
         local c = awful.client.focus.history.get(s, idx)
         if not c then break end
 
         if is_client_valid(c) and by_tag[c] and not seen[c] then
+            table.insert(self.snapshot_clients, c)
+            seen[c] = true
+        end
+    end
+
+    for _, c in ipairs(tag_clients) do
+        if is_client_valid(c) and not seen[c] then
             table.insert(self.snapshot_clients, c)
             seen[c] = true
         end
@@ -350,6 +363,11 @@ function Tab:hide()
     self.visible = false
     self.snapshot_clients = {}
     self.selected_idx = 1
+
+    if self.history_tracking_paused then
+        pcall(awful.client.focus.history.enable_tracking)
+        self.history_tracking_paused = false
+    end
 
     if self.keygrabber and not self.in_stop_callback then
         self.keygrabber:stop()
