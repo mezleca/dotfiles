@@ -1,6 +1,7 @@
 #!/bin/bash
 
 theme="dark"
+POWERMENU_ALLOW_FORCE="${POWERMENU_ALLOW_FORCE:-0}"
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -21,13 +22,30 @@ detect_de() {
 
 DE="$(detect_de)"
 
+terminate_session() {
+  if [ -n "${XDG_SESSION_ID:-}" ]; then
+    loginctl terminate-session "$XDG_SESSION_ID" 2>/dev/null && return 0
+  fi
+
+  loginctl terminate-user "$USER"
+}
+
 logout() {
+  close_launcher
+  sleep 0.08
+
   case "$DE" in
     i3)       i3-msg quit ;;
-    openbox)  openbox --exit 2>/dev/null || loginctl terminate-user "$USER" ;;
-    hyprland) hyprctl dispatch exit 2>/dev/null || loginctl terminate-user "$USER" ;;
-    awesome)  echo 'awesome.quit()' | awesome-client || pkill -x awesome ;;
-    *)        loginctl terminate-user "$USER" ;;
+    openbox)  openbox --exit 2>/dev/null || terminate_session ;;
+    hyprland) hyprctl dispatch exit 2>/dev/null || terminate_session ;;
+    awesome)
+      if command -v awesome-client >/dev/null 2>&1; then
+        awesome-client "require('gears').timer.start_new(0.12, function() awesome.quit(); return false end)" >/dev/null 2>&1 && return 0
+      fi
+
+      terminate_session
+      ;;
+    *)        terminate_session ;;
   esac
 }
 
@@ -37,24 +55,32 @@ close_launcher() {
   pkill -x wofi 2>/dev/null
 }
 
-safe_reboot() {
-  close_launcher
+request_power_action() {
+  local action="$1"
 
-  if ! systemctl --no-block reboot; then
-    if ! reboot; then
-      notify-send -u critical "power menu" "failed to reboot (systemctl/reboot)."
-    fi
+  close_launcher
+  sleep 0.10
+
+  if perform_power_action "$action"; then
+    exit 0
   fi
+
+  notify-send -u critical "power menu" "failed to ${action} (non-force methods failed)."
+  exit 1
 }
 
-safe_shutdown() {
-  close_launcher
+perform_power_action() {
+  local action="$1"
 
-  if ! systemctl --no-block poweroff; then
-    if ! poweroff; then
-      notify-send -u critical "power menu" "failed to power off (systemctl/poweroff)."
-    fi
+  loginctl "$action" && return 0
+  systemctl --no-block "$action" && return 0
+  systemctl -i --no-block "$action" && return 0
+
+  if [ "$POWERMENU_ALLOW_FORCE" = "1" ]; then
+    systemctl --force --force "$action" && return 0
   fi
+
+  return 1
 }
 
 OPTIONS="logout\nreboot\nshutdown"
@@ -68,6 +94,6 @@ SELECTED=$(printf "%b" "$OPTIONS" | rofi -dmenu -p "" \
 
 case "$SELECTED" in
   logout)   logout ;;
-  reboot)   safe_reboot ;;
-  shutdown) safe_shutdown ;;
+  reboot)   request_power_action reboot ;;
+  shutdown) request_power_action poweroff ;;
 esac

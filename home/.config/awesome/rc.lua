@@ -9,6 +9,10 @@ local tab = require("widgets.tabs")
 
 require("awful.autofocus")
 
+local function sh(cmd)
+    awful.spawn.with_shell(cmd)
+end
+
 -- modifier keys
 MODKEY = "Mod4"
 ALTKEY = "Mod1"
@@ -17,17 +21,16 @@ TERMINAL        = "kitty"
 FILE_MANAGER    = "nautilus"
 LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/launch.sh launcher"
 POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/launch.sh powermenu"
-WALLPAPER		= os.getenv("HOME") .. "/.config/rofi/launch.sh wallpaper"
+WALLPAPER       = os.getenv("HOME") .. "/.config/rofi/launch.sh wallpaper"
 SCREENSHOT      = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh"
 SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selection"
+
+-- load last wallpaper
+sh(os.getenv("HOME") .. "/.config/rofi/scripts/set_wallpaper.sh --restore")
 
 -- setup theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")
 awful.layout.layouts = { awful.layout.suit.floating }
-
-local function sh(cmd)
-    awful.spawn.with_shell(cmd)
-end
 
 -- autostart stuff
 sh("otd-daemon")
@@ -35,9 +38,7 @@ sh("dunst")
 sh("picom")
 sh("dex --autostart --environment awesome")
 sh("nm-applet")
-
--- load last wallpaper
-sh(os.getenv("HOME") .. "/.config/rofi/scripts/set_wallpaper.sh --restore")
+sh("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 
 awful.spawn.with_shell([[
 for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
@@ -56,6 +57,7 @@ end)
 
 -- apps that must always be fullscreen (forced once on startup)
 local FORCE_FULLSCREEN = { "osu!%.exe", "steam_app_" }
+local REDRAW_WORKAROUND_CLASSES = { "^unity$" }
 
 local function class_matches(c, patterns)
     if not c or not c.class then return false end
@@ -68,6 +70,86 @@ end
 
 local function should_be_fullscreen(c)
     return class_matches(c, FORCE_FULLSCREEN)
+end
+
+local function has_redraw_workaround(c)
+    return class_matches(c, REDRAW_WORKAROUND_CLASSES)
+end
+
+local redraw_refreshing_clients = {}
+local REDRAW_FOCUS_DELAY_S = 0.09
+local REDRAW_NUDGE_DELAY_S = 0.02
+local REDRAW_MAXIMIZED_INSET_PX = 4
+
+local function is_client_refreshable(c)
+    return c and c.valid and has_redraw_workaround(c) and not c.fullscreen and not redraw_refreshing_clients[c]
+end
+
+local function build_temp_unmaximized_geo(c, fallback_geo)
+    local workarea = c.screen and c.screen.workarea or fallback_geo
+    return {
+        x = workarea.x + REDRAW_MAXIMIZED_INSET_PX,
+        y = workarea.y + REDRAW_MAXIMIZED_INSET_PX,
+        width = math.max(workarea.width - (REDRAW_MAXIMIZED_INSET_PX * 2), 200),
+        height = math.max(workarea.height - (REDRAW_MAXIMIZED_INSET_PX * 2), 200)
+    }
+end
+
+local function restore_client_state(c, state)
+    if not c.valid then return end
+
+    c.minimized = false
+    c:geometry(state.geo)
+    c.fullscreen = state.fullscreen
+    c.floating = state.floating
+    c.maximized = state.maximized
+    c:raise()
+end
+
+local function apply_refresh_nudge(c, state)
+    if state.maximized then
+        c.maximized = false
+        c:geometry(build_temp_unmaximized_geo(c, state.geo))
+        return
+    end
+
+    c:geometry({
+        x = state.geo.x + 1,
+        y = state.geo.y + 1,
+        width = state.geo.width + 2,
+        height = state.geo.height + 1
+    })
+end
+
+local function refresh_window_redraw(c)
+    if not is_client_refreshable(c) then return end
+
+    redraw_refreshing_clients[c] = true
+    local state = {
+        maximized = c.maximized,
+        fullscreen = c.fullscreen,
+        floating = c.floating,
+        geo = c:geometry()
+    }
+
+    gears.timer.start_new(REDRAW_FOCUS_DELAY_S, function()
+        if not c.valid then
+            redraw_refreshing_clients[c] = nil
+            return false
+        end
+
+        c:emit_signal("request::activate", "redraw_refresh", { raise = true })
+        c.minimized = false
+        apply_refresh_nudge(c, state)
+
+        gears.timer.start_new(REDRAW_NUDGE_DELAY_S, function()
+            restore_client_state(c, state)
+            redraw_refreshing_clients[c] = nil
+            return false
+        end)
+
+        return false
+    end)
 end
 
 -- mouse binds
@@ -91,18 +173,18 @@ local global_keys = gears.table.join(
     awful.key({ MODKEY }, "p", function() sh(POWER_MENU) end),
     awful.key({ MODKEY, "Shift" }, "r", awesome.restart),
 
-	-- screenshot
-	awful.key({ MODKEY }, "s", function() sh(SCREENSHOT) end),
+    -- screenshot
+    awful.key({ MODKEY }, "s", function() sh(SCREENSHOT) end),
 
-	-- screenshot area (selection)
-	awful.key({ MODKEY, "Shift" }, "s", function() sh(SCREENSHOT_AREA) end),
+    -- screenshot area (selection)
+    awful.key({ MODKEY, "Shift" }, "s", function() sh(SCREENSHOT_AREA) end),
 
-	-- kill current window
+    -- kill current window
     awful.key({ MODKEY }, "q", function()
         if client.focus then client.focus:kill() end
     end),
 
-	-- maximize
+    -- maximize
     awful.key({ MODKEY }, "f", function()
         if client.focus then
             client.focus.maximized = not client.focus.maximized
@@ -112,10 +194,10 @@ local global_keys = gears.table.join(
 
     -- wallpaper widget
     awful.key({ MODKEY, "Shift" }, "p", function()
-       awful.spawn.with_shell(WALLPAPER) 
+        awful.spawn.with_shell(WALLPAPER)
     end),
 
-	-- actual fullscreen
+    -- actual fullscreen
     awful.key({ MODKEY, "Shift" }, "f", function()
         if client.focus then
             client.focus.fullscreen = not client.focus.fullscreen
@@ -267,10 +349,24 @@ end)
 
 client.connect_signal("focus", function(c)
     c.border_color = beautiful.border_focus
+    refresh_window_redraw(c)
+end)
+
+tag.connect_signal("property::selected", function(t)
+    if not t.selected then
+        return
+    end
+
+    gears.timer.delayed_call(function()
+        for _, c in ipairs(t:clients()) do
+            refresh_window_redraw(c)
+        end
+    end)
 end)
 
 client.connect_signal("unmanage", function(c)
     clamping_clients[c] = nil
+    redraw_refreshing_clients[c] = nil
 end)
 
 client.connect_signal("unfocus", function(c)

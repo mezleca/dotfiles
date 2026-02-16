@@ -12,6 +12,7 @@ local SYSTRAY_MARGIN_PX = 8
 local SYSTRAY_VERTICAL_MARGIN = 7
 local ROUNDED_CORNER_RADIUS = 6
 local TITLE_MAX_LENGTH = 50
+local TITLE_REFRESH_DEBOUNCE_SEC = 0.08
 local TAGLIST_MIN_WORKSPACES = 3
 
 -- workspace icons
@@ -191,9 +192,42 @@ function bar.create(s)
         window_title.markup = "<span foreground='" .. beautiful.color_label .. "'>" .. gears.string.xml_escape(title) .. "</span>"
     end
 
-    client.connect_signal("focus", function(c) update_title(c) end)
-    client.connect_signal("unfocus", function() if not client.focus then update_title() end end)
-    client.connect_signal("property::name", function(c) if client.focus == c then update_title(c) end end)
+    local function refresh_title()
+        update_title(client.focus)
+    end
+
+    local title_refresh_timer = gears.timer {
+        timeout = TITLE_REFRESH_DEBOUNCE_SEC,
+        autostart = false,
+        single_shot = true,
+        callback = refresh_title
+    }
+
+    local function queue_title_refresh()
+        if title_refresh_timer.started then
+            title_refresh_timer:again()
+            return
+        end
+
+        title_refresh_timer:start()
+    end
+
+    client.connect_signal("focus", queue_title_refresh)
+    client.connect_signal("unfocus", queue_title_refresh)
+    client.connect_signal("property::active", queue_title_refresh)
+    client.connect_signal("property::name", function(c)
+        if c.active or client.focus == c then
+            queue_title_refresh()
+        end
+    end)
+    client.connect_signal("unmanage", queue_title_refresh)
+    tag.connect_signal("property::selected", function(t)
+        if t.screen == s then
+            queue_title_refresh()
+        end
+    end)
+
+    refresh_title()
 
     -- systray with rounded box
     local systray = wibox.widget.systray()
