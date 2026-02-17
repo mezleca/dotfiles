@@ -72,8 +72,9 @@ request_power_action() {
 perform_power_action() {
   local action="$1"
 
-  loginctl "$action" && return 0
   systemctl --no-block "$action" && return 0
+  loginctl --no-block "$action" && return 0
+  loginctl "$action" && return 0
   systemctl -i --no-block "$action" && return 0
 
   if [ "$POWERMENU_ALLOW_FORCE" = "1" ]; then

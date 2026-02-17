@@ -80,6 +80,7 @@ local redraw_refreshing_clients = {}
 local REDRAW_FOCUS_DELAY_S = 0.09
 local REDRAW_NUDGE_DELAY_S = 0.02
 local REDRAW_MAXIMIZED_INSET_PX = 4
+local REDRAW_TAG_RETRY_DELAY_S = 0.18
 
 local function is_client_refreshable(c)
     return c and c.valid and has_redraw_workaround(c) and not c.fullscreen and not redraw_refreshing_clients[c]
@@ -103,7 +104,9 @@ local function restore_client_state(c, state)
     c.fullscreen = state.fullscreen
     c.floating = state.floating
     c.maximized = state.maximized
-    c:raise()
+    if state.was_focused then
+        c:raise()
+    end
 end
 
 local function apply_refresh_nudge(c, state)
@@ -129,7 +132,8 @@ local function refresh_window_redraw(c)
         maximized = c.maximized,
         fullscreen = c.fullscreen,
         floating = c.floating,
-        geo = c:geometry()
+        geo = c:geometry(),
+        was_focused = client.focus == c
     }
 
     gears.timer.start_new(REDRAW_FOCUS_DELAY_S, function()
@@ -138,7 +142,9 @@ local function refresh_window_redraw(c)
             return false
         end
 
-        c:emit_signal("request::activate", "redraw_refresh", { raise = true })
+        if state.was_focused then
+            c:emit_signal("request::activate", "redraw_refresh", { raise = true })
+        end
         c.minimized = false
         apply_refresh_nudge(c, state)
 
@@ -358,10 +364,28 @@ tag.connect_signal("property::selected", function(t)
     end
 
     gears.timer.delayed_call(function()
-        for _, c in ipairs(t:clients()) do
-            refresh_window_redraw(c)
+        if client.focus and client.focus.first_tag == t then
+            refresh_window_redraw(client.focus)
         end
     end)
+
+    gears.timer.start_new(REDRAW_TAG_RETRY_DELAY_S, function()
+        if not t.selected then
+            return false
+        end
+
+        if client.focus and client.focus.first_tag == t then
+            refresh_window_redraw(client.focus)
+        end
+
+        return false
+    end)
+end)
+
+client.connect_signal("property::hidden", function(c)
+    if not c.hidden and client.focus == c then
+        refresh_window_redraw(c)
+    end
 end)
 
 client.connect_signal("unmanage", function(c)

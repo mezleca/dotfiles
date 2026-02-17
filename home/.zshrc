@@ -135,6 +135,8 @@ alias ...="cd ../.."
 alias @other="cd_or_create ~/stuff/other/"
 alias @personal="cd_or_create ~/stuff/personal/"
 
+alias code="vscodium"
+
 alias ls="ls -al"
 alias la="ls -lah"
 alias l="ls -lh"
