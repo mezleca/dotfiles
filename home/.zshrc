@@ -134,8 +134,7 @@ alias ...="cd ../.."
 # paths with auto creation if not available
 alias @other="cd_or_create ~/stuff/other/"
 alias @personal="cd_or_create ~/stuff/personal/"
-
-alias code="vscodium"
+alias @unity="cd_or_create ~/stuff/unityy/"
 
 alias ls="ls -al"
 alias la="ls -lah"
@@ -148,6 +147,7 @@ alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
 
+alias code="vscodium"
 alias zed="zeditor"
 alias py="python3"
 alias pip="pip3"
