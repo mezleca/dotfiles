@@ -1,0 +1,128 @@
+// Zed settings
+// Docs: https://zed.dev/docs/configuring-zed
+{
+  "disable_ai": true,
+  "session": {
+    "trust_all_worktrees": true
+  },
+
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Spiceflow Dark"
+  },
+
+  "ui_font_family": "Adwaita Sans",
+  "ui_font_size": 16,
+
+  "buffer_font_family": "CommitMono Nerd Font Mono",
+  "buffer_font_size": 15,
+
+  "terminal": {
+    "font_family": "CommitMono Nerd Font Mono"
+  },
+
+  "autosave": "on_focus_change",
+  "format_on_save": "off",
+  "tab_size": 4,
+  "hard_tabs": false,
+  "auto_indent": false,
+
+  "inlay_hints": {
+    "enabled": false,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "show_background": false,
+    "edit_debounce_ms": 700,
+    "scroll_debounce_ms": 50
+  },
+
+  "lsp": {
+    "clangd": {
+      "binary": {
+        "path": "/usr/bin/clangd",
+        "arguments": [
+          "--background-index",
+          "--clang-tidy",
+          "--function-arg-placeholders=0"
+        ]
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "javascript": {
+          "updateImportsOnFileMove": {
+            "enabled": "always"
+          }
+        },
+        "typescript": {
+          "updateImportsOnFileMove": {
+            "enabled": "always"
+          }
+        }
+      }
+    }
+  },
+
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/Library/**",
+    "**/Temp/**",
+    "**/obj/**",
+    "**/Build/**",
+    "**/Builds/**",
+    "**/Logs/**",
+    "**/MemoryCaptures/**"
+  ],
+
+  "auto_install_extensions": {
+    "csharp": true
+  },
+
+  "languages": {
+    "C": {
+      "language_servers": ["clangd"],
+      "formatter": "language_server",
+      "format_on_save": "off"
+    },
+    "C++": {
+      "language_servers": ["clangd"],
+      "formatter": "language_server",
+      "format_on_save": "off"
+    },
+    "CSharp": {
+      "language_servers": ["omnisharp"],
+      "format_on_save": "off"
+    },
+    "TypeScript": {
+      "language_servers": ["vtsls"],
+      "format_on_save": "off"
+    },
+    "TSX": {
+      "language_servers": ["vtsls"],
+      "format_on_save": "off"
+    },
+    "JavaScript": {
+      "language_servers": ["vtsls"],
+      "format_on_save": "off"
+    },
+    "Go": {
+      "language_servers": ["gopls"],
+      "format_on_save": "off"
+    },
+    "Python": {
+      "language_servers": ["basedpyright", "ruff"],
+      "formatter": "language_server",
+      "format_on_save": "off"
+    }
+  }
+}

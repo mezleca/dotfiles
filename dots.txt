@@ -1,7 +1,13 @@
 wallpapers/**
 sound_effects/**
 .themes/**
-.config/micro/**
+.config/micro/bindings.json
+.config/micro/colorschemes/**
+.config/micro/palettero.cfg
+.config/micro/plug/**
+.config/micro/settings.json
+.config/micro/syntax/**
+.config/zed/settings.json
 .config/dunst/**
 .config/gtk-2.0/**
 .config/gtk-3.0/**
