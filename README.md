@@ -12,7 +12,7 @@ pacman -S --noconfirm --needed \
 
 # hyprland
 pacman -S --noconfirm --needed \
-  hyprland hyprpaper waybar pipewire pipewire-pulse wireplumber \
+  hyprland hyprpaper hyprshot waybar pipewire pipewire-pulse wireplumber \
   brightnessctl playerctl
 
 # aur stuff
