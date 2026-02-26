@@ -147,7 +147,6 @@ alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
 
-alias code="vscodium"
 alias zed="zeditor"
 alias py="python3"
 alias pip="pip3"
