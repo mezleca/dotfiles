@@ -14,13 +14,13 @@ sound_effects/**
 .config/gtk-4.0/**
 .config/hypr/**
 .config/hyprshell/**
+.config/quickshell/**
 .config/awesome/**
 .config/kitty/**
 .config/Kvantum/**
 .config/picom/**
 .config/polybar/**
 .config/rofi/**
-.config/waybar/**
 .local/bin/dot-screenshot.sh
 .local/share/applications/feh.desktop
 .local/share/applications/micro.desktop
