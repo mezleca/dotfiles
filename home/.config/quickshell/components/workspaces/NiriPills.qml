@@ -8,6 +8,10 @@ Item {
     property color activeColor: "#78b0ff"
     property color inactiveColor: "#2b2b2b"
     property int pillSpacing: 7
+    property bool showNumber: false
+    property int itemHeight: 10
+    property int itemWidth: 16
+    property int itemRadius: 999
     property var workspaces: []
     property bool refreshQueued: false
 
@@ -175,15 +179,24 @@ Item {
                     return false
                 }
 
-                width: isActive ? 24 : 14
-                height: 10
-                radius: 999
+                width: isActive ? Math.round(root.itemWidth * 2.4) : Math.round(root.itemWidth * 1.4)
+                height: root.itemHeight
+                radius: root.itemRadius
                 color: isActive ? root.activeColor : root.inactiveColor
                 opacity: exists ? 1.0 : 0.45
                 border.width: 0
 
                 Behavior on width {
                     NumberAnimation { duration: 120 }
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    visible: root.showNumber
+                    text: String(wsId)
+                    color: isActive ? "#0a0a0a" : "#d6d6d6"
+                    font.pixelSize: Math.round(root.itemHeight * 0.6)
+                    font.weight: Font.DemiBold
                 }
 
                 MouseArea {

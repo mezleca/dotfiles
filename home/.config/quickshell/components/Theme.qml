@@ -1,15 +1,22 @@
 import QtQuick
 
-QtObject {
-    readonly property color bgPrimary: "#141414"
-    readonly property color bgSecondary: "#111111"
-    readonly property color bgTertiary: "#0f0f0f"
-    readonly property color border: "#78b0ff"
-    readonly property color borderSubtle: "#2b2b2b"
-    readonly property color textPrimary: "#d6d6d6"
-    readonly property color textMuted: "#9aa9bb"
-    readonly property color textAccent: "#78b0ff"
-    readonly property color selected: "#22344f"
+Item {
+    id: root
+    width: 0
+    height: 0
+    visible: false
+
+    readonly property var settings: ShellSettings
+
+    readonly property color bgPrimary: settings.bgPrimary
+    readonly property color bgSecondary: settings.bgSecondary
+    readonly property color bgTertiary: settings.bgTertiary
+    readonly property color border: settings.accent
+    readonly property color borderSubtle: settings.borderSubtle
+    readonly property color textPrimary: settings.textPrimary
+    readonly property color textMuted: settings.textMuted
+    readonly property color textAccent: settings.accent
+    readonly property color selected: settings.selected
 
     readonly property string fontMain: "Manrope"
     readonly property string fontMono: "CommitMono Nerd Font"

@@ -9,7 +9,9 @@ import QtQuick.Layouts
 import "components"
 
 ShellRoot {
-    readonly property int barHeight: 36
+    readonly property int barHeight: settings.barHeight
+
+    readonly property var settings: ShellSettings
 
     Variants {
         model: Quickshell.screens
@@ -20,7 +22,8 @@ ShellRoot {
             screen: modelData
 
             anchors {
-                top: true
+                top: settings.barPosition === "top"
+                bottom: settings.barPosition === "bottom"
                 left: true
                 right: true
             }
@@ -34,7 +37,10 @@ ShellRoot {
             WlrLayershell.exclusionMode: QSW.ExclusionMode.Normal
             WlrLayershell.exclusiveZone: barHeight
 
-            Bar {}
+            Bar {
+                barPosition: settings.barPosition
+                barHeight: barHeight
+            }
         }
     }
 }

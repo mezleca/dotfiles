@@ -9,6 +9,7 @@ ShellRoot {
     id: root
     property var wallpapers: []
     property string selectedPathKey: ""
+    property real panelOpacity: 1.0
 
     function refreshList() {
         scanProc.command = ["/home/rel/.local/bin/wallpaperctl", "list"]
@@ -27,6 +28,14 @@ ShellRoot {
 
         applyProc.command = ["/home/rel/.local/bin/wallpaperctl", "apply", p]
         applyProc.running = true
+    }
+
+    function close_picker() {
+        if (settings.transitionFadeOut) {
+            fadeOut.restart()
+        } else {
+            Qt.quit()
+        }
     }
 
     Process {
@@ -52,6 +61,8 @@ ShellRoot {
         id: theme
     }
 
+    readonly property var settings: ShellSettings
+
     FloatingWindow {
         id: picker
         visible: true
@@ -61,7 +72,7 @@ ShellRoot {
         title: "Wallpaper Picker"
         Shortcut {
             sequence: "Escape"
-            onActivated: Qt.quit()
+            onActivated: root.close_picker()
         }
         onVisibleChanged: {
             if (!visible) {
@@ -74,6 +85,7 @@ ShellRoot {
             color: theme.bgPrimary
             border.width: 1
             border.color: theme.border
+            opacity: root.panelOpacity
 
             ColumnLayout {
                 anchors.fill: parent
@@ -177,6 +189,7 @@ ShellRoot {
 
                                     MouseArea {
                                         anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
                                         onClicked: {
                                             root.selectedPathKey = modelData.path
                                             root.applySelected(modelData.path)
@@ -191,5 +204,34 @@ ShellRoot {
         }
     }
 
-    Component.onCompleted: refreshList()
+    NumberAnimation {
+        id: fadeIn
+        target: root
+        property: "panelOpacity"
+        from: 0.0
+        to: 1.0
+        duration: Math.max(0, settings.transitionDurationMs)
+        easing.type: Easing.OutCubic
+    }
+
+    NumberAnimation {
+        id: fadeOut
+        target: root
+        property: "panelOpacity"
+        from: root.panelOpacity
+        to: 0.0
+        duration: Math.max(0, settings.transitionDurationMs)
+        easing.type: Easing.OutCubic
+        onFinished: Qt.quit()
+    }
+
+    Component.onCompleted: {
+        refreshList()
+        if (settings.transitionFadeIn) {
+            root.panelOpacity = 0.0
+            fadeIn.restart()
+        } else {
+            root.panelOpacity = 1.0
+        }
+    }
 }

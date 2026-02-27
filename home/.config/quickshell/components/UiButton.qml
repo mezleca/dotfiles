@@ -3,19 +3,23 @@ import QtQuick
 Rectangle {
     id: root
 
+    Theme {
+        id: theme
+    }
+
     property alias text: label.text
     property bool enabled: true
-    property color bgColor: "#1b2a3e"
-    property color bgHover: "#233955"
-    property color bgDisabled: "#202020"
-    property color textColor: "#d6d6d6"
+    property color bgColor: theme.selected
+    property color bgHover: theme.bgTertiary
+    property color bgDisabled: theme.bgSecondary
+    property color textColor: theme.textPrimary
     signal clicked()
 
     implicitWidth: Math.max(88, label.implicitWidth + 24)
     implicitHeight: 34
     radius: 6
     border.width: 1
-    border.color: root.enabled ? "#3c5582" : "#2b2b2b"
+    border.color: root.enabled ? theme.textAccent : theme.borderSubtle
     color: !root.enabled ? bgDisabled : mouseArea.containsMouse ? bgHover : bgColor
     opacity: root.enabled ? 1.0 : 0.7
 

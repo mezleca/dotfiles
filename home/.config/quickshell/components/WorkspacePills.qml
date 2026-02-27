@@ -7,6 +7,10 @@ Item {
     property int maxCount: 5
     property color activeColor: "#78b0ff"
     property color inactiveColor: "#2b2b2b"
+    property bool showNumber: false
+    property int itemHeight: 10
+    property int itemWidth: 16
+    property int itemRadius: 999
 
     implicitWidth: loader.implicitWidth
     implicitHeight: loader.implicitHeight
@@ -40,9 +44,17 @@ Item {
         loader.item.maxCount = root.maxCount
         loader.item.activeColor = root.activeColor
         loader.item.inactiveColor = root.inactiveColor
+        loader.item.showNumber = root.showNumber
+        loader.item.itemHeight = root.itemHeight
+        loader.item.itemWidth = root.itemWidth
+        loader.item.itemRadius = root.itemRadius
     }
 
     onMaxCountChanged: syncProps()
     onActiveColorChanged: syncProps()
     onInactiveColorChanged: syncProps()
+    onShowNumberChanged: syncProps()
+    onItemHeightChanged: syncProps()
+    onItemWidthChanged: syncProps()
+    onItemRadiusChanged: syncProps()
 }
