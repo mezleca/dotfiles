@@ -144,7 +144,7 @@ Item {
         visible: settings.showWorkspaces
         maxCount: settings.workspaceCount
         showNumber: settings.workspaceShowNumber
-        itemHeight: Math.round(root.height * 0.5)
+        itemHeight: Math.round(root.height * (settings.workspaceHeightFactor / 100.0))
         itemWidth: settings.workspaceWidth
         itemRadius: Math.max(0, Math.min(100, settings.workspaceRadius))
         activeColor: theme.textAccent

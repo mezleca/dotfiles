@@ -32,6 +32,7 @@ Item {
     property alias workspaceShowNumber: adapter.workspaceShowNumber
     property alias workspaceWidth: adapter.workspaceWidth
     property alias workspaceRadius: adapter.workspaceRadius
+    property alias workspaceHeightFactor: adapter.workspaceHeightFactor
 
     property alias accent: adapter.accent
     property alias bgPrimary: adapter.bgPrimary
@@ -74,6 +75,7 @@ Item {
         property bool workspaceShowNumber: false
         property int workspaceWidth: 16
         property int workspaceRadius: 999
+        property int workspaceHeightFactor: 50
 
         property string accent: "#78b0ff"
         property string bgPrimary: "#141414"
@@ -133,6 +135,7 @@ Item {
     onWorkspaceShowNumberChanged: queueSave()
     onWorkspaceWidthChanged: queueSave()
     onWorkspaceRadiusChanged: queueSave()
+    onWorkspaceHeightFactorChanged: queueSave()
     onAccentChanged: queueSave()
     onBgPrimaryChanged: queueSave()
     onBgSecondaryChanged: queueSave()

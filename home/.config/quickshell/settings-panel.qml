@@ -5,6 +5,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import "components"
+import "components/ui"
 
 ShellRoot {
     id: root
@@ -155,399 +156,6 @@ ShellRoot {
         id: apply_proc
     }
 
-    component StyledButton: Button {
-        id: btn
-
-        implicitHeight: 30
-        implicitWidth: Math.max(84, contentItem.implicitWidth + 20)
-
-        contentItem: Text {
-            text: btn.text
-            color: theme.textPrimary
-            font.family: theme.fontMain
-            font.pixelSize: 12
-            font.weight: Font.DemiBold
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
-
-        background: Rectangle {
-            radius: 4
-            color: btn.down ? theme.bgTertiary : theme.selected
-            border.width: 1
-            border.color: theme.borderSubtle
-        }
-    }
-
-    component StyledTextField: TextField {
-        id: field
-
-        color: theme.textPrimary
-        selectByMouse: true
-        selectionColor: theme.selected
-        selectedTextColor: theme.textPrimary
-        font.family: theme.fontMono
-        font.pixelSize: 12
-
-        background: Rectangle {
-            radius: 4
-            color: theme.bgSecondary
-            border.width: 1
-            border.color: theme.borderSubtle
-        }
-    }
-
-    component StyledSlider: Slider {
-        id: slider
-
-        background: Rectangle {
-            x: slider.leftPadding
-            y: slider.topPadding + slider.availableHeight / 2 - height / 2
-            width: slider.availableWidth
-            height: 8
-            radius: 4
-            color: theme.bgTertiary
-
-            Rectangle {
-                width: slider.visualPosition * parent.width
-                height: parent.height
-                radius: 4
-                color: theme.textAccent
-            }
-        }
-
-        handle: Rectangle {
-            x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
-            y: slider.topPadding + slider.availableHeight / 2 - height / 2
-            implicitWidth: 8
-            implicitHeight: 8
-            radius: 4
-            color: "transparent"
-            border.width: 0
-        }
-    }
-
-    component StyledComboBox: ComboBox {
-        id: combo
-
-        implicitHeight: 30
-
-        contentItem: Text {
-            leftPadding: 10
-            rightPadding: 24
-            text: combo.displayText
-            color: theme.textPrimary
-            font.family: theme.fontMain
-            font.pixelSize: 12
-            verticalAlignment: Text.AlignVCenter
-            elide: Text.ElideRight
-        }
-
-        background: Rectangle {
-            radius: 4
-            color: theme.bgSecondary
-            border.width: 1
-            border.color: theme.borderSubtle
-        }
-
-        indicator: Text {
-            text: "▾"
-            color: theme.textMuted
-            font.family: theme.fontMain
-            font.pixelSize: 11
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
-    component SectionCard: Rectangle {
-        id: card
-
-        required property string title
-        default property alias content: content_column.data
-
-        radius: 5
-        color: theme.bgPrimary
-        border.width: 1
-        border.color: theme.borderSubtle
-        implicitHeight: content_layout.implicitHeight + 20
-
-        ColumnLayout {
-            id: content_layout
-            anchors.fill: parent
-            anchors.margins: 10
-            spacing: 8
-
-            Text {
-                text: card.title
-                color: theme.textPrimary
-                font.family: theme.fontMain
-                font.pixelSize: 13
-                font.weight: Font.ExtraBold
-            }
-
-            ColumnLayout {
-                id: content_column
-                Layout.fillWidth: true
-                spacing: 7
-            }
-        }
-    }
-
-    component TransitionSelect: Item {
-        id: transitionRoot
-
-        implicitHeight: 30
-        implicitWidth: 220
-
-        function summaryText() {
-            const items = []
-            if (settings.transitionFadeIn) {
-                items.push("fade in")
-            }
-            if (settings.transitionFadeOut) {
-                items.push("fade out")
-            }
-            if (items.length === 0) {
-                return "none"
-            }
-            return items.join(" + ")
-        }
-
-        Rectangle {
-            id: selectButton
-            anchors.fill: parent
-            radius: 4
-            color: theme.bgSecondary
-            border.width: 1
-            border.color: theme.borderSubtle
-
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                text: transitionRoot.summaryText()
-                color: theme.textPrimary
-                font.family: theme.fontMain
-                font.pixelSize: 12
-                font.weight: Font.DemiBold
-            }
-
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 8
-                text: "▾"
-                color: theme.textMuted
-                font.family: theme.fontMain
-                font.pixelSize: 11
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    if (transitionPopup.visible) {
-                        transitionPopup.close()
-                    } else {
-                        transitionPopup.open()
-                    }
-                }
-            }
-        }
-
-        Popup {
-            id: transitionPopup
-            parent: panel.contentItem
-            x: transitionRoot.mapToItem(panel.contentItem, 0, 0).x
-            y: transitionRoot.mapToItem(panel.contentItem, 0, transitionRoot.height + 4).y
-            width: 220
-            modal: false
-            focus: true
-            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-            padding: 8
-
-            background: Rectangle {
-                radius: 4
-                color: theme.bgSecondary
-                border.width: 1
-                border.color: theme.borderSubtle
-            }
-
-            Column {
-                spacing: 6
-                width: parent.width
-
-                Item {
-                    width: parent.width
-                    height: 24
-
-                    RowLayout {
-                        anchors.fill: parent
-                        spacing: 8
-
-                        StyledCheckBox {
-                            id: none_check
-                            checked: !settings.transitionFadeIn && !settings.transitionFadeOut
-                            Layout.preferredWidth: 18
-                            Layout.preferredHeight: 18
-                            onClicked: {
-                                settings.transitionFadeIn = false
-                                settings.transitionFadeOut = false
-                            }
-                        }
-
-                        Text {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            text: "none"
-                            color: theme.textPrimary
-                            font.family: theme.fontMain
-                            font.pixelSize: 12
-                            font.weight: Font.DemiBold
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            settings.transitionFadeIn = false
-                            settings.transitionFadeOut = false
-                        }
-                    }
-                }
-
-                Item {
-                    width: parent.width
-                    height: 24
-
-                    RowLayout {
-                        anchors.fill: parent
-                        spacing: 8
-
-                        StyledCheckBox {
-                            id: fade_in_check
-                            checked: settings.transitionFadeIn
-                            Layout.preferredWidth: 18
-                            Layout.preferredHeight: 18
-                            onClicked: settings.transitionFadeIn = checked
-                        }
-
-                        Text {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            text: "fade in"
-                            color: theme.textPrimary
-                            font.family: theme.fontMain
-                            font.pixelSize: 12
-                            font.weight: Font.DemiBold
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: fade_in_check.toggle()
-                    }
-                }
-
-                Item {
-                    width: parent.width
-                    height: 24
-
-                    RowLayout {
-                        anchors.fill: parent
-                        spacing: 8
-
-                        StyledCheckBox {
-                            id: fade_out_check
-                            checked: settings.transitionFadeOut
-                            Layout.preferredWidth: 18
-                            Layout.preferredHeight: 18
-                            onClicked: settings.transitionFadeOut = checked
-                        }
-
-                        Text {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            text: "fade out"
-                            color: theme.textPrimary
-                            font.family: theme.fontMain
-                            font.pixelSize: 12
-                            font.weight: Font.DemiBold
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: fade_out_check.toggle()
-                    }
-                }
-            }
-        }
-    }
-
-    component StyledCheckBox: CheckBox {
-        id: styled_check
-
-        indicator: Rectangle {
-            width: 18
-            height: 18
-            radius: 2
-            color: styled_check.checked ? theme.textAccent : theme.bgPrimary
-            border.width: 1
-            border.color: styled_check.checked ? theme.textAccent : theme.borderSubtle
-        }
-
-        contentItem: Item { width: 0; height: 0 }
-        hoverEnabled: true
-    }
-
-    component SettingsToggleRow: Item {
-        id: row_root
-
-        required property string title
-        required property bool checked
-        required property var on_toggle
-
-        implicitHeight: 24
-
-        Row {
-            anchors.fill: parent
-            spacing: 8
-
-            StyledCheckBox {
-                id: check
-                checked: row_root.checked
-                width: 18
-                height: 18
-                anchors.verticalCenter: parent.verticalCenter
-                leftPadding: 0
-                rightPadding: 0
-                topPadding: 0
-                bottomPadding: 0
-                onClicked: row_root.on_toggle(checked)
-            }
-
-            Column {
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: 0
-                width: parent.width - 26
-
-                Text {
-                    text: row_root.title
-                    color: theme.textPrimary
-                    font.family: theme.fontMain
-                    font.pixelSize: 12
-                    font.weight: Font.DemiBold
-                }
-            }
-        }
-    }
-
     component ColorInputRow: Item {
         id: color_row
 
@@ -612,6 +220,8 @@ ShellRoot {
         visible: true
         implicitWidth: 920
         implicitHeight: 560
+        width: 920
+        height: 560
         color: "transparent"
         title: "Shell Settings"
 
@@ -894,6 +504,22 @@ ShellRoot {
                         stepSize: 1
                         value: settings.workspaceWidth
                         onMoved: settings.workspaceWidth = Math.round(value)
+                    }
+
+                    Text {
+                        text: "Height factor: " + String(settings.workspaceHeightFactor) + "%"
+                        color: theme.textMuted
+                        font.family: theme.fontMain
+                        font.pixelSize: 11
+                    }
+
+                    StyledSlider {
+                        Layout.fillWidth: true
+                        from: 25
+                        to: 100
+                        stepSize: 1
+                        value: settings.workspaceHeightFactor
+                        onMoved: settings.workspaceHeightFactor = Math.round(value)
                     }
 
                     Text {

@@ -1,12 +1,12 @@
 {
     "accent": "#78b0ff",
-    "barHeight": 38,
+    "barHeight": 36,
     "barPosition": "top",
     "bgPrimary": "#141414",
     "bgSecondary": "#111111",
     "bgTertiary": "#0f0f0f",
     "borderSubtle": "#2b2b2b",
-    "clockClickAction": "open_calendar_popup",
+    "clockClickAction": "show_text",
     "clockMode": "time",
     "selected": "#22344f",
     "showClock": true,
@@ -22,7 +22,8 @@
     "transitionFadeIn": true,
     "transitionFadeOut": true,
     "workspaceCount": 5,
+    "workspaceHeightFactor": 35,
     "workspaceRadius": 100,
     "workspaceShowNumber": false,
-    "workspaceWidth": 14
+    "workspaceWidth": 10
 }
