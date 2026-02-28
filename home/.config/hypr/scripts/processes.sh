@@ -3,7 +3,6 @@ set -euo pipefail
 
 # Format: "<match_regex>|<start_command>"
 APPS=(
-  "swww-daemon|swww-daemon --format xrgb"
   "otd-daemon|otd-daemon"
   "notifications\\.sh|$HOME/.config/hypr/scripts/notifications.sh"
   "hyprshell run|hyprshell run"
@@ -35,10 +34,6 @@ ensure_app() {
   fi
 }
 
-apply_saved_wallpaper() {
-  "$HOME/.local/bin/wallpaperctl" restore >/dev/null 2>&1 || true
-}
-
 stop_conflicting_tray_watcher
 
 for entry in "${APPS[@]}"; do
@@ -51,5 +46,4 @@ for entry in "${APPS[@]}"; do
   esac
 done
 
-apply_saved_wallpaper
 stop_conflicting_tray_watcher
