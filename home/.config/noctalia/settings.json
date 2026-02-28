@@ -16,6 +16,12 @@
         "ignoreMouseInput": false,
         "overviewLayer": false,
         "pinnedApps": [
+            "firefox",
+            "chromium",
+            "steam",
+            "osu-wine",
+            "dev.zed.Zed",
+            "osu-stuff"
         ],
         "position": "center",
         "screenshotAnnotationTool": "",
@@ -184,6 +190,13 @@
                     "useCustomFont": false
                 },
                 {
+                    "defaultSettings": {
+                        "enableTodoIntegration": false,
+                        "notecardsEnabled": true,
+                        "pincardsEnabled": true,
+                        "position": "Bottom",
+                        "showCloseButton": false
+                    },
                     "id": "plugin:clipper"
                 }
             ]
@@ -357,7 +370,7 @@
             ]
         },
         "language": "",
-        "lockOnSuspend": true,
+        "lockOnSuspend": false,
         "lockScreenAnimations": false,
         "lockScreenBlur": 0,
         "lockScreenCountdownDuration": 10000,
@@ -394,8 +407,8 @@
         "enabled": true,
         "fadeDuration": 5,
         "lockTimeout": 660,
-        "screenOffTimeout": 600,
-        "suspendTimeout": 1800
+        "screenOffTimeout": 599,
+        "suspendTimeout": 1801
     },
     "location": {
         "analogClockInCalendar": false,
@@ -608,7 +621,7 @@
         "overviewBlur": 0.4,
         "overviewEnabled": false,
         "overviewTint": 0.6,
-        "panelPosition": "follow_bar",
+        "panelPosition": "center",
         "randomIntervalSec": 300,
         "setWallpaperOnAllMonitors": true,
         "showHiddenFiles": false,
