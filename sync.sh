@@ -5,9 +5,13 @@ DOT_HOME_FOLDER="./home"
 DOT_ROOT_FOLDER="./root"
 DOTS_FILE="dots.txt"
 USER_HOME="$HOME"
+OWNER_USER=""
+OWNER_GROUP=""
 
 if [[ "$EUID" -eq 0 && -n "${SUDO_USER:-}" ]]; then
     USER_HOME="$(getent passwd "$SUDO_USER" | cut -d: -f6)"
+    OWNER_USER="$SUDO_USER"
+    OWNER_GROUP="$(id -gn "$SUDO_USER")"
 fi
 
 declare -i SYNCED=0 SKIPPED=0 NEW=0 REMOVED=0
@@ -105,21 +109,35 @@ preflight_permissions() {
         echo "error: root entries detected in dots.txt, run with sudo"
         exit 1
     fi
+
+    if [[ -n "$OWNER_USER" ]]; then
+        chown -R "$OWNER_USER:$OWNER_GROUP" "$DOT_HOME_FOLDER" || true
+    fi
 }
 
 sync_file() {
     local user_file="$1"
     local repo_file="$2"
     local rel_name="$3"
+    local scope="$4"
 
     if [[ ! -e "$repo_file" ]]; then
         echo "  new: $rel_name"
         mkdir -p "$(dirname "$repo_file")"
+        if [[ "$scope" == "home" && -n "$OWNER_USER" ]]; then
+            chown -R "$OWNER_USER:$OWNER_GROUP" "$(dirname "$repo_file")" || true
+        fi
         cp -f --remove-destination "$user_file" "$repo_file"
+        if [[ "$scope" == "home" && -n "$OWNER_USER" ]]; then
+            chown "$OWNER_USER:$OWNER_GROUP" "$repo_file" || true
+        fi
         ((NEW+=1))
     elif [[ "$user_file" -nt "$repo_file" ]]; then
         echo "  sync: $rel_name"
         cp -f --remove-destination "$user_file" "$repo_file"
+        if [[ "$scope" == "home" && -n "$OWNER_USER" ]]; then
+            chown "$OWNER_USER:$OWNER_GROUP" "$repo_file" || true
+        fi
         ((SYNCED+=1))
     else
         ((SKIPPED+=1))
@@ -141,27 +159,27 @@ sync_entry() {
     case "$mode" in
         literal)
             if [[ -f "$src_base" ]]; then
-                sync_file "$src_base" "$repo_base" "$spec"
+                sync_file "$src_base" "$repo_base" "$spec" "$scope"
                 return
             fi
             [[ -d "$src_base" ]] || return
             while IFS= read -r -d '' src_file; do
                 rel_file="${src_file#"$src_base/"}"
-                sync_file "$src_file" "$repo_base/$rel_file" "$base/$rel_file"
+                sync_file "$src_file" "$repo_base/$rel_file" "$base/$rel_file" "$scope"
             done < <(find "$src_base" -type f -print0)
             ;;
         one)
             [[ -d "$src_base" ]] || return
             while IFS= read -r -d '' src_file; do
                 rel_file="${src_file#"$src_base/"}"
-                sync_file "$src_file" "$repo_base/$rel_file" "$base/$rel_file"
+                sync_file "$src_file" "$repo_base/$rel_file" "$base/$rel_file" "$scope"
             done < <(find "$src_base" -maxdepth 1 -type f -print0)
             ;;
         recursive)
             [[ -d "$src_base" ]] || return
             while IFS= read -r -d '' src_file; do
                 rel_file="${src_file#"$src_base/"}"
-                sync_file "$src_file" "$repo_base/$rel_file" "$base/$rel_file"
+                sync_file "$src_file" "$repo_base/$rel_file" "$base/$rel_file" "$scope"
             done < <(find "$src_base" -type f -print0)
             ;;
     esac

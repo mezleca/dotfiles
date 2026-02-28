@@ -15,7 +15,6 @@ $HOME/.config/gtk-4.0/**
 $HOME/.config/hypr/**
 $HOME/.config/hyprshell/**
 $HOME/.config/noctalia/**
-$HOME/.config/quickshell/**
 $HOME/.config/awesome/**
 $HOME/.config/kitty/**
 $HOME/.config/Kvantum/**
@@ -23,7 +22,6 @@ $HOME/.config/picom/**
 $HOME/.config/polybar/**
 $HOME/.config/rofi/**
 $HOME/.local/bin/dot-screenshot.sh
-$HOME/.local/bin/wallpaperctl
 $HOME/.local/share/applications/feh.desktop
 $HOME/.local/share/applications/micro.desktop
 $HOME/.local/share/applications/mimeapps.list

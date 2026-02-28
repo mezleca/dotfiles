@@ -30,11 +30,11 @@
         "cavaFrameRate": 30,
         "mprisBlacklist": [
         ],
-        "preferredPlayer": "",
+        "preferredPlayer": "vlc",
         "visualizerType": "linear",
         "volumeFeedback": false,
         "volumeFeedbackSoundFile": "",
-        "volumeOverdrive": false,
+        "volumeOverdrive": true,
         "volumeStep": 5
     },
     "bar": {
@@ -92,10 +92,10 @@
                     "colorizeIcons": false,
                     "hideMode": "hidden",
                     "id": "ActiveWindow",
-                    "maxWidth": 145,
+                    "maxWidth": 500,
                     "scrollingMode": "hover",
-                    "showIcon": true,
-                    "textColor": "none",
+                    "showIcon": false,
+                    "textColor": "tertiary",
                     "useFixedWidth": false
                 },
                 {
@@ -192,7 +192,7 @@
     "brightness": {
         "backlightDeviceMappings": [
         ],
-        "brightnessStep": 4,
+        "brightnessStep": 10,
         "enableDdcSupport": true,
         "enforceMinimum": true
     },
@@ -214,13 +214,13 @@
     },
     "colorSchemes": {
         "darkMode": true,
-        "generationMethod": "tonal-spot",
+        "generationMethod": "rainbow",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Nord",
+        "predefinedScheme": "Vesper",
         "schedulingMode": "off",
-        "useWallpaperColors": false
+        "useWallpaperColors": true
     },
     "controlCenter": {
         "cards": [
@@ -323,7 +323,7 @@
         "animationDisabled": false,
         "animationSpeed": 1,
         "autoStartAuth": false,
-        "avatarImage": "/home/rel/.face",
+        "avatarImage": "/mnt/kingspec/images/1907895326456864768.jpg",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",
         "clockStyle": "custom",
@@ -391,7 +391,7 @@
     },
     "idle": {
         "customCommands": "[]",
-        "enabled": false,
+        "enabled": true,
         "fadeDuration": 5,
         "lockTimeout": 660,
         "screenOffTimeout": 600,
@@ -569,7 +569,7 @@
         "enableUserTheming": false
     },
     "ui": {
-        "boxBorderEnabled": false,
+        "boxBorderEnabled": true,
         "fontDefault": "Adwaita Sans",
         "fontDefaultScale": 0.91,
         "fontFixed": "Adwaita Mono",
@@ -587,17 +587,17 @@
         "enabled": true,
         "favorites": [
             {
-                "colorScheme": "Nord",
+                "colorScheme": "Vesper",
                 "darkMode": true,
-                "generationMethod": "tonal-spot",
+                "generationMethod": "rainbow",
                 "paletteColors": [
-                    "#8fbcbb",
-                    "#88c0d0",
-                    "#5e81ac",
-                    "#bf616a"
+                    "#b1c5ff",
+                    "#c0c6dd",
+                    "#e1bbdd",
+                    "#ffb4ab"
                 ],
                 "path": "/home/rel/wallpapers/8.png",
-                "useWallpaperColors": false
+                "useWallpaperColors": true
             }
         ],
         "fillColor": "#000000",
@@ -615,9 +615,9 @@
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
         "sortOrder": "name",
-        "transitionDuration": 1500,
+        "transitionDuration": 500,
         "transitionEdgeSmoothness": 0.05,
-        "transitionType": "random",
+        "transitionType": "fade",
         "useSolidColor": false,
         "useWallhaven": false,
         "viewMode": "single",

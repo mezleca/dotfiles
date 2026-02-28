@@ -13,11 +13,11 @@ pacman -S --noconfirm --needed \
 # hyprland
 pacman -S --noconfirm --needed \
   hyprland hyprshot pipewire pipewire-pulse wireplumber \
-  brightnessctl playerctl xdg-desktop-portal-hyprland swww
+  brightnessctl playerctl xdg-desktop-portal-hyprland
 
 # aur stuff
 paru -S --noconfirm \
   kora-icon-theme picom-git awesome-git otf-commit-mono-nerd \
-  opentabletdriver hyprshell quickshell otd-daemon
+  opentabletdriver hyprshell noctalia-shell otd-daemon
 
 ```

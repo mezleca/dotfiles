@@ -1,4 +1,0 @@
-module qs.components.bar
-ClockModule 1.0 ClockModule.qml
-AudioModule 1.0 AudioModule.qml
-BrightnessModule 1.0 BrightnessModule.qml
