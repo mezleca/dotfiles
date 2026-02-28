@@ -6,8 +6,6 @@ import QtQuick
 
 Item {
     id: root
-    width: 0
-    height: 0
     visible: false
 
     readonly property string configDir: (Quickshell.env("XDG_CONFIG_HOME") || (Quickshell.env("HOME") + "/.config")) + "/quickshell"
@@ -19,6 +17,8 @@ Item {
     property alias showTray: adapter.showTray
     property alias showCpu: adapter.showCpu
     property alias showMem: adapter.showMem
+    property alias showAudio: adapter.showAudio
+    property alias showBrightness: adapter.showBrightness
     property alias showClock: adapter.showClock
     property alias clockMode: adapter.clockMode
     property alias clockClickAction: adapter.clockClickAction
@@ -27,6 +27,7 @@ Item {
     property alias transitionDurationMs: adapter.transitionDurationMs
     property alias barPosition: adapter.barPosition
     property alias barHeight: adapter.barHeight
+    property alias barShowBorder: adapter.barShowBorder
     property alias titleLimit: adapter.titleLimit
     property alias workspaceCount: adapter.workspaceCount
     property alias workspaceShowNumber: adapter.workspaceShowNumber
@@ -42,6 +43,8 @@ Item {
     property alias textPrimary: adapter.textPrimary
     property alias textMuted: adapter.textMuted
     property alias selected: adapter.selected
+    property alias audioClickCommand: adapter.audioClickCommand
+    property alias brightnessClickCommand: adapter.brightnessClickCommand
 
     function reload() {
         fileView.reload()
@@ -62,6 +65,8 @@ Item {
         property bool showTray: true
         property bool showCpu: true
         property bool showMem: true
+        property bool showAudio: true
+        property bool showBrightness: true
         property bool showClock: true
         property string clockMode: "time"
         property string clockClickAction: "show_text"
@@ -70,6 +75,7 @@ Item {
         property int transitionDurationMs: 180
         property string barPosition: "top"
         property int barHeight: 36
+        property bool barShowBorder: true
         property int titleLimit: 50
         property int workspaceCount: 5
         property bool workspaceShowNumber: false
@@ -85,6 +91,8 @@ Item {
         property string textPrimary: "#d6d6d6"
         property string textMuted: "#9aa9bb"
         property string selected: "#22344f"
+        property string audioClickCommand: ""
+        property string brightnessClickCommand: ""
     }
 
     Process {
@@ -122,6 +130,8 @@ Item {
     onShowTrayChanged: queueSave()
     onShowCpuChanged: queueSave()
     onShowMemChanged: queueSave()
+    onShowAudioChanged: queueSave()
+    onShowBrightnessChanged: queueSave()
     onShowClockChanged: queueSave()
     onClockModeChanged: queueSave()
     onClockClickActionChanged: queueSave()
@@ -130,6 +140,7 @@ Item {
     onTransitionDurationMsChanged: queueSave()
     onBarPositionChanged: queueSave()
     onBarHeightChanged: queueSave()
+    onBarShowBorderChanged: queueSave()
     onTitleLimitChanged: queueSave()
     onWorkspaceCountChanged: queueSave()
     onWorkspaceShowNumberChanged: queueSave()
@@ -144,6 +155,8 @@ Item {
     onTextPrimaryChanged: queueSave()
     onTextMutedChanged: queueSave()
     onSelectedChanged: queueSave()
+    onAudioClickCommandChanged: queueSave()
+    onBrightnessClickCommandChanged: queueSave()
 
     Component.onCompleted: fileView.reload()
 }

@@ -40,6 +40,7 @@ ShellRoot {
             Bar {
                 barPosition: settings.barPosition
                 barHeight: barHeight
+                screenName: modelData.name
             }
         }
     }

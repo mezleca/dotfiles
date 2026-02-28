@@ -2,7 +2,7 @@
 # core
 pacman -S --noconfirm --needed \
   mpv feh eog xclip maim rofi kitty nautilus dunst micro \
-  network-manager-applet libnotify imagemagick bc \
+  libnotify imagemagick bc \
   ttf-jetbrains-mono-nerd polkit polkit-gnome
 
 # awesome/x11
@@ -12,11 +12,12 @@ pacman -S --noconfirm --needed \
 
 # hyprland
 pacman -S --noconfirm --needed \
-  hyprland hyprpaper hyprshot waybar pipewire pipewire-pulse wireplumber \
-  brightnessctl playerctl xdg-desktop-portal-hyprland
+  hyprland hyprshot pipewire pipewire-pulse wireplumber \
+  brightnessctl playerctl xdg-desktop-portal-hyprland swww
 
 # aur stuff
 paru -S --noconfirm \
   kora-icon-theme picom-git awesome-git otf-commit-mono-nerd \
-  opentabletdriver hyprshell snixembed
+  opentabletdriver hyprshell quickshell otd-daemon
+
 ```

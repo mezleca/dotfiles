@@ -1,9 +1,9 @@
-import Quickshell
-import Quickshell.Widgets
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 
 import ".."
+import "../services"
 
 Item {
     id: root
@@ -27,13 +27,7 @@ Item {
     implicitHeight: 24
     visible: visibleClock
 
-    SystemClock {
-        id: clock
-        enabled: true
-        precision: SystemClock.Minutes
-    }
-
-    readonly property var currentDate: clock.date
+    readonly property var currentDate: TimeService.currentDate
 
     function monthLabel(dateObj) {
         return dateObj.toLocaleString(Qt.locale().name, "MMMM yyyy")
@@ -50,7 +44,6 @@ Item {
             return
         }
 
-        dismissLayer.visible = true
         calendarPopup.visible = true
         if (transitionFadeIn) {
             calendarOpacity = 0.0
@@ -58,6 +51,10 @@ Item {
         } else {
             calendarOpacity = 1.0
         }
+        Qt.callLater(() => {
+            root.updateCalendarPosition()
+            dismissLayer.visible = true
+        })
     }
 
     function closeCalendar() {
@@ -94,6 +91,30 @@ Item {
         }
     }
 
+    function updateCalendarPosition() {
+        if (!calendarPopup.visible) {
+            return
+        }
+        const parentItem = root.parent || root
+        const clockPos = clockText.mapToItem(parentItem, 0, 0)
+        const popupWidth = calendarPopup.implicitWidth
+        const popupHeight = calendarPopup.implicitHeight
+        let nextX = clockPos.x + clockText.width - popupWidth
+        const minX = 8
+        const maxX = parentItem.width - popupWidth - 8
+        if (nextX < minX) {
+            nextX = minX
+        } else if (nextX > maxX) {
+            nextX = Math.max(minX, maxX)
+        }
+        let nextY = clockPos.y + clockText.height + 8
+        if (root.barPosition === "bottom") {
+            nextY = clockPos.y - popupHeight - 8
+        }
+        calendarPopup.x = nextX
+        calendarPopup.y = nextY
+    }
+
     Timer {
         id: altTextTimer
         interval: 2000
@@ -125,6 +146,9 @@ Item {
         }
     }
 
+    onWidthChanged: root.updateCalendarPosition()
+    onHeightChanged: root.updateCalendarPosition()
+
     Text {
         id: clockText
         anchors.centerIn: parent
@@ -142,18 +166,20 @@ Item {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
+        preventStealing: true
         onClicked: root.handleClockClick()
     }
 
-    PopupWindow {
+    Popup {
         id: dismissLayer
         visible: false
-        color: "transparent"
-        implicitWidth: 8000
-        implicitHeight: 8000
-        anchor.item: root
-        anchor.rect.x: -4000
-        anchor.rect.y: -4000
+        modal: false
+        focus: false
+        x: 0
+        y: 0
+        width: root.parent ? root.parent.width : 8000
+        height: root.parent ? root.parent.height : 8000
+        background: Rectangle { color: "transparent" }
 
         MouseArea {
             anchors.fill: parent
@@ -162,18 +188,14 @@ Item {
         }
     }
 
-    PopupWindow {
+    Popup {
         id: calendarPopup
         visible: false
-        color: "transparent"
         implicitWidth: 300
         implicitHeight: 290
-        anchor.item: root
-        anchor.rect.x: {
-            const preferredX = root.width - implicitWidth
-            return Math.max(-root.x + 8, Math.min(preferredX, root.parent ? (root.parent.width - root.x - implicitWidth - 8) : preferredX))
-        }
-        anchor.rect.y: root.barPosition === "bottom" ? (-implicitHeight - 8) : (root.height + 8)
+        modal: false
+        focus: true
+        background: Rectangle { color: "transparent" }
 
         Rectangle {
             anchors.fill: parent

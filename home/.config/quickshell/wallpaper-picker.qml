@@ -1,33 +1,25 @@
 import Quickshell
-import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
 import "components"
+import "components/services"
 
 ShellRoot {
     id: root
-    property var wallpapers: []
     property string selectedPathKey: ""
     property real panelOpacity: 1.0
 
     function refreshList() {
-        scanProc.command = ["/home/rel/.local/bin/wallpaperctl", "list"]
-        scanProc.running = true
+        WallpaperService.refresh()
     }
 
     function applySelected(pathValue) {
-        if (applyProc.running) {
-            return
-        }
-
         const p = pathValue || selectedPathKey
         if (p.length === 0) {
             return
         }
-
-        applyProc.command = ["/home/rel/.local/bin/wallpaperctl", "apply", p]
-        applyProc.running = true
+        WallpaperService.apply(p)
     }
 
     function close_picker() {
@@ -38,24 +30,7 @@ ShellRoot {
         }
     }
 
-    Process {
-        id: scanProc
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const lines = this.text.split("\n").map(s => s.trim()).filter(s => s.length > 0)
-                const items = []
-                for (const p of lines) {
-                    items.push({ path: p })
-                }
-                wallpapers = items
-                selectedPathKey = ""
-            }
-        }
-    }
-
-    Process {
-        id: applyProc
-    }
+    readonly property var wallpapers: WallpaperService.wallpapers
 
     Theme {
         id: theme
@@ -108,7 +83,6 @@ ShellRoot {
                     UiButton {
                         text: "Refresh"
                         onClicked: {
-                            wallpapers = []
                             selectedPathKey = ""
                             refreshList()
                         }

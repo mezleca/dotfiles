@@ -21,7 +21,6 @@ Item {
     property string summaryText: ""
     property var popupParent: null
     property bool isOpen: false
-    // placeholder to keep state if needed later
 
     signal selectionChanged(var keys)
 
@@ -243,14 +242,14 @@ Item {
                         anchors.fill: parent
                         spacing: 8
 
-                    StyledCheckBox {
-                        id: item_check
-                        checked: root.selectedKeys.indexOf(modelData.key) !== -1
-                        enabled: !locked
-                        Layout.preferredWidth: 18
-                        Layout.preferredHeight: 18
-                        onClicked: root.toggleKey(modelData.key)
-                    }
+                        StyledCheckBox {
+                            id: item_check
+                            checked: root.selectedKeys.indexOf(modelData.key) !== -1
+                            enabled: !locked
+                            Layout.preferredWidth: 18
+                            Layout.preferredHeight: 18
+                            onClicked: root.toggleKey(modelData.key)
+                        }
 
                         Text {
                             Layout.fillWidth: true

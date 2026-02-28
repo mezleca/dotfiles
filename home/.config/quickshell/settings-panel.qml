@@ -1,53 +1,18 @@
 import Quickshell
-import Quickshell.Io
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
 import "components"
 import "components/ui"
+import "components/services"
 
 ShellRoot {
     id: root
 
     property int currentTab: 0
-    property var wallpapers: []
     property string selectedPathKey: ""
     property real panelOpacity: 1.0
-
-    function refresh_wallpapers() {
-        scan_proc.command = ["/home/rel/.local/bin/wallpaperctl", "list"]
-        scan_proc.running = true
-    }
-
-    function apply_wallpaper(path_value) {
-        if (apply_proc.running) {
-            return
-        }
-
-        const target_path = path_value || selectedPathKey
-        if (target_path.length == 0) {
-            return
-        }
-
-        apply_proc.command = ["/home/rel/.local/bin/wallpaperctl", "apply", target_path]
-        apply_proc.running = true
-    }
-
-    function apply_theme(theme_data) {
-        settings.accent = theme_data.accent
-        settings.bgPrimary = theme_data.bgPrimary
-        settings.bgSecondary = theme_data.bgSecondary
-        settings.bgTertiary = theme_data.bgTertiary
-        settings.borderSubtle = theme_data.borderSubtle
-        settings.textPrimary = theme_data.textPrimary
-        settings.textMuted = theme_data.textMuted
-        settings.selected = theme_data.selected
-    }
-
-    function is_valid_hex(color_value) {
-        return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test((color_value || "").trim())
-    }
 
     function close_panel() {
         if (settings.transitionFadeOut) {
@@ -57,74 +22,7 @@ ShellRoot {
         }
     }
 
-    readonly property var predefined_themes: [
-        {
-            name: "noctalia dark",
-            accent: "#6ca0ff",
-            bgPrimary: "#13151a",
-            bgSecondary: "#171a21",
-            bgTertiary: "#1d212a",
-            borderSubtle: "#2b3040",
-            textPrimary: "#e6eaf2",
-            textMuted: "#9ba7bb",
-            selected: "#24344f"
-        },
-        {
-            name: "graphite",
-            accent: "#78b0ff",
-            bgPrimary: "#141414",
-            bgSecondary: "#111111",
-            bgTertiary: "#0f0f0f",
-            borderSubtle: "#2b2b2b",
-            textPrimary: "#d6d6d6",
-            textMuted: "#9aa9bb",
-            selected: "#22344f"
-        },
-        {
-            name: "slate",
-            accent: "#7ab7ff",
-            bgPrimary: "#10161c",
-            bgSecondary: "#0c1116",
-            bgTertiary: "#090e13",
-            borderSubtle: "#283240",
-            textPrimary: "#d8e1ed",
-            textMuted: "#9ba9bc",
-            selected: "#1f3348"
-        },
-        {
-            name: "warm dark",
-            accent: "#f5b57a",
-            bgPrimary: "#181410",
-            bgSecondary: "#14100d",
-            bgTertiary: "#100d0b",
-            borderSubtle: "#3a2e27",
-            textPrimary: "#f2e3d5",
-            textMuted: "#b99f89",
-            selected: "#3f2f26"
-        },
-        {
-            name: "paper light",
-            accent: "#4d77c8",
-            bgPrimary: "#f2f4f8",
-            bgSecondary: "#e9edf4",
-            bgTertiary: "#dde3ee",
-            borderSubtle: "#bcc7d8",
-            textPrimary: "#1e2a3c",
-            textMuted: "#5b6a80",
-            selected: "#cfdaf0"
-        },
-        {
-            name: "sand light",
-            accent: "#4f7f7a",
-            bgPrimary: "#f7f4ee",
-            bgSecondary: "#f0ece3",
-            bgTertiary: "#e7e0d4",
-            borderSubtle: "#cdc1ae",
-            textPrimary: "#2e2a24",
-            textMuted: "#6f6458",
-            selected: "#ddd4c6"
-        }
-    ]
+    readonly property var predefined_themes: ThemeService.predefinedThemes
 
     Theme {
         id: theme
@@ -132,29 +30,7 @@ ShellRoot {
 
     readonly property var settings: ShellSettings
 
-    Process {
-        id: scan_proc
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const lines = this.text.split("\n")
-                const parsed = []
-
-                for (let i = 0; i < lines.length; i += 1) {
-                    const item_path = (lines[i] || "").trim()
-                    if (item_path.length > 0) {
-                        parsed.push({ path: item_path })
-                    }
-                }
-
-                root.wallpapers = parsed
-            }
-        }
-    }
-
-    Process {
-        id: apply_proc
-    }
+    readonly property var wallpapers: WallpaperService.wallpapers
 
     component ColorInputRow: Item {
         id: color_row
@@ -193,7 +69,7 @@ ShellRoot {
                 text: color_row.value
                 onEditingFinished: {
                     const v = text.trim()
-                    if (root.is_valid_hex(v)) {
+                    if (ThemeService.isValidHex(v)) {
                         color_row.on_apply(v)
                     } else {
                         text = color_row.value
@@ -205,7 +81,7 @@ ShellRoot {
                 text: "Apply"
                 onClicked: {
                     const v = input.text.trim()
-                    if (root.is_valid_hex(v)) {
+                    if (ThemeService.isValidHex(v)) {
                         color_row.on_apply(v)
                     } else {
                         input.text = color_row.value
@@ -220,8 +96,6 @@ ShellRoot {
         visible: true
         implicitWidth: 920
         implicitHeight: 560
-        width: 920
-        height: 560
         color: "transparent"
         title: "Shell Settings"
 
@@ -310,7 +184,7 @@ ShellRoot {
                     Loader {
                         anchors.fill: parent
                         anchors.margins: 12
-                        sourceComponent: root.currentTab == 0 ? config_tab : (root.currentTab == 1 ? wallpaper_tab : colors_tab)
+                                sourceComponent: root.currentTab == 0 ? config_tab : (root.currentTab == 1 ? wallpaper_tab : colors_tab)
                     }
                 }
             }
@@ -394,6 +268,20 @@ ShellRoot {
 
                     SettingsToggleRow {
                         Layout.fillWidth: true
+                        title: "Audio"
+                        checked: settings.showAudio
+                        on_toggle: checked => { settings.showAudio = checked }
+                    }
+
+                    SettingsToggleRow {
+                        Layout.fillWidth: true
+                        title: "Brightness"
+                        checked: settings.showBrightness
+                        on_toggle: checked => { settings.showBrightness = checked }
+                    }
+
+                    SettingsToggleRow {
+                        Layout.fillWidth: true
                         title: "Clock"
                         checked: settings.showClock
                         on_toggle: checked => { settings.showClock = checked }
@@ -435,6 +323,13 @@ ShellRoot {
                         stepSize: 1
                         value: settings.barHeight
                         onMoved: settings.barHeight = Math.round(value)
+                    }
+
+                    SettingsToggleRow {
+                        Layout.fillWidth: true
+                        title: "Border"
+                        checked: settings.barShowBorder
+                        on_toggle: checked => { settings.barShowBorder = checked }
                     }
                 }
 
@@ -557,6 +452,48 @@ ShellRoot {
                 }
 
                 SectionCard {
+                    visible: settings.showAudio
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+                    title: "Audio"
+
+                    Text {
+                        text: "Click command"
+                        color: theme.textMuted
+                        font.family: theme.fontMain
+                        font.pixelSize: 11
+                    }
+
+                    StyledTextField {
+                        Layout.fillWidth: true
+                        text: settings.audioClickCommand
+                        placeholderText: "pavucontrol"
+                        onEditingFinished: settings.audioClickCommand = text.trim()
+                    }
+                }
+
+                SectionCard {
+                    visible: settings.showBrightness
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+                    title: "Brightness"
+
+                    Text {
+                        text: "Click command"
+                        color: theme.textMuted
+                        font.family: theme.fontMain
+                        font.pixelSize: 11
+                    }
+
+                    StyledTextField {
+                        Layout.fillWidth: true
+                        text: settings.brightnessClickCommand
+                        placeholderText: "lightbulb"
+                        onEditingFinished: settings.brightnessClickCommand = text.trim()
+                    }
+                }
+
+                SectionCard {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
                     title: "Transitions"
@@ -616,7 +553,7 @@ ShellRoot {
 
                 StyledButton {
                     text: "Refresh"
-                    onClicked: root.refresh_wallpapers()
+                    onClicked: WallpaperService.refresh()
                 }
             }
 
@@ -648,7 +585,7 @@ ShellRoot {
                         cellWidth: grid_host.desired_cell_width
                         cellHeight: grid_host.desired_cell_height
                         clip: true
-                        model: root.wallpapers
+                        model: wallpapers
                         cacheBuffer: 1200
 
                         delegate: Item {
@@ -692,7 +629,7 @@ ShellRoot {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: {
                                     root.selectedPathKey = modelData.path
-                                    root.apply_wallpaper(modelData.path)
+                                    WallpaperService.apply(modelData.path)
                                 }
                             }
                         }
@@ -825,7 +762,7 @@ ShellRoot {
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: root.apply_theme(modelData)
+                                    onClicked: ThemeService.applyTheme(modelData)
                                 }
                             }
                         }
@@ -897,7 +834,7 @@ ShellRoot {
     }
 
     Component.onCompleted: {
-        refresh_wallpapers()
+        WallpaperService.refresh()
         if (settings.transitionFadeIn) {
             root.panelOpacity = 0.0
             panelFadeIn.restart()
