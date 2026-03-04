@@ -21,7 +21,8 @@
             "steam",
             "osu-wine",
             "dev.zed.Zed",
-            "osu-stuff"
+            "osu-stuff",
+            "com.heroicgameslauncher.hgl"
         ],
         "position": "center",
         "screenshotAnnotationTool": "",
