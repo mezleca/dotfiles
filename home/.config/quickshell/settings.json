@@ -13,7 +13,7 @@
     "clockMode": "time",
     "selected": "#22344f",
     "showAudio": true,
-    "showBrightness": true,
+    "showBrightness": false,
     "showClock": true,
     "showCpu": true,
     "showMem": true,

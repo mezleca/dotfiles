@@ -6,8 +6,12 @@ DOT_ROOT_FOLDER="./root"
 DOTS_FILE="dots.txt"
 
 USER_HOME="$HOME"
+OWNER_USER=""
+OWNER_GROUP=""
 if [[ "$EUID" -eq 0 && -n "${SUDO_USER:-}" ]]; then
     USER_HOME="$(getent passwd "$SUDO_USER" | cut -d: -f6)"
+    OWNER_USER="$SUDO_USER"
+    OWNER_GROUP="$(id -gn "$SUDO_USER")"
 fi
 
 declare -i NEED_ROOT=0 INSTALLED=0 SKIPPED=0
@@ -101,6 +105,7 @@ install_file() {
     local src="$1"
     local dst="$2"
     local rel="$3"
+    local scope="$4"
 
     if [[ ! -f "$src" ]]; then
         ((SKIPPED+=1))
@@ -110,6 +115,9 @@ install_file() {
     echo "  install: $rel"
     mkdir -p "$(dirname "$dst")"
     cp -f --remove-destination "$src" "$dst"
+    if [[ "$scope" == "home" && -n "$OWNER_USER" ]]; then
+        chown "$OWNER_USER:$OWNER_GROUP" "$dst" || true
+    fi
     ((INSTALLED+=1))
 }
 
@@ -129,27 +137,27 @@ install_entry() {
     case "$mode" in
         literal)
             if [[ -f "$repo_base" ]]; then
-                install_file "$repo_base" "$dst_base" "$spec"
+                install_file "$repo_base" "$dst_base" "$spec" "$scope"
                 return
             fi
             [[ -d "$repo_base" ]] || { ((SKIPPED+=1)); return; }
             while IFS= read -r -d '' repo_file; do
                 rel_file="${repo_file#"$repo_base/"}"
-                install_file "$repo_file" "$dst_base/$rel_file" "$base/$rel_file"
+                install_file "$repo_file" "$dst_base/$rel_file" "$base/$rel_file" "$scope"
             done < <(find "$repo_base" -type f -print0)
             ;;
         one)
             [[ -d "$repo_base" ]] || { ((SKIPPED+=1)); return; }
             while IFS= read -r -d '' repo_file; do
                 rel_file="${repo_file#"$repo_base/"}"
-                install_file "$repo_file" "$dst_base/$rel_file" "$base/$rel_file"
+                install_file "$repo_file" "$dst_base/$rel_file" "$base/$rel_file" "$scope"
             done < <(find "$repo_base" -maxdepth 1 -type f -print0)
             ;;
         recursive)
             [[ -d "$repo_base" ]] || { ((SKIPPED+=1)); return; }
             while IFS= read -r -d '' repo_file; do
                 rel_file="${repo_file#"$repo_base/"}"
-                install_file "$repo_file" "$dst_base/$rel_file" "$base/$rel_file"
+                install_file "$repo_file" "$dst_base/$rel_file" "$base/$rel_file" "$scope"
             done < <(find "$repo_base" -type f -print0)
             ;;
     esac
