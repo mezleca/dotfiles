@@ -147,7 +147,10 @@ alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
 
+# code editors
 alias zed="zeditor"
+alias code="vscodium"
+
 alias py="python3"
 alias pip="pip3"
 alias vim="nvim"
