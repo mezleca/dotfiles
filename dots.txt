@@ -8,6 +8,7 @@ $HOME/.config/micro/plug/**
 $HOME/.config/micro/settings.json
 $HOME/.config/micro/syntax/**
 $HOME/.config/zed/settings.json
+$HOME/.config/VSCodium/User/settings.json
 $HOME/.config/dunst/**
 $HOME/.config/gtk-2.0/**
 $HOME/.config/gtk-3.0/**
