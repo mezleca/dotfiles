@@ -1,7 +1,6 @@
 $HOME/wallpapers/**
 $HOME/sound_effects/**
 $HOME/.themes/**
-$HOME/.config/spicetify/
 $HOME/.config/micro/bindings.json
 $HOME/.config/micro/colorschemes/**
 $HOME/.config/micro/palettero.cfg
