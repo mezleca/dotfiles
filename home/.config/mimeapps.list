@@ -53,7 +53,7 @@ application/gzip=org.gnome.FileRoller.desktop;
 application/vnd.rar=org.gnome.FileRoller.desktop;
 x-scheme-handler/heroic=com.heroicgameslauncher.hgl.desktop;heroic.desktop;
 x-scheme-handler/discord-1216669957799018608=discord-1216669957799018608.desktop;
-x-scheme-handler/discord=legcord.desktop;
+x-scheme-handler/discord=equibop.desktop;legcord.desktop;
 x-scheme-handler/hydralauncher=hydralauncher.desktop;
 x-scheme-handler/ror2mm=r2modman.desktop
 
@@ -113,6 +113,6 @@ application/gzip=org.gnome.FileRoller.desktop
 x-scheme-handler/terminal=kitty.desktop
 x-scheme-handler/discord-1216669957799018608=discord-1216669957799018608.desktop
 x-scheme-handler/heroic=com.heroicgameslauncher.hgl.desktop
-x-scheme-handler/discord=legcord.desktop
+x-scheme-handler/discord=equibop.desktop
 x-scheme-handler/hydralauncher=hydralauncher.desktop
 x-scheme-handler/ror2mm=r2modman.desktop

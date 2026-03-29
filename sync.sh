@@ -86,6 +86,8 @@ load_entries() {
     while IFS= read -r line; do
         line="${line%%#*}"
         line="${line%$'\r'}"
+        line="${line%/}"
+        
         [[ -z "$line" ]] && continue
 
         ENTRIES+=("$line")
