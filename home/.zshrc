@@ -171,3 +171,5 @@ alias myip="curl -s ifconfig.me"
 alias clip="xclip -selection clipboard"
 
 unsetopt xtrace
+
+export PATH=$PATH:/home/rel/.spicetify

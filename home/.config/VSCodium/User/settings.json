@@ -48,6 +48,7 @@
     "workbench.settings.enableNaturalLanguageSearch": false,
     "window.zoomLevel": 0.3,
     "terminal.integrated.fontFamily": "CommitMono Nerd Font Mono",
+    "terminal.integrated.shellIntegration.enabled": false,
     "files.autoSave": "onFocusChange",
     "files.exclude": {
         "**/.git": true,
@@ -101,20 +102,24 @@
             "path": "/usr/bin/qtpaths"
         }
     ],
+    "qt-qml.qmlls.customExePath": "/usr/lib/qt6/bin/qmlls",
+    "qt-qml.qmlls.additionalImportPaths": [ "/usr/lib/qt6/qml" ],
     "qt-support.qtInstallDirectories": [],
     "cmake.additionalKits": [
         "/home/rel/.local/share/qt-support/qt-kits.json"
     ],
+    "cmake.configureOnEdit": false,
+    "cmake.showConfigureWithDebuggerNotification": false,
+    "cmake.debugConfig": { "console": "internalConsole" },
     "js/ts.updateImportsOnFileMove.enabled": "always",
     "telemetry.telemetryLevel": "off",
     "extensions.autoUpdate": false,
     "update.mode": "none",
     "[c]": { "editor.formatOnSave": false },
     "[cpp]": { "editor.formatOnSave": false },
-    "[csharp]": { "editor.formatOnSave": false },
     "[typescript]": { "editor.formatOnSave": false },
     "[typescriptreact]": { "editor.formatOnSave": false },
     "[javascript]": { "editor.formatOnSave": false },
     "[go]": { "editor.formatOnSave": false },
-    "[python]": { "editor.formatOnSave": false },
+    "[python]": { "editor.formatOnSave": false }
 }
