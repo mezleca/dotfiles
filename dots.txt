@@ -36,3 +36,4 @@ $HOME/.zshrc
 /etc/X11/xorg.conf.d/15-dmabuf.conf
 /etc/X11/xorg.conf.d/20-modesetting.conf
 /etc/X11/xorg.conf.d/20-nvidia.conf
+/etc/systemd/coredump.conf
