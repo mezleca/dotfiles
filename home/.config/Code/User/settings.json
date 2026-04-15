@@ -98,21 +98,23 @@
     "qt-core.additionalQtPaths": [
         {
             "name": "Qt-5.15.18-linux-g++_from_PATH",
-            "path": "/usr/bin/qtpaths"
+            "path": "/usr/bin/qtpaths",
+            
         }
     ],
     "qt-qml.qmlls.customExePath": "/usr/lib/qt6/bin/qmlls",
     "qt-qml.qmlls.additionalImportPaths": [ "/usr/lib/qt6/qml" ],
-    "qt-support.qtInstallDirectories": [],
     "cmake.additionalKits": [
         "/home/rel/.local/share/qt-support/qt-kits.json"
     ],
+    "cmake.enableAutomaticKitScan": false,
     "cmake.configureOnEdit": false,
     "cmake.showConfigureWithDebuggerNotification": false,
     "cmake.debugConfig": { "console": "internalConsole" },
     "js/ts.updateImportsOnFileMove.enabled": "always",
     "telemetry.telemetryLevel": "off",
     "extensions.autoUpdate": false,
+    "python.analysis.typeCheckingMode": "standard",
     "update.mode": "none",
     "[c]": { "editor.formatOnSave": false },
     "[cpp]": { "editor.formatOnSave": false },

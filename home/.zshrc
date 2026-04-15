@@ -149,7 +149,7 @@ alias du="du -h"
 
 # code editors
 alias zed="zeditor"
-alias code="vscodium"
+# alias code="vscodium"
 
 alias py="python3"
 alias pip="pip3"
