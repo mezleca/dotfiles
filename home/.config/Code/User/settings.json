@@ -3,12 +3,8 @@
     "explorer.confirmDelete": false,
     "explorer.confirmPasteNative": false,
     "security.workspace.trust.untrustedFiles": "open",
-    "github.copilot.enable": {
-        "*": false,
-        "plaintext": false,
-        "markdown": false,
-        "scminput": false
-    },
+    "chat.autopilot.enabled": false,
+    "chat.agent.enabled": false,
     "editor.minimap.enabled": false,
     "editor.inlayHints.enabled": "off",
     "editor.formatOnSave": false,
@@ -30,7 +26,7 @@
     "editor.hover.delay": 1000,
     "editor.quickSuggestionsDelay": 300,
     "editor.fontFamily": "CommitMono Nerd Font Mono",
-    "editor.fontSize": 16,
+    "editor.fontSize": 14,
     "workbench.editorAssociations": {
         "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc": "default",
         "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.ui": "default",
@@ -38,11 +34,9 @@
         "*.svg": "default",
         "*.qrc": "qt-core.qrcEditor"
     },
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "chalice-icon-theme",
     "workbench.list.smoothScrolling": false,
     "workbench.tree.renderIndentGuides": "none",
-    "workbench.experimental.fontFamily": "Adwaita Sans",
-    "workbench.experimental.fontSize": 16,
     "workbench.enableExperiments": false,
     "workbench.settings.enableNaturalLanguageSearch": false,
     "window.zoomLevel": 0.3,
@@ -98,16 +92,14 @@
     "qt-core.additionalQtPaths": [
         {
             "name": "Qt-5.15.18-linux-g++_from_PATH",
-            "path": "/usr/bin/qtpaths",
-            
+            "path": "/usr/bin/qtpaths"
         }
     ],
     "qt-qml.qmlls.customExePath": "/usr/lib/qt6/bin/qmlls",
     "qt-qml.qmlls.additionalImportPaths": [ "/usr/lib/qt6/qml" ],
-    "cmake.additionalKits": [
-        "/home/rel/.local/share/qt-support/qt-kits.json"
-    ],
+    "cmake.additionalKits": [ "/home/rel/.local/share/qt-support/qt-kits.json" ],
     "cmake.enableAutomaticKitScan": false,
+    "cmake.automaticReconfigure": false,
     "cmake.configureOnEdit": false,
     "cmake.showConfigureWithDebuggerNotification": false,
     "cmake.debugConfig": { "console": "internalConsole" },

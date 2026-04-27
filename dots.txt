@@ -27,7 +27,6 @@ $HOME/.config/rofi/**
 $HOME/.local/bin/dot-screenshot.sh
 $HOME/.local/share/applications/feh.desktop
 $HOME/.local/share/applications/micro.desktop
-$HOME/.local/share/applications/mimeapps.list
 $HOME/.config/mimeapps.list
 $HOME/.xprofile
 $HOME/.bashrc

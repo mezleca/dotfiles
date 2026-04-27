@@ -1,6 +1,23 @@
 // Zed settings
 // Docs: https://zed.dev/docs/configuring-zed
 {
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "disable_ai": true,
   "session": {
     "trust_all_worktrees": true
