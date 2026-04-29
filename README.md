@@ -1,7 +1,7 @@
 ```bash
 # core
 pacman -S --noconfirm --needed \
-  mpv feh eog xclip maim rofi kitty nautilus dunst micro \
+  mpv feh fzf bat eog xclip maim rofi kitty nautilus dunst micro \
   libnotify imagemagick bc \
   ttf-jetbrains-mono-nerd polkit polkit-gnome
 
