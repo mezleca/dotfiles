@@ -2,8 +2,6 @@
 
 WALL_FOLDER="$HOME/wallpapers"
 LAST_WALL_FILE="$HOME/.cache/last-wallpaper"
-SET_WALL_SCRIPT="$HOME/.config/rofi/scripts/set_wallpaper.sh"
-
 restore=0
 
 while [ "$1" != "" ]; do
@@ -33,9 +31,11 @@ find_wallpapers() {
 
 apply_wallpaper() {
     local path="$1"
+    
     echo "applying: $path"
     echo "$path" > "$LAST_WALL_FILE"
-    "$SET_WALL_SCRIPT" "$path"
+    
+    feh --bg-fill $path
 }
 
 restore_wallpaper() {

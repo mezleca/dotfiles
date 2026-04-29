@@ -185,7 +185,7 @@ alias du="du -h"
 # config
 alias reload="source ~/.zshrc"
 alias zshconfig="$EDITOR ~/.zshrc"
-alias dotfiles="$EDITOR ~/dotfiles/dots.txt"
+alias dotfiles="cd ~/dotfiles && $EDITOR ./dots.txt"
 
 # find process by name
 alias pgrep="ps aux | grep"

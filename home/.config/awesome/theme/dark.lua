@@ -6,8 +6,8 @@ theme.fg_normal = "#ffffff"
 theme.fg_focus = "#ffffff"
 theme.fg_urgent = "#ff5555"
 
-theme.border_width = 3
-theme.border_focus = "#3d466b"
+theme.border_width = 2
+theme.border_focus = "#5080bf"
 theme.border_normal = "#333333"
 
 -- custom colors for widgets

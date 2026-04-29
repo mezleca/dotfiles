@@ -79,7 +79,15 @@ local CLIENT_RULES = {
         { rule_any = { class = { "osu!%.exe", "steam_app_" } } }
     },
     borderless = {
-        { rule_any = { name = { "Vicinae Launcher", "Vicinae Power", "Vicinae" } } },
+        { 
+            rule_any = { 
+            name = { 
+                "Vicinae Launcher", 
+                "Vicinae Power", 
+                "Vicinae", 
+                "org.gnome.Nautilus" 
+            } 
+        }},
         { rule_any = { class = {} } }
     }
 }
