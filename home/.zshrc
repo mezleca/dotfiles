@@ -182,9 +182,10 @@ alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
 
-# zsh
+# config
 alias reload="source ~/.zshrc"
 alias zshconfig="$EDITOR ~/.zshrc"
+alias dotfiles="$EDITOR ~/dotfiles/dots.txt"
 
 # find process by name
 alias pgrep="ps aux | grep"
