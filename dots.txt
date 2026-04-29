@@ -15,7 +15,6 @@ $HOME/.config/gtk-2.0/**
 $HOME/.config/gtk-3.0/**
 $HOME/.config/gtk-4.0/**
 $HOME/.config/hypr/**
-$HOME/.config/hyprshell/**
 $HOME/.config/noctalia/**
 $HOME/.config/awesome/**
 $HOME/.config/kitty/**

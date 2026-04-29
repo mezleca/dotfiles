@@ -135,7 +135,7 @@ path=(
   # spicetify
   $HOME/.spicetify
 
-  $path   # preserva o que o sistema já colocou
+  $path
 )
 
 export BUN_INSTALL="$HOME/.bun"

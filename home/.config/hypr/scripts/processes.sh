@@ -5,7 +5,6 @@ set -euo pipefail
 APPS=(
   "otd-daemon|otd-daemon"
   "notifications\\.sh|$HOME/.config/hypr/scripts/notifications.sh"
-  "hyprshell run|hyprshell run"
 )
 
 mode="${1:-restart}"
