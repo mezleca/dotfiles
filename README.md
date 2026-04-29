@@ -1,13 +1,13 @@
 ```bash
 # core
 pacman -S --noconfirm --needed \
-  mpv feh fzf bat eog xclip maim rofi kitty nautilus dunst micro \
-  libnotify imagemagick bc \
+  mpv feh eog xclip maim rofi kitty nautilus dunst micro \
+  libnotify imagemagick bc fzf bat \
   ttf-jetbrains-mono-nerd polkit polkit-gnome
 
 # awesome/x11
 pacman -S --noconfirm --needed \
-  polybar pamixer pavucontrol dex \
+  vicinae-bin polybar pamixer pavucontrol dex \
   lua-lgi lua-filesystem
 
 # hyprland
@@ -18,6 +18,6 @@ pacman -S --noconfirm --needed \
 # aur stuff
 paru -S --noconfirm \
   kora-icon-theme picom-git awesome-git otf-commit-mono-nerd \
-  opentabletdriver hyprshell noctalia-shell otd-daemon
+  opentabletdriver noctalia-shell otd-daemon
 
 ```

@@ -2,6 +2,7 @@ local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
+local ruled = require("ruled")
 
 -- custom widgets
 local bar = require("widgets.bar")
@@ -13,173 +14,120 @@ local function sh(cmd)
     awful.spawn.with_shell(cmd)
 end
 
+local function activate_and_raise(c)
+    c:activate({ context = "mouse_click", raise = true })
+end
+
+local function toggle_maximized(c)
+    if not c then
+        return
+    end
+
+    c.maximized = not c.maximized
+    c:raise()
+end
+
+local function toggle_fullscreen(c)
+    if not c then
+        return
+    end
+
+    c.fullscreen = not c.fullscreen
+    c:raise()
+end
+
+local function move_client(c)
+    c:activate({ context = "mouse_click" })
+    awful.mouse.client.move(c)
+end
+
+local function resize_client(c)
+    c:activate({ context = "mouse_click" })
+    awful.mouse.client.resize(c)
+end
+
 -- modifier keys
 MODKEY = "Mod4"
 ALTKEY = "Mod1"
 
-TERMINAL        = "kitty"
-FILE_MANAGER    = "nautilus"
-LAUNCHER        = os.getenv("HOME") .. "/.config/rofi/launch.sh launcher"
-POWER_MENU      = os.getenv("HOME") .. "/.config/rofi/launch.sh powermenu"
-WALLPAPER       = os.getenv("HOME") .. "/.config/rofi/launch.sh wallpaper"
-SCREENSHOT      = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh"
+TERMINAL = "kitty"
+FILE_MANAGER = "nautilus"
+
+LAUNCHER = "vicinae vicinae://toggle"
+POWER_MENU = "vicinae vicinae://launch/power"
+WALLPAPER = os.getenv("HOME") .. "/.local/bin/vicinae-wallpaper.sh"
+SCREENSHOT = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh"
 SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selection"
 
--- load last wallpaper
-sh(os.getenv("HOME") .. "/.config/rofi/scripts/set_wallpaper.sh --restore")
+local AUTOSTART_COMMANDS = {
+    "otd-daemon",
+    "dunst",
+    "picom",
+    "dex --autostart --environment awesome",
+    "nm-applet",
+    "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+}
 
--- setup theme
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")
-awful.layout.layouts = { awful.layout.suit.floating }
+local WORKSPACE_NAMES = { "1", "2", "3", "4", "5" }
+local AUDIO_STEP = "10%"
+local MAXIMIZE_THRESHOLD = 0.8
+local UNITY_REPAINT_DELAY_SEC = 1 / 60
 
--- autostart stuff
-sh("otd-daemon")
-sh("dunst")
-sh("picom")
-sh("dex --autostart --environment awesome")
-sh("nm-applet")
-sh("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
+local CLIENT_RULES = {
+    force_fullscreen = {
+        { rule_any = { class = { "osu!%.exe", "steam_app_" } } }
+    },
+    borderless = {
+        { rule_any = { name = { "Vicinae Launcher", "Vicinae Power", "Vicinae" } } },
+        { rule_any = { class = {} } }
+    }
+}
 
-awful.spawn.with_shell([[
-for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
-  xinput --set-prop $id 'libinput Accel Profile Enabled' 0, 1
-done
-]])
-
-naughty.connect_signal("request::display_error", function(message, startup)
-    local title = "awesome error" .. (startup and " (startup)" or "")
-    awful.spawn.with_shell(string.format(
-        "notify-send -u critical '%s' '%s'",
-        title:gsub("'", "'\\''"),
-        message:gsub("'", "'\\''")
-    ))
-end)
-
--- apps that must always be fullscreen (forced once on startup)
-local FORCE_FULLSCREEN = { "osu!%.exe", "steam_app_" }
-
-local function class_matches(c, patterns)
-    if not c or not c.class then return false end
-    local cls = c.class:lower()
-    for _, p in ipairs(patterns) do
-        if cls:match(p) then return true end
+local function setup_autostart()
+    for _, cmd in ipairs(AUTOSTART_COMMANDS) do
+        sh(cmd)
     end
+end
+
+local function client_matches_rules(c, rules)
+    for _, rule in ipairs(rules) do
+        if ruled.client.matches(c, rule) then
+            return true
+        end
+    end
+
     return false
 end
 
 local function should_be_fullscreen(c)
-    return class_matches(c, FORCE_FULLSCREEN)
+    return client_matches_rules(c, CLIENT_RULES.force_fullscreen)
 end
 
--- mouse binds
-local client_buttons = gears.table.join(
-    awful.button({}, 1, function(c) c:activate({ context = "mouse_click", raise = true }) end),
-    awful.button({ MODKEY }, 1, function(c)
-        c:activate({ context = "mouse_click" })
-        awful.mouse.client.move(c)
-    end),
-    awful.button({ MODKEY }, 3, function(c)
-        c:activate({ context = "mouse_click" })
-        awful.mouse.client.resize(c)
-    end)
-)
+local function should_hide_border(c)
+    if client_matches_rules(c, CLIENT_RULES.borderless) then
+        return true
+    end
 
--- keybindings
-local global_keys = gears.table.join(
-    awful.key({ MODKEY }, "Return", function() sh(TERMINAL) end),
-    awful.key({ MODKEY }, "e", function() sh(FILE_MANAGER) end),
-    awful.key({ MODKEY }, "d", function() sh(LAUNCHER) end),
-    awful.key({ MODKEY }, "p", function() sh(POWER_MENU) end),
-    awful.key({ MODKEY, "Shift" }, "r", awesome.restart),
+    if c.fullscreen or c.maximized then
+        return true
+    end
 
-    -- screenshot
-    awful.key({ MODKEY }, "s", function() sh(SCREENSHOT) end),
-
-    -- screenshot area (selection)
-    awful.key({ MODKEY, "Shift" }, "s", function() sh(SCREENSHOT_AREA) end),
-
-    -- kill current window
-    awful.key({ MODKEY }, "q", function()
-        if client.focus then client.focus:kill() end
-    end),
-
-    -- maximize
-    awful.key({ MODKEY }, "f", function()
-        if client.focus then
-            client.focus.maximized = not client.focus.maximized
-            client.focus:raise()
-        end
-    end),
-
-    -- wallpaper widget
-    awful.key({ MODKEY, "Shift" }, "p", function()
-        awful.spawn.with_shell(WALLPAPER)
-    end),
-
-    -- actual fullscreen
-    awful.key({ MODKEY, "Shift" }, "f", function()
-        if client.focus then
-            client.focus.fullscreen = not client.focus.fullscreen
-            client.focus:raise()
-        end
-    end),
-
-    -- show tab switcher
-    awful.key({ ALTKEY }, "Tab", function()
-        tab:show(awful.screen.focused())
-    end),
-
-    -- audio keys
-    awful.key({}, "XF86AudioRaiseVolume", function() sh("pactl set-sink-volume @DEFAULT_SINK@ +10%") end),
-    awful.key({}, "XF86AudioLowerVolume", function() sh("pactl set-sink-volume @DEFAULT_SINK@ -10%") end),
-    awful.key({}, "XF86AudioMute", function() sh("pactl set-sink-mute @DEFAULT_SINK@ toggle") end),
-    awful.key({}, "XF86AudioMicMute", function() sh("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end)
-)
-
--- setup workspaces and bar
-awful.screen.connect_for_each_screen(function(s)
-    awful.tag({ "1","2","3","4","5" }, s, awful.layout.suit.floating)
-    bar.create(s)
-    tab:create(s)
-end)
-
-for i = 1, 5 do
-    global_keys = gears.table.join(global_keys,
-        awful.key({ MODKEY }, "#" .. i + 9, function()
-            local tag = awful.screen.focused().tags[i]
-            if tag then tag:view_only() end
-        end),
-        awful.key({ MODKEY, "Shift" }, "#" .. i + 9, function()
-            if client.focus then
-                local tag = client.focus.screen.tags[i]
-                if tag then client.focus:move_to_tag(tag) end
-            end
-        end)
-    )
+    return false
 end
 
-root.keys(global_keys)
+local function get_border_width(c)
+    if should_hide_border(c) then
+        return 0
+    end
 
--- default rules
-awful.rules.rules = {
-    {
-        rule = {},
-        properties = {
-            border_width = beautiful.border_width,
-            border_color = beautiful.border_normal,
-            focus = awful.client.focus.filter,
-            placement = awful.placement.centered,
-            raise = true,
-            floating = true,
-            maximized = false,
-            fullscreen = false,
-            buttons = client_buttons
-        }
-    },
-}
+    return beautiful.border_width
+end
 
--- signals
-client.connect_signal("manage", function(c)
+local function update_client_border(c)
+    c.border_width = get_border_width(c)
+end
+
+local function apply_manage_rules(c)
     if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
         awful.placement.no_offscreen(c)
     end
@@ -188,34 +136,39 @@ client.connect_signal("manage", function(c)
     if should_be_fullscreen(c) then
         c.fullscreen = true
         c.floating = false
+        update_client_border(c)
         return
     end
 
     -- auto maximize if client takes up more than 80% of screen width or height
     local screen_geo = c.screen.workarea
     local c_geo = c:geometry()
-    local border = beautiful.border_width * 2
+    local border = get_border_width(c) * 2
 
     local width_percent = (c_geo.width + border) / screen_geo.width
     local height_percent = (c_geo.height + border) / screen_geo.height
 
-    if width_percent > 0.8 or height_percent > 0.8 then
+    if width_percent > MAXIMIZE_THRESHOLD or height_percent > MAXIMIZE_THRESHOLD then
         c.maximized = true
     end
-end)
+
+    update_client_border(c)
+end
 
 local clamping_clients = {}
 
--- dont allow windows to move / resize past workarea
-client.connect_signal("property::geometry", function(c)
-    if not c.floating or c.fullscreen or c.maximized then return end
+local function clamp_client_to_workarea(c)
+    if not c.floating or c.fullscreen or c.maximized then
+        return
+    end
 
-    -- ignore if we're already clamping that client
-    if clamping_clients[c] then return end
+    if clamping_clients[c] then
+        return
+    end
 
-    local screen_geo = awful.screen.focused().workarea
+    local screen_geo = c.screen.workarea
     local c_geo = c:geometry()
-    local border = beautiful.border_width * 2
+    local border = c.border_width * 2
 
     local clamped = false
     local new_geo = {
@@ -255,64 +208,222 @@ client.connect_signal("property::geometry", function(c)
         clamped = true
     end
 
-    if clamped then
-        clamping_clients[c] = true
-        c:geometry(new_geo)
-
-        -- clear after we clamp it
-        gears.timer.delayed_call(function()
-            clamping_clients[c] = nil
-        end)
+    if not clamped then
+        return
     end
-end)
 
-last_focus = nil
-unity_force_repaint = true
+    clamping_clients[c] = true
+    c:geometry(new_geo)
 
-client.connect_signal('focus', function(c)
-    if not c then return end -- that can happen :/
+    -- clear after we clamp it
+    gears.timer.delayed_call(function()
+        clamping_clients[c] = nil
+    end)
+end
+
+local last_focus = nil
+local unity_force_repaint = true
+
+local function handle_unity_focus(c)
+    if not c then
+        return
+    end
 
     -- This is needed to have Unity on one screen and some utility panels on another
     -- without constantly repainting whenever the user switches back and forth
-    if not unity_force_repaint and last_focus and last_focus.valid and last_focus.tag == c.tag and awful.rules.match(last_focus, { class = "Unity" }) then
+    if not unity_force_repaint
+        and last_focus
+        and last_focus.valid
+        and last_focus.tag == c.tag
+        and ruled.client.match(last_focus, { class = "Unity" })
+    then
         last_focus = c
         return
     end
+
     last_focus = c
     unity_force_repaint = false
 
-    if not awful.rules.match(c, { class = "Unity" }) then return end
-    if awful.rules.match(c, { rule_any = {type = { "dialog", "popup", "popup_menu" }}}) then return end -- Ignore these types of windows
-    if awful.rules.match(c, { name = "Select" }) then return end
+    if not ruled.client.match(c, { class = "Unity" }) then
+        return
+    end
+
+    if ruled.client.matches(c, { rule_any = { type = { "dialog", "popup", "popup_menu" } } }) then
+        return
+    end
+
+    if ruled.client.match(c, { name = "Select" }) then
+        return
+    end
 
     -- The workaround
     -- note: gears.timer.delayed_call doesn't not seem to work for this
     c.fullscreen = false
-    gears.timer.start_new(1/60, function() -- 0 doesn't always work in every case
+    gears.timer.start_new(UNITY_REPAINT_DELAY_SEC, function()
         c.fullscreen = true
+        update_client_border(c)
+        return false
     end)
+end
+
+local function focus_client(c)
+    c.border_color = beautiful.border_focus
+    update_client_border(c)
+    handle_unity_focus(c)
+end
+
+local function unfocus_client(c)
+    c.border_color = beautiful.border_normal
+    update_client_border(c)
+end
+
+local function clear_client_state(c)
+    clamping_clients[c] = nil
+end
+
+-- restore last selected wallpaper
+sh(WALLPAPER .. " --restore")
+
+-- setup theme
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/dark.lua")
+awful.layout.layouts = { awful.layout.suit.floating }
+
+-- autostart stuff
+setup_autostart()
+
+awful.spawn.with_shell([[
+for id in $(xinput list | grep "pointer" | cut -d '=' -f 2 | cut -f 1); do
+  xinput --set-prop $id 'libinput Accel Profile Enabled' 0, 1
+done
+]])
+
+naughty.connect_signal("request::display_error", function(message, startup)
+    local title = "awesome error" .. (startup and " (startup)" or "")
+    awful.spawn.with_shell(string.format(
+        "notify-send -u critical '%s' '%s'",
+        title:gsub("'", "'\\''"),
+        message:gsub("'", "'\\''")
+    ))
 end)
 
-tag.connect_signal('property::selected', function ()
+-- mouse binds
+local client_buttons = gears.table.join(
+    awful.button({}, 1, activate_and_raise),
+    awful.button({ MODKEY }, 1, move_client),
+    awful.button({ MODKEY }, 3, resize_client)
+)
+
+-- keybindings
+local global_keys = gears.table.join(
+    awful.key({ MODKEY }, "Return", function() sh(TERMINAL) end),
+    awful.key({ MODKEY }, "e", function() sh(FILE_MANAGER) end),
+    awful.key({ MODKEY }, "d", function() sh(LAUNCHER) end),
+    awful.key({ MODKEY }, "p", function() sh(POWER_MENU) end),
+    awful.key({ MODKEY, "Shift" }, "r", awesome.restart),
+
+    -- screenshot
+    awful.key({ MODKEY }, "s", function() sh(SCREENSHOT) end),
+
+    -- screenshot area (selection)
+    awful.key({ MODKEY, "Shift" }, "s", function() sh(SCREENSHOT_AREA) end),
+
+    -- kill current window
+    awful.key({ MODKEY }, "q", function()
+        if client.focus then
+            client.focus:kill()
+        end
+    end),
+
+    -- maximize
+    awful.key({ MODKEY }, "f", function()
+        toggle_maximized(client.focus)
+    end),
+
+    -- wallpaper widget
+    awful.key({ MODKEY, "Shift" }, "p", function()
+        awful.spawn.with_shell(WALLPAPER)
+    end),
+
+    -- actual fullscreen
+    awful.key({ MODKEY, "Shift" }, "f", function()
+        toggle_fullscreen(client.focus)
+    end),
+
+    -- show tab switcher
+    awful.key({ ALTKEY }, "Tab", function()
+        tab:show(awful.screen.focused())
+    end),
+
+    -- audio keys
+    awful.key({}, "XF86AudioRaiseVolume", function() sh("pactl set-sink-volume @DEFAULT_SINK@ +" .. AUDIO_STEP) end),
+    awful.key({}, "XF86AudioLowerVolume", function() sh("pactl set-sink-volume @DEFAULT_SINK@ -" .. AUDIO_STEP) end),
+    awful.key({}, "XF86AudioMute", function() sh("pactl set-sink-mute @DEFAULT_SINK@ toggle") end),
+    awful.key({}, "XF86AudioMicMute", function() sh("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end)
+)
+
+-- setup workspaces and bar
+awful.screen.connect_for_each_screen(function(s)
+    awful.tag(WORKSPACE_NAMES, s, awful.layout.suit.floating)
+    bar.create(s)
+    tab:create(s)
+end)
+
+for i = 1, #WORKSPACE_NAMES do
+    global_keys = gears.table.join(global_keys,
+        awful.key({ MODKEY }, "#" .. i + 9, function()
+            local tag = awful.screen.focused().tags[i]
+            if tag then
+                tag:view_only()
+            end
+        end),
+        awful.key({ MODKEY, "Shift" }, "#" .. i + 9, function()
+            if client.focus then
+                local tag = client.focus.screen.tags[i]
+                if tag then
+                    client.focus:move_to_tag(tag)
+                end
+            end
+        end)
+    )
+end
+
+root.keys(global_keys)
+
+-- default rules
+awful.rules.rules = {
+    {
+        rule = {},
+        properties = {
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_normal,
+            focus = awful.client.focus.filter,
+            placement = awful.placement.centered,
+            raise = true,
+            floating = true,
+            maximized = false,
+            fullscreen = false,
+            buttons = client_buttons
+        }
+    },
+}
+
+-- signals
+client.connect_signal("request::manage", apply_manage_rules)
+
+-- dont allow windows to move / resize past workarea
+client.connect_signal("property::geometry", clamp_client_to_workarea)
+
+-- unity repaint "fix"
+-- https://discussions.unity.com/t/editor-repaint-issue-when-using-i3-window-manager/738539/9
+client.connect_signal("focus", focus_client)
+
+tag.connect_signal("property::selected", function()
     unity_force_repaint = true
 end)
 
-client.connect_signal("focus", function(c)
-    c.border_color = beautiful.border_focus
-end)
-
-client.connect_signal("unmanage", function(c)
-    clamping_clients[c] = nil
-end)
-
-client.connect_signal("unfocus", function(c)
-    c.border_color = beautiful.border_normal
-end)
-
-client.connect_signal("property::fullscreen", function(c)
-    c.border_width = c.fullscreen and 0 or beautiful.border_width
-end)
-
-client.connect_signal("property::maximized", function(c)
-    c.border_width = c.maximized and 0 or beautiful.border_width
-end)
+client.connect_signal("request::unmanage", clear_client_state)
+client.connect_signal("unfocus", unfocus_client)
+client.connect_signal("property::fullscreen", update_client_border)
+client.connect_signal("property::maximized", update_client_border)
+client.connect_signal("property::name", update_client_border)
+client.connect_signal("property::class", update_client_border)
