@@ -1,7 +1,4 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-export PATH=$HOME/go/bin:$PATH 
-export PATH=/usr/lib/emscripten/:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -29,7 +26,7 @@ ZSH_THEME="kardan"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
@@ -111,11 +108,37 @@ fi
 # bun
 export BUN_INSTALL="$HOME/.bun"
 
-# rest
-export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.spicetify:$(go env GOBIN):$(go env GOPATH)/bin:$HOME/.local/share/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/usr/lib/emscripten"
+path=(
+  # system
+  /usr/local/sbin
+  /usr/local/bin
+  /usr/bin
+  /usr/bin/site_perl
+  /usr/bin/vendor_perl
+  /usr/bin/core_perl
+  /usr/lib/emscripten
 
-# bun completions
-[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+  # user
+  $HOME/bin
+  $HOME/.local/bin
+
+  # go
+  $(go env GOPATH)/bin
+  $(go env GOBIN)
+
+  # bun
+  $HOME/.bun/bin
+
+  # flutter
+  $HOME/.local/share/flutter/bin
+
+  # spicetify
+  $HOME/.spicetify
+
+  $path   # preserva o que o sistema já colocou
+)
+
+export BUN_INSTALL="$HOME/.bun"
 
 mkcd() {
     mkdir -p "$1" && cd "$1"
@@ -128,48 +151,46 @@ cd_or_create() {
     cd "$1"
 }
 
+# bun completions
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
 alias ..="cd .."
 alias ...="cd ../.."
 
-# paths with auto creation if not available
-alias @other="cd_or_create ~/stuff/other/"
-alias @personal="cd_or_create ~/stuff/personal/"
-alias @unity="cd_or_create ~/stuff/unityy/"
+# paths
+alias @other="cd_or_create ~/Projects/other/"
+alias @notes="cd_or_create ~/Projects/notes/"
+alias @personal="cd_or_create ~/Projects/personal/"
+alias @unity="cd_or_create ~/Projects/unity/"
 
-alias ls="ls -al"
 alias la="ls -lah"
 alias l="ls -lh"
 alias ll="ls -lh"
 
-alias c="clear"
+# code editors
+alias zed="zeditor"
+
+# useful
+alias py="python3"
+alias pip="pip3"
+alias vim="nvim"
 alias h="history"
+
+# overrides
+alias ls="ls -al"
 alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
 
-# code editors
-alias zed="zeditor"
-# alias code="vscodium"
-
-alias py="python3"
-alias pip="pip3"
-alias vim="nvim"
-
-# reload zsh config
+# zsh
 alias reload="source ~/.zshrc"
-
-# quick edit zshrc
 alias zshconfig="$EDITOR ~/.zshrc"
 
 # find process by name
 alias pgrep="ps aux | grep"
 
-# get current ip
+# fun
 alias myip="curl -s ifconfig.me"
-
-# copy to clipboard (if xclip is installed)
 alias clip="xclip -selection clipboard"
 
 unsetopt xtrace
-
-export PATH=$PATH:/home/rel/.spicetify

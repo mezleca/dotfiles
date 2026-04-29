@@ -2,7 +2,9 @@
     "Alt-/": "lua:comment.comment",
     "CtrlUnderscore": "lua:comment.comment",
     "buffer": {
-        "Ctrl-j": "FindNext",
-        "Ctrl-k": "FindPrevious"
+        "Ctrl-J": "FindNext",
+        "Ctrl-K": "FindPrevious",
+        "Ctrl-p": "command:OmniGlobalSearch",
+        "Alt-p": "command:OmniGotoFile",
     }
 }
