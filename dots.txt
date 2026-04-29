@@ -1,5 +1,4 @@
 $HOME/wallpapers/**
-$HOME/sound_effects/**
 $HOME/.themes/**
 $HOME/.config/spicetify/
 $HOME/.config/micro/bindings.json
@@ -27,10 +26,10 @@ $HOME/.config/rofi/**
 $HOME/.local/bin/dot-screenshot.sh
 $HOME/.local/bin/vicinae-wallpaper.sh
 $HOME/.local/bin/install-common-gpg-keys.sh
+$HOME/.local/share/sfx/**
 $HOME/.local/share/applications/feh.desktop
 $HOME/.local/share/applications/micro.desktop
 $HOME/.config/mimeapps.list
-$HOME/.xprofile
 $HOME/.bashrc
 $HOME/.zshrc
 /etc/X11/xorg.conf.d/00-keyboard.conf

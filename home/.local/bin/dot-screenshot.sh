@@ -20,7 +20,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 play_sound() {
-    local sfx="$HOME/sound_effects/iphone.mp3"
+    local sfx="$HOME/.local/share/sfx/iphone.mp3"
     if [[ -f "$sfx" ]] && command -v mpv >/dev/null 2>&1; then
         mpv --no-terminal --really-quiet "$sfx" >/dev/null 2>&1 &
     fi
