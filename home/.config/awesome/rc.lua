@@ -61,6 +61,7 @@ SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selectio
 
 local AUTOSTART_COMMANDS = {
     "otd-daemon",
+    "vicinae server",
     "dunst",
     "picom",
     "dex --autostart --environment awesome",
