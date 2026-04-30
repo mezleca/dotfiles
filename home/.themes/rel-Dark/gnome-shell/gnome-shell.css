@@ -866,11 +866,11 @@ StEntry StLabel.hint-text, .popup-menu .search-entry StLabel.hint-text {
 
 /* Looking Glass */
 #LookingGlassDialog {
-  background-color: #2C2C2C;
+  background-color: #222126;
   padding: 0;
   spacing: 6px;
   margin: 6px;
-  border-radius: 12px;
+  border-radius: 0px;
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.25);
   color: #FFFFFF;
   border: none;
@@ -879,7 +879,7 @@ StEntry StLabel.hint-text, .popup-menu .search-entry StLabel.hint-text {
 #LookingGlassDialog > #Toolbar {
   padding: 0 6px;
   border: none;
-  border-radius: 12px 12px 0 0;
+  border-radius: 0px 0px 0 0;
   background-color: rgba(255, 255, 255, 0.04);
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.12);
   spacing: 6px;
@@ -1020,7 +1020,7 @@ StEntry StLabel.hint-text, .popup-menu .search-entry StLabel.hint-text {
 
 #LookingGlassPropertyInspector {
   color: rgba(255, 255, 255, 0.7);
-  background: #2C2C2C;
+  background: #222126;
   border: none;
   border-radius: 6px;
   padding: 6px;
@@ -1728,11 +1728,11 @@ StEntry StLabel.hint-text, .popup-menu .search-entry StLabel.hint-text {
 }
 
 #unlockDialogNotifications StButton#vhandle, #unlockDialogNotifications StButton#hhandle {
-  background-color: rgba(44, 44, 44, 0.3);
+  background-color: rgba(37, 36, 40, 0.3);
 }
 
 #unlockDialogNotifications StButton#vhandle:hover, #unlockDialogNotifications StButton#vhandle:focus, #unlockDialogNotifications StButton#hhandle:hover, #unlockDialogNotifications StButton#hhandle:focus {
-  background-color: rgba(44, 44, 44, 0.5);
+  background-color: rgba(37, 36, 40, 0.5);
 }
 
 #unlockDialogNotifications StButton#vhandle:active, #unlockDialogNotifications StButton#hhandle:active {
@@ -1788,21 +1788,21 @@ StScrollBar StButton#vhandle:active, StScrollBar StButton#hhandle:active {
   selection-background-color: rgba(255, 255, 255, 0.12);
   selected-color: #FFFFFF !important;
   color: #FFFFFF;
-  background-color: #2C2C2C;
+  background-color: #222126;
   border: 2px solid transparent !important;
   box-shadow: none !important;
 }
 
 .search-entry:hover {
   color: #FFFFFF;
-  background-color: #2C2C2C;
+  background-color: #222126;
   border: 2px solid rgba(255, 255, 255, 0.3) !important;
   box-shadow: none !important;
 }
 
 .search-entry:focus {
   color: #FFFFFF;
-  background-color: #2C2C2C;
+  background-color: #222126;
   border: 2px solid #5b9bf8 !important;
   box-shadow: none !important;
 }
@@ -2998,21 +2998,21 @@ StWidget.focused .app-grid-running-dot {
 .message {
   padding: 6px;
   margin: 3px;
-  border-radius: 12px;
+  border-radius: 0px;
 }
 
 .popup-menu .message {
   border-radius: 6px;
   color: rgba(255, 255, 255, 0.7);
-  background-color: #373737 !important;
+  background-color: #2d2c31 !important;
 }
 
 .popup-menu .message:hover {
-  background-color: #414141 !important;
+  background-color: #38373c !important;
 }
 
 .popup-menu .message:active {
-  background-color: #4c4c4c !important;
+  background-color: #434247 !important;
 }
 
 .popup-menu .message .notification-button {
@@ -3020,12 +3020,12 @@ StWidget.focused .app-grid-running-dot {
 }
 
 .message:second-in-stack {
-  background-color: #3d3d3d !important;
+  background-color: #343337 !important;
   box-shadow: none;
 }
 
 .message:lower-in-stack {
-  background-color: #434343 !important;
+  background-color: #3a393e !important;
   box-shadow: none;
 }
 
@@ -4013,7 +4013,7 @@ StWidget.focused .app-grid-running-dot {
   width: 20px;
   height: 20px;
   border-radius: 9999px;
-  background: #d5d5d5;
+  background: #d3d3d4;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition-duration: 100ms;
 }
