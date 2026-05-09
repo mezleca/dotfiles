@@ -9,8 +9,8 @@ function M.hash_color(str)
     end
 
     local r = (hash % 256) / 255
-    local g = ((hash // 256) % 256) / 255
-    local b = ((hash // 65536) % 256) / 255
+    local g = (math.floor(hash / 256) % 256) / 255
+    local b = (math.floor(hash / 65536) % 256) / 255
 
     -- boost saturation
     local max_val = math.max(r, g, b)

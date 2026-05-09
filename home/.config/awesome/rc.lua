@@ -46,6 +46,12 @@ local function resize_client(c)
     awful.mouse.client.resize(c)
 end
 
+HOMEDIR = os.getenv("HOME")
+
+-- im also targetting somewm (wayland version of awesome)
+-- so we need to ignore stuff
+local IS_X11 = os.getenv("XDG_SESSION_TYPE") ~= "wayland"
+
 -- modifier keys
 MODKEY = "Mod4"
 ALTKEY = "Mod1"
@@ -55,15 +61,15 @@ FILE_MANAGER = "nautilus"
 
 LAUNCHER = "vicinae vicinae://toggle"
 POWER_MENU = "vicinae vicinae://launch/power"
-WALLPAPER = os.getenv("HOME") .. "/.local/bin/vicinae-wallpaper.sh"
-SCREENSHOT = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh"
-SCREENSHOT_AREA = os.getenv("HOME") .. "/.local/bin/dot-screenshot.sh --selection"
+WALLPAPER = HOMEDIR .. "/.local/bin/vicinae-wallpaper.sh"
+SCREENSHOT = HOMEDIR .. "/.local/bin/dot-screenshot.sh"
+SCREENSHOT_AREA = HOMEDIR .. "/.local/bin/dot-screenshot.sh --selection"
 
 local AUTOSTART_COMMANDS = {
+    HOMEDIR .. "/.config/awesome/scripts/compositor.sh",
     "otd-daemon",
     "vicinae server",
     "dunst",
-    "picom",
     "dex --autostart --environment awesome",
     "nm-applet",
     "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
@@ -92,7 +98,7 @@ local CLIENT_RULES = {
     }
 }
 
-local function setup_autostart()
+local function setup_autostart()    
     for _, cmd in ipairs(AUTOSTART_COMMANDS) do
         sh(cmd)
     end
@@ -278,7 +284,11 @@ end
 local function focus_client(c)
     c.border_color = beautiful.border_focus
     update_client_border(c)
-    handle_unity_focus(c)
+
+    -- somewm (wayland)
+    if IS_X11 then
+        handle_unity_focus(c)
+    end
 end
 
 local function unfocus_client(c)
@@ -421,13 +431,20 @@ client.connect_signal("request::manage", apply_manage_rules)
 
 -- dont allow windows to move / resize past workarea
 client.connect_signal("property::geometry", clamp_client_to_workarea)
-
--- unity repaint "fix"
--- https://discussions.unity.com/t/editor-repaint-issue-when-using-i3-window-manager/738539/9
 client.connect_signal("focus", focus_client)
 
-tag.connect_signal("property::selected", function()
+tag.connect_signal("property::selected", function(t)
+    -- unity repaint "fix"
+    -- https://discussions.unity.com/t/editor-repaint-issue-when-using-i3-window-manager/738539/9
     unity_force_repaint = true
+
+    if t.selected then
+        for _, c in ipairs(t:clients()) do
+            if c.class and c.class:lower():find("zed") then
+                c:emit_signal("request::activate", "mouse_enter", { raise = false })
+            end
+        end
+    end
 end)
 
 client.connect_signal("request::unmanage", clear_client_state)

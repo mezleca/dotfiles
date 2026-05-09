@@ -241,8 +241,8 @@ bottom-sheet > dimming {
 }
 
 bottom-sheet > sheet {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.07), 0 3px 20px 10px rgba(0, 0, 0, 0.05), 0 6px 32px 16px rgba(0, 0, 0, 0.02), 0 0 0 1px @shade_color;
 }
 
@@ -255,8 +255,8 @@ bottom-sheet > sheet > drag-handle {
 }
 
 bottom-sheet > sheet > outline {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   box-shadow: inset 1px 0 rgba(255, 255, 255, 0.08), inset -1px 0 rgba(255, 255, 255, 0.08), inset 0 1px rgba(255, 255, 255, 0.08);
 }
 
@@ -1758,7 +1758,7 @@ floating-sheet > dimming {
 }
 
 floating-sheet > sheet {
-  border-radius: 12px;
+  border-radius: 0px;
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.07), 0 3px 20px 10px rgba(0, 0, 0, 0.05), 0 6px 32px 16px rgba(0, 0, 0, 0.02), 0 0 0 1px @shade_color;
   outline: 1px solid rgba(255, 255, 255, 0.08);
   outline-offset: -1px;
@@ -2658,7 +2658,8 @@ headerbar {
   background-color: @headerbar_backdrop_color;
   color: @headerbar_fg_color;
   margin: 0;
-  box-shadow: inset 0 -1px alpha(@headerbar_border_color,0.12);
+  border-radius: 0px 0px 0 0;
+  box-shadow: inset 0 -1px alpha(@headerbar_border_color,0.12), inset 0 1px rgba(255, 255, 255, 0.08);
 }
 
 headerbar > windowhandle > box {
@@ -2697,7 +2698,7 @@ headerbar.default-decoration {
   margin: 0;
   border: none;
   min-height: 34px;
-  box-shadow: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
 }
 
 headerbar.default-decoration > windowhandle > box {
@@ -2705,10 +2706,9 @@ headerbar.default-decoration > windowhandle > box {
 }
 
 headerbar.default-decoration windowcontrols > button {
-  min-width: 16px;
-  min-height: 16px;
+  min-width: 22px;
+  min-height: 22px;
   margin: 0 4px;
-  padding: 0;
 }
 
 headerbar.default-decoration windowcontrols > .icon {
@@ -2751,7 +2751,7 @@ window > .titlebar headerbar.default-decoration > windowhandle > box {
 
 leaflet:first-child > headerbar + separator {
   background-color: @headerbar_backdrop_color;
-  box-shadow: inset 0 -1px alpha(@headerbar_border_color,0.12);
+  box-shadow: inset 0 -1px alpha(@headerbar_border_color,0.12), inset 0 1px rgba(255, 255, 255, 0.08);
 }
 
 leaflet:first-child > headerbar + separator:backdrop {
@@ -2764,7 +2764,7 @@ toolbarview > .bottom-bar headerbar, headerbar.flat, window.shortcuts headerbar.
   background: none;
   color: inherit;
   min-height: 46px;
-  box-shadow: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
 }
 
 toolbarview > .top-bar headerbar > windowhandle > box,
@@ -2780,23 +2780,6 @@ toolbarview > .bottom-bar headerbar.default-decoration, headerbar.default-decora
 toolbarview > .top-bar headerbar.default-decoration > windowhandle > box,
 toolbarview > .bottom-bar headerbar.default-decoration > windowhandle > box, headerbar.default-decoration.flat > windowhandle > box, window.shortcuts headerbar.default-decoration.titlebar > windowhandle > box, adaptive-preview headerbar.default-decoration.adaptive-mode-flat > windowhandle > box, window.print headerbar.default-decoration.titlebar > windowhandle > box, window.pagesetup headerbar.default-decoration.titlebar > windowhandle > box, window.aboutdialog headerbar.default-decoration.titlebar > windowhandle > box, window.colorchooser headerbar.default-decoration.titlebar > windowhandle > box, window.appchooser headerbar.default-decoration.titlebar > windowhandle > box {
   padding: 3px;
-}
-
-toolbarview > .top-bar headerbar windowcontrols > button.minimize:backdrop > image,
-toolbarview > .bottom-bar headerbar windowcontrols > button.minimize:backdrop > image, headerbar.flat windowcontrols > button.minimize:backdrop > image, window.shortcuts headerbar.titlebar windowcontrols > button.minimize:backdrop > image, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.minimize:backdrop > image, window.print headerbar.titlebar windowcontrols > button.minimize:backdrop > image, window.pagesetup headerbar.titlebar windowcontrols > button.minimize:backdrop > image, window.aboutdialog headerbar.titlebar windowcontrols > button.minimize:backdrop > image, window.colorchooser headerbar.titlebar windowcontrols > button.minimize:backdrop > image, window.appchooser headerbar.titlebar windowcontrols > button.minimize:backdrop > image, toolbarview > .top-bar headerbar windowcontrols > button.maximize:backdrop > image,
-toolbarview > .bottom-bar headerbar windowcontrols > button.maximize:backdrop > image, headerbar.flat windowcontrols > button.maximize:backdrop > image, window.shortcuts headerbar.titlebar windowcontrols > button.maximize:backdrop > image, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.maximize:backdrop > image, window.print headerbar.titlebar windowcontrols > button.maximize:backdrop > image, window.pagesetup headerbar.titlebar windowcontrols > button.maximize:backdrop > image, window.aboutdialog headerbar.titlebar windowcontrols > button.maximize:backdrop > image, window.colorchooser headerbar.titlebar windowcontrols > button.maximize:backdrop > image, window.appchooser headerbar.titlebar windowcontrols > button.maximize:backdrop > image, toolbarview > .top-bar headerbar windowcontrols > button.close:backdrop > image,
-toolbarview > .bottom-bar headerbar windowcontrols > button.close:backdrop > image, headerbar.flat windowcontrols > button.close:backdrop > image, window.shortcuts headerbar.titlebar windowcontrols > button.close:backdrop > image, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.close:backdrop > image, window.print headerbar.titlebar windowcontrols > button.close:backdrop > image, window.pagesetup headerbar.titlebar windowcontrols > button.close:backdrop > image, window.aboutdialog headerbar.titlebar windowcontrols > button.close:backdrop > image, window.colorchooser headerbar.titlebar windowcontrols > button.close:backdrop > image, window.appchooser headerbar.titlebar windowcontrols > button.close:backdrop > image {
-  background-color: alpha(@window_fg_color,0.3);
-}
-
-toolbarview > .top-bar headerbar windowcontrols > button.minimize:backdrop:hover,
-toolbarview > .bottom-bar headerbar windowcontrols > button.minimize:backdrop:hover, headerbar.flat windowcontrols > button.minimize:backdrop:hover, window.shortcuts headerbar.titlebar windowcontrols > button.minimize:backdrop:hover, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.minimize:backdrop:hover, window.print headerbar.titlebar windowcontrols > button.minimize:backdrop:hover, window.pagesetup headerbar.titlebar windowcontrols > button.minimize:backdrop:hover, window.aboutdialog headerbar.titlebar windowcontrols > button.minimize:backdrop:hover, window.colorchooser headerbar.titlebar windowcontrols > button.minimize:backdrop:hover, window.appchooser headerbar.titlebar windowcontrols > button.minimize:backdrop:hover, toolbarview > .top-bar headerbar windowcontrols > button.minimize:backdrop:active,
-toolbarview > .bottom-bar headerbar windowcontrols > button.minimize:backdrop:active, headerbar.flat windowcontrols > button.minimize:backdrop:active, window.shortcuts headerbar.titlebar windowcontrols > button.minimize:backdrop:active, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.minimize:backdrop:active, window.print headerbar.titlebar windowcontrols > button.minimize:backdrop:active, window.pagesetup headerbar.titlebar windowcontrols > button.minimize:backdrop:active, window.aboutdialog headerbar.titlebar windowcontrols > button.minimize:backdrop:active, window.colorchooser headerbar.titlebar windowcontrols > button.minimize:backdrop:active, window.appchooser headerbar.titlebar windowcontrols > button.minimize:backdrop:active, toolbarview > .top-bar headerbar windowcontrols > button.maximize:backdrop:hover,
-toolbarview > .bottom-bar headerbar windowcontrols > button.maximize:backdrop:hover, headerbar.flat windowcontrols > button.maximize:backdrop:hover, window.shortcuts headerbar.titlebar windowcontrols > button.maximize:backdrop:hover, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.maximize:backdrop:hover, window.print headerbar.titlebar windowcontrols > button.maximize:backdrop:hover, window.pagesetup headerbar.titlebar windowcontrols > button.maximize:backdrop:hover, window.aboutdialog headerbar.titlebar windowcontrols > button.maximize:backdrop:hover, window.colorchooser headerbar.titlebar windowcontrols > button.maximize:backdrop:hover, window.appchooser headerbar.titlebar windowcontrols > button.maximize:backdrop:hover, toolbarview > .top-bar headerbar windowcontrols > button.maximize:backdrop:active,
-toolbarview > .bottom-bar headerbar windowcontrols > button.maximize:backdrop:active, headerbar.flat windowcontrols > button.maximize:backdrop:active, window.shortcuts headerbar.titlebar windowcontrols > button.maximize:backdrop:active, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.maximize:backdrop:active, window.print headerbar.titlebar windowcontrols > button.maximize:backdrop:active, window.pagesetup headerbar.titlebar windowcontrols > button.maximize:backdrop:active, window.aboutdialog headerbar.titlebar windowcontrols > button.maximize:backdrop:active, window.colorchooser headerbar.titlebar windowcontrols > button.maximize:backdrop:active, window.appchooser headerbar.titlebar windowcontrols > button.maximize:backdrop:active, toolbarview > .top-bar headerbar windowcontrols > button.close:backdrop:hover,
-toolbarview > .bottom-bar headerbar windowcontrols > button.close:backdrop:hover, headerbar.flat windowcontrols > button.close:backdrop:hover, window.shortcuts headerbar.titlebar windowcontrols > button.close:backdrop:hover, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.close:backdrop:hover, window.print headerbar.titlebar windowcontrols > button.close:backdrop:hover, window.pagesetup headerbar.titlebar windowcontrols > button.close:backdrop:hover, window.aboutdialog headerbar.titlebar windowcontrols > button.close:backdrop:hover, window.colorchooser headerbar.titlebar windowcontrols > button.close:backdrop:hover, window.appchooser headerbar.titlebar windowcontrols > button.close:backdrop:hover, toolbarview > .top-bar headerbar windowcontrols > button.close:backdrop:active,
-toolbarview > .bottom-bar headerbar windowcontrols > button.close:backdrop:active, headerbar.flat windowcontrols > button.close:backdrop:active, window.shortcuts headerbar.titlebar windowcontrols > button.close:backdrop:active, adaptive-preview headerbar.adaptive-mode-flat windowcontrols > button.close:backdrop:active, window.print headerbar.titlebar windowcontrols > button.close:backdrop:active, window.pagesetup headerbar.titlebar windowcontrols > button.close:backdrop:active, window.aboutdialog headerbar.titlebar windowcontrols > button.close:backdrop:active, window.colorchooser headerbar.titlebar windowcontrols > button.close:backdrop:active, window.appchooser headerbar.titlebar windowcontrols > button.close:backdrop:active {
-  color: alpha(@window_fg_color,0.45);
 }
 
 .maximized toolbarview > .top-bar headerbar, toolbarview > .top-bar .maximized headerbar,
@@ -2867,77 +2850,63 @@ toolbarview > .bottom-bar .collapse-spacing headerbar.default-decoration > windo
  *********************/
 windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque),
 windowcontrols > button.image-button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
-  min-height: 16px;
-  min-width: 16px;
-  padding: 9px 0;
-  margin-left: 4px;
-  margin-right: 4px;
-  box-shadow: none;
+  min-height: 24px;
+  min-width: 24px;
+  padding: 5px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 windowcontrols > button.minimize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
-  color: transparent;
+  color: alpha(currentColor,0.75);
 }
 
 windowcontrols > button.minimize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+  background: none;
   box-shadow: none;
-  background-color: transparent;
-  background-image: none;
 }
 
-windowcontrols > button.minimize:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.minimize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
-  color: white;
+windowcontrols > button.minimize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.maximize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.close:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
+  background-color: alpha(currentColor,0.1);
 }
 
-windowcontrols > button.minimize:backdrop:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.maximize:backdrop:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.close:backdrop:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: alpha(@headerbar_fg_color,0.3);
+windowcontrols > button.minimize:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+  color: currentColor;
 }
 
-windowcontrols > button.minimize:backdrop:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.minimize:backdrop:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:backdrop:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:backdrop:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:backdrop:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:backdrop:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
-  color: alpha(@headerbar_fg_color,0.45);
+windowcontrols > button.minimize:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.maximize:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.close:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
+  background-color: alpha(currentColor,0.15);
 }
 
-windowcontrols > button.minimize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: #ebcb8b;
+windowcontrols > button.minimize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+  color: currentColor;
 }
 
-windowcontrols > button.minimize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: mix(black,#ebcb8b,0.75);
+windowcontrols > button.minimize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.maximize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image, windowcontrols > button.close:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
+  background-color: alpha(currentColor,0.2);
 }
 
-windowcontrols > button.maximize:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: #a3be8c;
-}
-
-windowcontrols > button.maximize:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: mix(black,#a3be8c,0.75);
-}
-
-windowcontrols > button.close:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: #bf616a;
-}
-
-windowcontrols > button.close:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image {
-  background-color: mix(black,#bf616a,0.75);
+windowcontrols > button.minimize:backdrop:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.maximize:backdrop:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), windowcontrols > button.close:backdrop:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+  opacity: 0.65;
 }
 
 windowcontrols {
-  border-spacing: 6px;
+  border-spacing: 3px;
 }
 
 windowcontrols:not(.empty).start:dir(ltr), windowcontrols:not(.empty).end:dir(rtl) {
-  margin-right: 6px;
-  margin-left: 6px;
+  margin-right: 3px;
+  margin-left: 3px;
 }
 
 windowcontrols:not(.empty).start:dir(rtl), windowcontrols:not(.empty).end:dir(ltr) {
-  margin-left: 6px;
-  margin-right: 6px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > image,
 windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > image {
-  padding: 0;
+  padding: 4px;
   border-radius: 100%;
   transition: background 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -4523,14 +4492,13 @@ window.dialog-window.alert {
 
 dialog-host > dialog.alert.floating sheet,
 window.dialog-window.alert {
-  border-radius: 18px;
-  outline-offset: -1px;
-  outline: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 15px 16px 2px rgba(0, 0, 0, 0.14), 0 6px 18px 5px rgba(0, 0, 0, 0.12), 0 0 36px transparent, 0 0 0 1px @headerbar_darker_shade_color;
+  border-radius: 6px;
+  outline: 0 none transparent;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 15px 16px 2px rgba(0, 0, 0, 0.14), 0 6px 18px 5px rgba(0, 0, 0, 0.12), 0 0 36px transparent;
 }
 
 window.messagedialog {
-  border-radius: 18px;
+  border-radius: 6px;
 }
 
 window.messagedialog .message-area {
@@ -5213,8 +5181,8 @@ popover > contents {
   background-color: @popover_bg_color;
   color: @popover_fg_color;
   background-clip: border-box;
-  border: 1px solid mix(white,@popover_bg_color,0.92);
-  box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.09), 0 2px 14px 3px rgba(0, 0, 0, 0.05), 0 0 0 1px @headerbar_darker_shade_color;
+  border: none;
+  box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.09), 0 2px 14px 3px rgba(0, 0, 0, 0.05);
 }
 
 popover > contents {
@@ -5970,16 +5938,8 @@ shortcut-label > .dimmed, dialog.shortcuts .shortcut-row shortcut-label.title-bo
   transition: background-color 200ms ease-out;
 }
 
-.sidebar-pane listview,
-.sidebar-pane list:not(.navigation-sidebar),
-.sidebar-pane list.boxed-list,
-.sidebar-pane list.content {
-  background-color: mix(white,@sidebar_bg_color,0.95);
-  color: @sidebar_fg_color;
-}
-
-.sidebar-pane list.boxed-list-separate {
-  color: @sidebar_fg_color;
+.sidebar-pane headerbar {
+  border-top-right-radius: 0;
 }
 
 .sidebar-pane flap > dimming,
@@ -6035,11 +5995,11 @@ shortcut-label > .dimmed, dialog.shortcuts .shortcut-row shortcut-label.title-bo
 }
 
 .sidebar-pane:dir(ltr), .sidebar-pane:dir(ltr) banner > revealer > widget, .sidebar-pane.end:dir(rtl), .sidebar-pane.end:dir(rtl) banner > revealer > widget {
-  box-shadow: inset -1px 0 alpha(currentColor,0.1);
+  box-shadow: none;
 }
 
 .sidebar-pane:dir(rtl), .sidebar-pane:dir(rtl) banner > revealer > widget, .sidebar-pane.end:dir(ltr), .sidebar-pane.end:dir(ltr) banner > revealer > widget {
-  box-shadow: inset 1px 0 alpha(currentColor,0.1);
+  box-shadow: none;
 }
 
 .sidebar-pane toolbarview.undershoot-top scrolledwindow > undershoot.top, .content-pane toolbarview.undershoot-top scrolledwindow > undershoot.top {
@@ -6097,6 +6057,11 @@ shortcut-label > .dimmed, dialog.shortcuts .shortcut-row shortcut-label.title-bo
 .sidebar-pane .content-pane:backdrop {
   background-color: @secondary_sidebar_backdrop_color;
   transition: background-color 200ms ease-out;
+}
+
+.content-pane .sidebar-pane headerbar,
+.sidebar-pane .content-pane headerbar {
+  border-radius: 0;
 }
 
 .content-pane .sidebar-pane toolbarview.undershoot-top scrolledwindow > undershoot.top,
@@ -6230,7 +6195,7 @@ shortcut-label > .dimmed, dialog.shortcuts .shortcut-row shortcut-label.title-bo
 .sidebar-pane .content-pane:dir(ltr) banner > revealer > widget,
 .sidebar-pane .content-pane.end:dir(rtl),
 .sidebar-pane .content-pane.end:dir(rtl) banner > revealer > widget {
-  box-shadow: inset -1px 0 alpha(currentColor,0.1);
+  box-shadow: none;
 }
 
 .content-pane .sidebar-pane:dir(rtl), .content-pane .sidebar-pane:dir(rtl) banner > revealer > widget, .content-pane .sidebar-pane.end:dir(ltr), .content-pane .sidebar-pane.end:dir(ltr) banner > revealer > widget,
@@ -6238,7 +6203,11 @@ shortcut-label > .dimmed, dialog.shortcuts .shortcut-row shortcut-label.title-bo
 .sidebar-pane .content-pane:dir(rtl) banner > revealer > widget,
 .sidebar-pane .content-pane.end:dir(ltr),
 .sidebar-pane .content-pane.end:dir(ltr) banner > revealer > widget {
-  box-shadow: inset 1px 0 alpha(currentColor,0.1);
+  box-shadow: none;
+}
+
+.content-pane headerbar {
+  border-top-left-radius: 0;
 }
 
 .sidebar-pane .sidebar-pane {
@@ -6257,124 +6226,6 @@ stacksidebar row > label {
 
 stacksidebar row.needs-attention > label {
   background-size: 6px 6px, 0 0;
-}
-
-#NautilusPathButton, .content-pane headerbar menubutton.image-button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) > button, .content-pane headerbar button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), .content-pane headerbar button.arrow-button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), .content-pane headerbar button.image-button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), .content-pane headerbar button.image-text-button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:focus:not(:hover):not(:active), .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:focus:not(:hover):not(:active), .content-pane headerbar button:focus:not(:hover):not(:active):not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:focus:not(:hover):not(:active) {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:hover, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:hover, .content-pane headerbar button:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:hover {
-  color: @window_fg_color;
-}
-
-.keyboard-activating#NautilusPathButton, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button.keyboard-activating, .content-pane headerbar button.keyboard-activating:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button.keyboard-activating, #NautilusPathButton:active, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:active, .content-pane headerbar button:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:active {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:disabled, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:disabled, .content-pane headerbar button:disabled:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:disabled {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:checked, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:checked, .content-pane headerbar button:checked:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:checked {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:checked:hover, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:checked:hover, .content-pane headerbar button:checked:hover:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:checked:hover {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:checked:active, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:checked:active, .content-pane headerbar button:checked:active:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:checked:active {
-  color: @window_fg_color;
-}
-
-#NautilusPathButton:checked:disabled, .content-pane headerbar menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button > button:checked:disabled, .content-pane headerbar button:checked:disabled:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque), headerbar .pathbar button:checked:disabled {
-  color: @window_fg_color;
-}
-
-.content-pane headerbar {
-  color: @window_fg_color;
-}
-
-.content-pane headerbar entry {
-  color: @window_fg_color;
-}
-
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).minimize, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).maximize, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).close,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.minimize,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.maximize,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.close {
-  color: transparent;
-}
-
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).minimize:hover, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).minimize:active, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).maximize:hover, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).maximize:active, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).close:hover, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).close:active,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.minimize:hover,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.minimize:active,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.maximize:hover,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.maximize:active,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.close:hover,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.close:active {
-  color: white;
-}
-
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).minimize:backdrop > image, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).maximize:backdrop > image, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).close:backdrop > image,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.minimize:backdrop > image,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.maximize:backdrop > image,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.close:backdrop > image {
-  background-color: alpha(@window_fg_color,0.3);
-}
-
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).minimize:backdrop:hover, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).minimize:backdrop:active, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).maximize:backdrop:hover, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).maximize:backdrop:active, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).close:backdrop:hover, .content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).close:backdrop:active,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.minimize:backdrop:hover,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.minimize:backdrop:active,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.maximize:backdrop:hover,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.maximize:backdrop:active,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.close:backdrop:hover,
-.content-pane headerbar windowcontrols > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque).image-button.close:backdrop:active {
-  color: alpha(@window_fg_color,0.45);
-}
-
-.content-pane headerbar switch {
-  background-color: alpha(@window_fg_color,0.15);
-}
-
-.content-pane headerbar switch:hover {
-  background-color: alpha(@window_fg_color,0.2);
-}
-
-.content-pane headerbar switch:active {
-  background-color: alpha(@window_fg_color,0.25);
-}
-
-.content-pane headerbar switch:hover > slider, .content-pane headerbar switch:active > slider {
-  box-shadow: 0 2px 3px transparent, 0 0 0 6px alpha(@window_fg_color,0.1);
-}
-
-.content-pane headerbar switch:checked {
-  background-color: @accent_bg_color;
-}
-
-.content-pane tabbar .box {
-  color: @window_fg_color;
-}
-
-.content-pane tabbar tab {
-  color: @window_fg_color;
-}
-
-.content-pane tabbar tab:selected {
-  color: @window_fg_color;
-}
-
-.content-pane tabbar tab:hover {
-  color: @window_fg_color;
-}
-
-.content-pane tabbar tab:active {
-  color: @window_fg_color;
 }
 
 /**********************
@@ -7688,15 +7539,14 @@ window {
 
 window.csd {
   margin: 0;
-  border-radius: 12px;
-  outline-offset: -1px;
-  outline: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 15px 16px 2px rgba(0, 0, 0, 0.14), 0 6px 18px 5px rgba(0, 0, 0, 0.12), 0 0 36px transparent, 0 0 0 1px @headerbar_darker_shade_color;
+  border-radius: 0px;
+  outline: 0 none transparent;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 15px 16px 2px rgba(0, 0, 0, 0.14), 0 6px 18px 5px rgba(0, 0, 0, 0.12), 0 0 36px transparent;
 }
 
 window.csd:backdrop {
   transition: box-shadow 200ms ease-out;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15), 0 3px 3px 0 rgba(0, 0, 0, 0.18), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 0 36px transparent, 0 0 0 1px @headerbar_darker_shade_color;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15), 0 3px 3px 0 rgba(0, 0, 0, 0.18), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 0 36px transparent;
 }
 
 window.csd.tiled, window.csd.tiled-top, window.csd.tiled-left, window.csd.tiled-right, window.csd.tiled-bottom {
@@ -8336,7 +8186,7 @@ menubutton stack > box {
 
 .running-stopwatch .seconds-label,
 .running-stopwatch .miliseconds-label {
-  color: #89a3c2;
+  color: #5b9bf8;
 }
 
 .stopped-stopwatch .miliseconds-label,
@@ -8369,20 +8219,20 @@ menubutton stack > box {
 }
 
 .night .clock-time {
-  color: #5e81ac;
-  background-color: alpha(#89a3c2,0.25);
+  color: #3c84f7;
+  background-color: alpha(#5b9bf8,0.25);
 }
 
 .naut .clock-time,
 .astro .clock-time {
-  color: #d08770;
-  background-color: alpha(#dca493,0.25);
+  color: #FF7043;
+  background-color: alpha(#FF8A65,0.25);
 }
 
 .civil .clock-time,
 .day .clock-time {
-  color: #e4b558;
-  background: alpha(#eac985,0.25);
+  color: #FBC02D;
+  background: alpha(#FFD600,0.25);
 }
 
 .exit-info {
@@ -8621,7 +8471,6 @@ windowtitle .nautilus-grid-view child.activatable #NautilusViewCell .subtitle, .
   background-color: alpha(currentColor,0.05);
   border-radius: 6px;
   padding: 0;
-  color: @window_fg_color;
 }
 
 #NautilusPathButton {
@@ -8691,7 +8540,7 @@ screenshot-carousel button,
 }
 
 .origin-beta {
-  color: #eac985;
+  color: #FFD600;
 }
 
 .origin-button > button {
@@ -8953,7 +8802,7 @@ button.star {
 }
 
 star-image {
-  color: #e4b558;
+  color: #FBC02D;
 }
 
 .dimmer-label {
@@ -8973,7 +8822,7 @@ star-image {
 }
 
 .upgrade-banner-background {
-  background: linear-gradient(to bottom, #a0c082, #89a3c2);
+  background: linear-gradient(to bottom, #66BB6A, #5b9bf8);
   color: white;
 }
 
@@ -9117,8 +8966,8 @@ carousel.card {
 }
 
 .context-tile-lozenge.blue, .context-tile-lozenge.details-rating-5 {
-  color: #89a3c2;
-  background-color: alpha(#89a3c2,0.15);
+  color: #5b9bf8;
+  background-color: alpha(#5b9bf8,0.15);
 }
 
 .context-tile-lozenge.yellow, .context-tile-lozenge.details-rating-12 {
@@ -9127,8 +8976,8 @@ carousel.card {
 }
 
 .context-tile-lozenge.details-rating-15 {
-  color: #dca493;
-  background-color: alpha(#dca493,0.15);
+  color: #FF8A65;
+  background-color: alpha(#FF8A65,0.15);
 }
 
 .context-tile-lozenge.red, .context-tile-lozenge.details-rating-18 {
@@ -9199,7 +9048,7 @@ row.app > box.header > image {
 }
 
 row.app label.warning {
-  color: #d4878f;
+  color: #F44336;
 }
 
 @keyframes pre-delay {
@@ -9502,12 +9351,6 @@ styleselector checkbutton > radio:not(:checked):not(:indeterminate), styleselect
   filter: none;
 }
 
-.note-window popover > arrow,
-.note-window popover > contents {
-  border: 1px solid alpha(@accent_fg_color,0.1);
-  box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.09), 0 2px 14px 3px rgba(0, 0, 0, 0.05);
-}
-
 .note-window.style-yellow, .note-window.style-yellow .text-view.view, .note-window.style-yellow window.print .text-view.dialog-action-box, window.print .note-window.style-yellow .text-view.dialog-action-box, .note-window.style-yellow .text-view.view > text, .note-window.style-yellow window.print .text-view.dialog-action-box > text, window.print .note-window.style-yellow .text-view.dialog-action-box > text {
   background-color: var(--accent-yellow);
 }
@@ -9634,51 +9477,51 @@ window#desktopwindow.background {
 /* GTK NAMED COLORS
    ----------------
    use responsibly! */
-@define-color accent_bg_color #89a3c2;
-@define-color accent_fg_color rgba(0, 0, 0, 0.87);
-@define-color accent_color #89a3c2;
-@define-color destructive_bg_color #d4878f;
-@define-color destructive_fg_color rgba(0, 0, 0, 0.87);
-@define-color destructive_color #d4878f;
-@define-color success_bg_color #a0c082;
-@define-color success_fg_color rgba(0, 0, 0, 0.87);
-@define-color success_color #a0c082;
-@define-color warning_bg_color #eac985;
+@define-color accent_bg_color #5b9bf8;
+@define-color accent_fg_color #FFFFFF;
+@define-color accent_color #5b9bf8;
+@define-color destructive_bg_color #F44336;
+@define-color destructive_fg_color #FFFFFF;
+@define-color destructive_color #F44336;
+@define-color success_bg_color #66BB6A;
+@define-color success_fg_color #FFFFFF;
+@define-color success_color #66BB6A;
+@define-color warning_bg_color #FFD600;
 @define-color warning_fg_color rgba(0, 0, 0, 0.87);
-@define-color warning_color #eac985;
-@define-color error_bg_color #d4878f;
-@define-color error_fg_color rgba(0, 0, 0, 0.87);
-@define-color error_color #d4878f;
-@define-color window_bg_color #242932;
-@define-color window_fg_color #ffffff;
-@define-color view_bg_color #242932;
-@define-color view_fg_color #ffffff;
-@define-color headerbar_bg_color #242932;
-@define-color headerbar_fg_color #ffffff;
-@define-color headerbar_border_color #ffffff;
-@define-color headerbar_backdrop_color #1e222a;
+@define-color warning_color #FFD600;
+@define-color error_bg_color #F44336;
+@define-color error_fg_color #FFFFFF;
+@define-color error_color #F44336;
+@define-color window_bg_color #252428;
+@define-color window_fg_color #FFFFFF;
+@define-color view_bg_color #222126;
+@define-color view_fg_color #FFFFFF;
+@define-color headerbar_bg_color #2C2C2C;
+@define-color headerbar_fg_color #FFFFFF;
+@define-color headerbar_border_color #FFFFFF;
+@define-color headerbar_backdrop_color #242424;
 @define-color headerbar_shade_color rgba(0, 0, 0, 0.36);
 @define-color headerbar_darker_shade_color rgba(0, 0, 0, 0.75);
-@define-color sidebar_bg_color #1e222a;
-@define-color sidebar_fg_color #ffffff;
-@define-color sidebar_backdrop_color #242932;
+@define-color sidebar_bg_color #28272b;
+@define-color sidebar_fg_color #FFFFFF;
+@define-color sidebar_backdrop_color #28272b;
 @define-color sidebar_shade_color rgba(0, 0, 0, 0.25);
 @define-color sidebar_border_color rgba(255, 255, 255, 0.08);
-@define-color secondary_sidebar_bg_color #242932;
-@define-color secondary_sidebar_fg_color #ffffff;
-@define-color secondary_sidebar_backdrop_color #242932;
+@define-color secondary_sidebar_bg_color #222126;
+@define-color secondary_sidebar_fg_color #FFFFFF;
+@define-color secondary_sidebar_backdrop_color #252428;
 @define-color secondary_sidebar_shade_color rgba(0, 0, 0, 0.25);
 @define-color secondary_sidebar_border_color rgba(255, 255, 255, 0.12);
 @define-color card_bg_color rgba(255, 255, 255, 0.04);
-@define-color card_fg_color #ffffff;
+@define-color card_fg_color #FFFFFF;
 @define-color card_shade_color rgba(0, 0, 0, 0.36);
-@define-color dialog_bg_color #1e222a;
-@define-color dialog_fg_color #ffffff;
-@define-color popover_bg_color #242932;
-@define-color popover_fg_color #ffffff;
+@define-color dialog_bg_color #242424;
+@define-color dialog_fg_color #FFFFFF;
+@define-color popover_bg_color #2C2C2C;
+@define-color popover_fg_color #FFFFFF;
 @define-color popover_shade_color rgba(0, 0, 0, 0.25);
-@define-color thumbnail_bg_color #333a47;
-@define-color thumbnail_fg_color #ffffff;
+@define-color thumbnail_bg_color #3C3C3C;
+@define-color thumbnail_fg_color #FFFFFF;
 @define-color shade_color rgba(0, 0, 0, 0.25);
 @define-color scrollbar_outline_color rgba(0, 0, 0, 0.5);
 /* Public colors from Default */

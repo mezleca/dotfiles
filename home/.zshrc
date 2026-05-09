@@ -162,6 +162,7 @@ alias @other="cd_or_create ~/Projects/other/"
 alias @notes="cd_or_create ~/Projects/notes/"
 alias @personal="cd_or_create ~/Projects/personal/"
 alias @unity="cd_or_create ~/Projects/unity/"
+alias @vm="cd_or_create ~/Projects/vm"
 
 alias la="ls -lah"
 alias l="ls -lh"

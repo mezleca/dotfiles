@@ -50,6 +50,7 @@ x-scheme-handler/https=firefox.desktop;helium.desktop;
 x-scheme-handler/hydralauncher=hydralauncher.desktop;
 x-scheme-handler/ror2mm=r2modman.desktop
 x-scheme-handler/chrome=firefox.desktop;
+application/x-osu-beatmap-archive=osu-lazer-uri-handler.desktop;
 
 [Default Applications]
 application/gzip=org.gnome.FileRoller.desktop
@@ -110,3 +111,4 @@ x-scheme-handler/https=firefox.desktop
 x-scheme-handler/hydralauncher=hydralauncher.desktop
 x-scheme-handler/ror2mm=r2modman.desktop
 x-scheme-handler/terminal=kitty.desktop
+application/x-osu-beatmap-archive=osu-lazer-uri-handler.desktop
