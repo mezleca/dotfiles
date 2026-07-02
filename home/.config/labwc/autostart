@@ -60,10 +60,11 @@ start_if_missing "awww-daemon" "awww-daemon"
 # notifications
 start_if_missing "dunst" "dunst"
 
-# keyring for apps like zed-editor
+# keyring
 if command -v gnome-keyring-daemon >/dev/null 2>&1; then
-    eval "$(gnome-keyring-daemon --start --components=secrets)"
+    eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets)"
     export GNOME_KEYRING_CONTROL
+    printf '\n' | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
 fi
 
 # idle management, autolock after 10min and before suspend
@@ -90,4 +91,10 @@ fi
 # custom wallpaper manager
 if [ -x "${HOME}/.config/mango/scripts/wallpaper.sh" ]; then
     "${HOME}/.config/mango/scripts/wallpaper.sh" --restore >/dev/null 2>&1 &
+fi
+
+if [ "$REFRESH_MODE" = "--refresh" ]; then
+    # nothing
+else
+    kitty &
 fi
