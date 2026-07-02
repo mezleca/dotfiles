@@ -1,0 +1,28 @@
+* {
+    font: "Roboto Medium 13";
+}
+
+window {
+    width: 400px;
+}
+
+mainbox {
+    children: [ listview ];
+}
+
+listview {
+    lines: 1;
+    columns: 5;
+    cycle: false;
+    spacing: 10px;
+}
+
+element {
+    children: [ element-text ];
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+}
+
+element-text {
+    horizontal-align: 0.5;
+}

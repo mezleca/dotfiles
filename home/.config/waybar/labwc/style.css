@@ -1,0 +1,128 @@
+@define-color waybar_bg #0A0C10;
+@define-color waybar_fg #ffffff;
+@define-color waybar_surface #11151b;
+@define-color waybar_surface_hover #171d25;
+@define-color waybar_border #333333;
+@define-color waybar_accent #5080bf;
+@define-color waybar_accent_soft rgba(80, 128, 191, 0.22);
+@define-color waybar_warning #d1a25a;
+@define-color waybar_danger #ff5555;
+@define-color waybar_muted #555555;
+
+* {
+  background-color: transparent;
+  color: @waybar_fg;
+  border: none;
+  border-radius: 0;
+  font-family: "Adwaita Sans", "Cantarell", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+window#waybar {
+  background: @waybar_bg;
+  border-top: 1px solid @waybar_border;
+}
+
+tooltip {
+  background: @waybar_surface;
+  border: 1px solid @waybar_border;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+menu {
+  background: @waybar_surface;
+  border: 1px solid @waybar_border;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+menu menuitem {
+  background: transparent;
+  border-radius: 4px;
+}
+
+menu menuitem:hover {
+  background: @waybar_surface_hover;
+}
+
+.modules-left,
+.modules-right {
+  margin: 0;
+  padding: 0 8px;
+  min-height: 30px;
+}
+
+#custom-launcher,
+#workspaces,
+#cpu,
+#memory,
+#pulseaudio,
+#battery,
+#clock,
+#tray {
+  background: transparent;
+  border: none;
+  min-height: 30px;
+}
+
+#custom-launcher {
+  min-width: 32px;
+  padding: 0 10px;
+  color: @waybar_accent;
+}
+
+#workspaces {
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+#workspaces button {
+  padding: 0 6px;
+  margin: 0;
+  min-width: 20px;
+  min-height: 22px;
+  border-radius: 4px;
+  color: @waybar_muted;
+  transition: all 120ms ease;
+}
+
+#workspaces button:hover {
+  background: transparent;
+  color: alpha(@waybar_fg, 0.72);
+}
+
+#workspaces button.hidden {
+  color: alpha(@waybar_fg, 0.72);
+}
+
+#workspaces button.active {
+  background: @waybar_accent_soft;
+  color: @waybar_accent;
+}
+
+#workspaces button.urgent {
+  color: @waybar_danger;
+}
+
+#custom-launcher,
+#cpu,
+#memory,
+#pulseaudio,
+#battery,
+#clock,
+#tray {
+  padding: 0 10px;
+  margin-left: 0;
+  border-radius: 0;
+}
+
+#battery.warning {
+  color: @waybar_warning;
+}
+
+#battery.critical {
+  color: @waybar_danger;
+}

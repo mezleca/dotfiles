@@ -1,0 +1,78 @@
+{
+  "reload_style_on_change": true,
+  "layer": "top",
+  "position": "bottom",
+  "spacing": 0,
+  "height": 40,
+  "modules-left": [
+    "custom/launcher",
+    "ext/workspaces"
+  ],
+  "modules-right": [
+    "tray",
+    "cpu",
+    "memory",
+    "pulseaudio",
+    "battery",
+    "clock"
+  ],
+  "custom/launcher": {
+    "format": "󰣇",
+    "tooltip": false,
+    "on-click": "/home/rel/.config/rofi/launch.sh launcher"
+  },
+  "ext/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "all-outputs": false,
+    "active-only": false,
+    "ignore-hidden": false,
+    "sort-by-id": true
+  },
+  "cpu": {
+    "interval": 2,
+    "format": " {usage}%",
+    "on-click": "kitty -e btop"
+  },
+  "memory": {
+    "interval": 2,
+    "format": " {}%",
+    "on-click": "kitty -e btop"
+  },
+  "battery": {
+    "interval": 5,
+    "format": " {capacity}%",
+    "format-discharging": " {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "states": {
+      "warning": 20,
+      "critical": 10
+    }
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟 muted",
+    "tooltip-format": "volume {volume}%",
+    "format-icons": {
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "scroll-step": 5,
+    "on-click": "pavucontrol"
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 8
+  },
+  "clock": {
+    "format": " {:%H:%M}",
+    "format-alt": "{:L%A %d %B}",
+    "tooltip": false
+  }
+}

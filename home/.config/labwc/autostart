@@ -1,0 +1,93 @@
+#!/usr/bin/env sh
+set -eu
+
+readonly WAYBAR_CONFIG_PATH="${HOME}/.config/waybar/labwc/config.jsonc"
+readonly WAYBAR_STYLE_PATH="${HOME}/.config/waybar/labwc/style.css"
+readonly HYPRLOCK_SCRIPT="${HOME}/.config/labwc/hyprlock.sh"
+readonly REFRESH_MODE="${1:-}"
+
+start_if_present() {
+    command_name="$1"
+    
+    shift
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        return 0
+    fi
+    
+    "$@" >/dev/null 2>&1 &
+}
+
+start_if_missing() {
+    process_name="$1"
+    command_name="$2"
+    
+    shift 2
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        return 0
+    fi
+    
+    if pgrep -x "$process_name" >/dev/null 2>&1; then
+        return 0
+    fi
+    
+    "$command_name" "$@" >/dev/null 2>&1 &
+}
+
+restart_if_present() {
+    process_name="$1"
+    command_name="$2"
+    
+    shift 2
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        return 0
+    fi
+    
+    pkill -x "$process_name" >/dev/null 2>&1 || true
+    "$command_name" "$@" >/dev/null 2>&1 &
+}
+
+# copy and paste between apps
+# https://labwc.github.io/integration.html#clipboard
+if [ "$REFRESH_MODE" = "--refresh" ]; then
+    start_if_missing "wl-paste" "wl-paste" cliphist --watch
+else
+    restart_if_present "wl-paste" "wl-paste" cliphist --watch
+fi
+
+# wallpaper daemon
+start_if_missing "awww-daemon" "awww-daemon"
+
+# notifications
+start_if_missing "dunst" "dunst"
+
+# keyring for apps like zed-editor
+if command -v gnome-keyring-daemon >/dev/null 2>&1; then
+    eval "$(gnome-keyring-daemon --start --components=secrets)"
+    export GNOME_KEYRING_CONTROL
+fi
+
+# idle management, autolock after 10min and before suspend
+start_if_missing "swayidle" "swayidle" -w \
+    timeout 600 "$HYPRLOCK_SCRIPT" \
+    before-sleep "$HYPRLOCK_SCRIPT"
+
+# waybar
+if [ "$REFRESH_MODE" = "--refresh" ]; then
+    restart_if_present "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
+else
+    start_if_missing "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
+fi
+
+if command -v dunstctl >/dev/null 2>&1; then
+    dunstctl set-paused false >/dev/null 2>&1 || true
+fi
+
+# screenshare
+if [ -x /usr/lib/xdg-desktop-portal-wlr ] && ! pgrep -x "xdg-desktop-portal-wlr" >/dev/null 2>&1; then
+    /usr/lib/xdg-desktop-portal-wlr >/dev/null 2>&1 &
+fi
+
+# custom wallpaper manager
+if [ -x "${HOME}/.config/mango/scripts/wallpaper.sh" ]; then
+    "${HOME}/.config/mango/scripts/wallpaper.sh" --restore >/dev/null 2>&1 &
+fi

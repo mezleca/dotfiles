@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+	<core>
+		<decoration>server</decoration>
+		<maximizedDecoration>titlebar</maximizedDecoration>
+		<adaptiveSync>no</adaptiveSync>
+		<allowTearing>fullscreenForced</allowTearing>
+		<reuseOutputMode>no</reuseOutputMode>
+		<autoEnableOutputs>yes</autoEnableOutputs>
+		<xwaylandPersistence>yes</xwaylandPersistence>
+		<primarySelection>yes</primarySelection>
+	</core>
+
+	<placement>
+		<policy>cascade</policy>
+		<cascadeOffset x="40" y="30" />
+	</placement>
+
+	<resistance>
+		<screenEdgeStrength>20</screenEdgeStrength>
+		<windowEdgeStrength>20</windowEdgeStrength>
+		<unSnapThreshold>20</unSnapThreshold>
+		<unMaximizeThreshold>150</unMaximizeThreshold>
+	</resistance>
+
+	<!-- window switcher (alt-tab) -->
+	<windowSwitcher preview="yes" outlines="no" order="focus">
+		<osd
+			show="yes"
+			style="thumbnail"
+			output="focused"
+			thumbnailLabelFormat="%n"
+		/>
+		<fields>
+			<field content="icon" width="8%" />
+			<field content="desktop_entry_name" width="32%" />
+			<field content="title" width="60%" />
+		</fields>
+	</windowSwitcher>
+
+	<focus>
+		<followMouse>yes</followMouse>
+		<followMouseRequiresMovement>yes</followMouseRequiresMovement>
+		<raiseOnFocus>no</raiseOnFocus>
+	</focus>
+
+	<snapping>
+		<range inner="10" outer="10" />
+		<cornerRange>50</cornerRange>
+		<topMaximize>yes</topMaximize>
+		<notifyClient>always</notifyClient>
+		<overlay enabled="yes">
+			<delay inner="500" outer="500" />
+		</overlay>
+	</snapping>
+
+	<theme>
+		<name>Rel-Dark</name>
+		<cornerRadius>6</cornerRadius>
+		<dropShadows>yes</dropShadows>
+		<icon>kora</icon>
+	</theme>
+
+	<resize>
+		<popupShow>Never</popupShow>
+		<drawContents>yes</drawContents>
+	</resize>
+
+	<desktops number="5">
+		<names>
+			<name>1</name>
+			<name>2</name>
+			<name>3</name>
+			<name>4</name>
+			<name>5</name>
+		</names>
+		<initial>1</initial>
+		<popupTime>600</popupTime>
+	</desktops>
+
+	<keyboard>
+		<layoutScope>global</layoutScope>
+		<repeatRate>30</repeatRate>
+		<repeatDelay>300</repeatDelay>
+
+		<!-- apps -->
+		<keybind key="W-Return">
+			<action name="Execute" command="kitty" />
+		</keybind>
+		<keybind key="W-e">
+			<action name="Execute" command="nautilus" />
+		</keybind>
+		<keybind key="W-d">
+			<action name="Execute" command="/home/rel/.config/rofi/launch.sh launcher" />
+		</keybind>
+
+		<!-- power menu (two binds, same target) -->
+		<keybind key="W-p">
+			<action name="Execute" command="/home/rel/.config/rofi/launch.sh powermenu" />
+		</keybind>
+
+		<!-- wallpaper picker -->
+		<keybind key="W-S-w">
+			<action name="Execute" command="/home/rel/.config/mango/scripts/wallpaper.sh --select" />
+		</keybind>
+
+		<!-- window management -->
+		<keybind key="W-q">
+			<action name="Close" />
+		</keybind>
+		<keybind key="W-i">
+			<action name="Iconify" />
+		</keybind>
+		<keybind key="W-f">
+			<action name="ToggleMaximize" />
+		</keybind>
+		<keybind key="W-S-f">
+			<action name="ToggleFullscreen" />
+		</keybind>
+
+		<!-- screenshot -->
+		<keybind key="W-s">
+			<action name="Execute" command="/home/rel/.local/bin/dot-screenshot.sh" />
+		</keybind>
+		<keybind key="W-S-s">
+			<action name="Execute" command="/home/rel/.local/bin/dot-screenshot.sh --selection" />
+		</keybind>
+
+		<!-- reload labwc + autostart -->
+		<keybind key="W-S-r">
+			<action name="Execute" command="labwc -r" />
+			<action name="Execute" command="/home/rel/.config/labwc/autostart --refresh" />
+		</keybind>
+
+		<!-- exit compositor -->
+		<keybind key="W-S-m">
+			<action name="Exit" />
+		</keybind>
+
+		<!-- root menu -->
+		<keybind key="W-Space">
+			<action name="ShowMenu" menu="root-menu" />
+		</keybind>
+
+		<!-- window switcher -->
+		<keybind key="A-Tab">
+			<action name="NextWindow" />
+		</keybind>
+		<keybind key="A-S-Tab">
+			<action name="PreviousWindow" />
+		</keybind>
+
+		<!-- desktop switching -->
+		<keybind key="W-1"><action name="GoToDesktop" to="1" /></keybind>
+		<keybind key="W-2"><action name="GoToDesktop" to="2" /></keybind>
+		<keybind key="W-3"><action name="GoToDesktop" to="3" /></keybind>
+		<keybind key="W-4"><action name="GoToDesktop" to="4" /></keybind>
+		<keybind key="W-5"><action name="GoToDesktop" to="5" /></keybind>
+
+		<!-- send window to desktop without following -->
+		<keybind key="W-S-1"><action name="SendToDesktop" to="1" follow="no" /></keybind>
+		<keybind key="W-S-2"><action name="SendToDesktop" to="2" follow="no" /></keybind>
+		<keybind key="W-S-3"><action name="SendToDesktop" to="3" follow="no" /></keybind>
+		<keybind key="W-S-4"><action name="SendToDesktop" to="4" follow="no" /></keybind>
+		<keybind key="W-S-5"><action name="SendToDesktop" to="5" follow="no" /></keybind>
+
+		<!-- volume -->
+		<keybind key="XF86AudioRaiseVolume" allowWhenLocked="yes">
+			<action name="Execute" command="pactl set-sink-volume @DEFAULT_SINK@ +5%" />
+		</keybind>
+		<keybind key="XF86AudioLowerVolume" allowWhenLocked="yes">
+			<action name="Execute" command="pactl set-sink-volume @DEFAULT_SINK@ -5%" />
+		</keybind>
+		<keybind key="XF86AudioMute" allowWhenLocked="yes">
+			<action name="Execute" command="pactl set-sink-mute @DEFAULT_SINK@ toggle" />
+		</keybind>
+
+		<!-- brightness -->
+		<keybind key="XF86MonBrightnessUp" allowWhenLocked="yes">
+			<action name="Execute" command="sh -c 'command -v brightnessctl &gt;/dev/null 2&gt;&amp;1 &amp;&amp; brightnessctl set +5%'" />
+		</keybind>
+		<keybind key="XF86MonBrightnessDown" allowWhenLocked="yes">
+			<action name="Execute" command="sh -c 'command -v brightnessctl &gt;/dev/null 2&gt;&amp;1 &amp;&amp; brightnessctl set 5%-'" />
+		</keybind>
+
+		<!-- lockscreen -->
+		<keybind key="W-l">
+		   <action name="Execute" command="/home/rel/.config/labwc/hyprlock.sh"/>
+		</keybind> 
+
+		<!-- media controls -->
+		<keybind key="XF86AudioNext"  allowWhenLocked="yes"><action name="Execute" command="playerctl next" /></keybind>
+		<keybind key="XF86AudioPrev"  allowWhenLocked="yes"><action name="Execute" command="playerctl previous" /></keybind>
+		<keybind key="XF86AudioPlay"  allowWhenLocked="yes"><action name="Execute" command="playerctl play-pause" /></keybind>
+		<keybind key="XF86AudioPause" allowWhenLocked="yes"><action name="Execute" command="playerctl play-pause" /></keybind>
+	</keyboard>
+
+	<mouse>
+		<!-- move/resize with super + drag anywhere on the frame -->
+		<context name="Frame">
+			<mousebind button="W-Left" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind button="W-Left" action="Drag">
+				<action name="Move" />
+			</mousebind>
+			<mousebind button="W-Right" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind button="W-Right" action="Drag">
+				<action name="Resize" />
+			</mousebind>
+		</context>
+
+		<!-- resize by dragging the window border -->
+		<context name="Border">
+			<mousebind button="Left" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind button="Left" action="Drag">
+				<action name="Resize" />
+			</mousebind>
+		</context>
+
+		<!-- titlebar: focus/raise, shade on scroll -->
+		<context name="TitleBar">
+			<mousebind button="Left" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind button="Right" action="Click">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind direction="Up" action="Scroll">
+				<action name="Unshade" />
+				<action name="Focus" />
+			</mousebind>
+			<mousebind direction="Down" action="Scroll">
+				<action name="Unfocus" />
+				<action name="Shade" />
+			</mousebind>
+		</context>
+
+		<!-- title text: drag to move, double-click to maximize -->
+		<context name="Title">
+			<mousebind button="Left" action="Drag">
+				<action name="Move" />
+			</mousebind>
+			<mousebind button="Left" action="DoubleClick">
+				<action name="ToggleMaximize" />
+			</mousebind>
+			<mousebind button="Right" action="Click">
+				<action name="ShowMenu" menu="client-menu" />
+			</mousebind>
+		</context>
+
+		<!-- maximize button: left=both, right=horizontal, middle=vertical -->
+		<context name="Maximize">
+			<mousebind button="Left" action="Click">
+				<action name="ToggleMaximize" />
+			</mousebind>
+			<mousebind button="Right" action="Click">
+				<action name="ToggleMaximize" direction="horizontal" />
+			</mousebind>
+			<mousebind button="Middle" action="Click">
+				<action name="ToggleMaximize" direction="vertical" />
+			</mousebind>
+		</context>
+
+		<!-- window menu button -->
+		<context name="WindowMenu">
+			<mousebind button="Left" action="Click">
+				<action name="ShowMenu" menu="client-menu" atCursor="no" />
+			</mousebind>
+			<mousebind button="Right" action="Click">
+				<action name="ShowMenu" menu="client-menu" atCursor="no" />
+			</mousebind>
+		</context>
+
+		<context name="Icon">
+			<mousebind button="Left" action="Click">
+				<action name="ShowMenu" menu="client-menu" atCursor="no" />
+			</mousebind>
+			<mousebind button="Right" action="Click">
+				<action name="ShowMenu" menu="client-menu" atCursor="no" />
+			</mousebind>
+		</context>
+
+		<context name="Shade">
+			<mousebind button="Left" action="Click">
+				<action name="ToggleShade" />
+			</mousebind>
+		</context>
+
+		<context name="AllDesktops">
+			<mousebind button="Left" action="Click">
+				<action name="ToggleOmnipresent" />
+			</mousebind>
+		</context>
+
+		<context name="Iconify">
+			<mousebind button="Left" action="Click">
+				<action name="Iconify" />
+			</mousebind>
+		</context>
+
+		<context name="Close">
+			<mousebind button="Left" action="Click">
+				<action name="Close" />
+			</mousebind>
+		</context>
+
+		<!-- click on client area to focus/raise -->
+		<context name="Client">
+			<mousebind button="Left" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind button="Middle" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+			<mousebind button="Right" action="Press">
+				<action name="Focus" />
+				<action name="Raise" />
+			</mousebind>
+		</context>
+
+		<!-- root: open menu on click, scroll to switch desktop -->
+		<context name="Root">
+			<mousebind button="Right" action="Press">
+				<action name="ShowMenu" menu="root-menu" />
+			</mousebind>
+			<mousebind button="Middle" action="Press">
+				<action name="ShowMenu" menu="root-menu" />
+			</mousebind>
+			<mousebind direction="Up" action="Scroll">
+				<action name="GoToDesktop" to="left" wrap="yes" />
+			</mousebind>
+			<mousebind direction="Down" action="Scroll">
+				<action name="GoToDesktop" to="right" wrap="yes" />
+			</mousebind>
+		</context>
+
+	</mouse>
+
+	<libinput>
+		<device category="non-touch">
+			<accelProfile>flat</accelProfile>
+			<pointerSpeed>0.0</pointerSpeed>
+			<naturalScroll>no</naturalScroll>
+		</device>
+		<device category="touchpad">
+			<accelProfile>flat</accelProfile>
+			<pointerSpeed>-0.15</pointerSpeed>
+			<tap>yes</tap>
+			<tapAndDrag>yes</tapAndDrag>
+			<dragLock>yes</dragLock>
+			<disableWhileTyping>yes</disableWhileTyping>
+			<naturalScroll>no</naturalScroll>
+		</device>
+	</libinput>
+</labwc_config>

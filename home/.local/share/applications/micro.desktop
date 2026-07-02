@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Micro
+GenericName=Text Editor
+Comment=Text Editor
+Exec=kitty -e micro %F
+Icon=text-editor
+Terminal=false
+Categories=Utility;TextEditor;
+MimeType=text/plain;text/x-c;text/x-c++;text/x-python;text/x-shellscript;text/x-makefile;text/markdown;application/json;application/xml;text/x-java;text/x-tex;
+StartupNotify=false

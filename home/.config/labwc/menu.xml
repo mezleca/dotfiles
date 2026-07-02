@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<openbox_menu>
+    <menu id="root-menu">
+        <item label="Launcher">
+            <action name="Execute" command="/home/rel/.config/rofi/launch.sh launcher" />
+        </item>
+
+        <item label="Terminal">
+            <action name="Execute" command="kitty" />
+        </item>
+
+        <item label="Files">
+            <action name="Execute" command="nautilus" />
+        </item>
+
+        <item label="Wallpaper">
+            <action name="Execute" command="/home/rel/.config/mango/scripts/wallpaper.sh --select" />
+        </item>
+
+        <item label="Power">
+            <action name="Execute" command="/home/rel/.config/rofi/launch.sh powermenu" />
+        </item>
+
+        <separator />
+
+        <item label="Reconfigure">
+            <action name="Reconfigure" />
+        </item>
+
+        <item label="Exit">
+            <action name="Exit" />
+        </item>
+    </menu>
+</openbox_menu>

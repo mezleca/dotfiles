@@ -1,0 +1,6 @@
+* {
+    bg: #14171bff;
+    fg: #ffffff;
+    fg-dim: #888888ff;
+    selected: #333333;
+}
