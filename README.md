@@ -46,11 +46,11 @@ pacman -S --noconfirm --needed \
   pipewire pipewire-pulse wireplumber playerctl pamixer pavucontrol \
   qt6ct qt6-wayland dex \
   polkit polkit-gnome gnome-keyring wl-clipboard wl-clip-persist cliphist \
-  grim slurp jq waybar hyprlock \
+  grim slurp jq waybar \
   cjson xdg-desktop-portal xdg-desktop-portal-gtk
 
 # labwc
-pacman -S --noconfirm --needed swaybg xorg-xwayland xdg-desktop-portal-wlr
+pacman -S --noconfirm --needed hyprlock swayidle swaybg xorg-xwayland xdg-desktop-portal-wlr
 
 # mango
 pacman -S --noconfirm --needed yad awww

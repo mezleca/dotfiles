@@ -94,7 +94,7 @@ if [ -x "${HOME}/.config/mango/scripts/wallpaper.sh" ]; then
 fi
 
 if [ "$REFRESH_MODE" = "--refresh" ]; then
-    # nothing
+    :
 else
     kitty &
 fi
