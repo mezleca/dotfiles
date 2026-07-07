@@ -2,11 +2,11 @@ $HOME/wallpapers/**
 $HOME/.config/gtk-2.0/
 $HOME/.config/gtk-3.0/
 $HOME/.config/gtk-4.0/
-$HOME/.config/spicetify/
 $HOME/.config/labwc/
 $HOME/.config/mango/
 $HOME/.config/hypr/
 $HOME/.config/fontconfig/
+$HOME/.config/xdg-desktop-portal/**
 $HOME/.config/micro/bindings.json
 $HOME/.config/micro/colorschemes/**
 $HOME/.config/micro/palettero.cfg
@@ -23,7 +23,6 @@ $HOME/.config/picom/**
 $HOME/.config/rofi/**
 $HOME/.config/waybar/**
 $HOME/.local/bin/dot-screenshot.sh
-$HOME/.local/bin/vicinae-wallpaper.sh
 $HOME/.local/bin/install-common-gpg-keys.sh
 $HOME/.local/share/sfx/**
 $HOME/.local/share/applications/feh.desktop

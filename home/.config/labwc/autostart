@@ -46,9 +46,9 @@ restart_if_present() {
     "$command_name" "$@" >/dev/null 2>&1 &
 }
 
-# make qt luke cute 
-systemctl --user import-environment QT_QPA_PLATFORMTHEME
-dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME
+# import some env vars
+systemctl --user import-environment QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY
+dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY
 
 # copy and paste between apps
 # https://labwc.github.io/integration.html#clipboard
@@ -65,11 +65,12 @@ start_if_missing "awww-daemon" "awww-daemon"
 start_if_missing "dunst" "dunst"
 
 # keyring
-if command -v gnome-keyring-daemon >/dev/null 2>&1; then
-    eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets)"
+if command -v gnome-keyring-daemon >/dev/null 2>&1 && ! pgrep -x gnome-keyring-daemon >/dev/null 2>&1; then
+    eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
     export GNOME_KEYRING_CONTROL
-    printf '\n' | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
 fi
+
+printf '\n' | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
 
 # idle management, autolock after 10min and before suspend
 start_if_missing "swayidle" "swayidle" -w \
