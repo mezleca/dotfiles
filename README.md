@@ -44,7 +44,7 @@ pacman -S --noconfirm --needed \
   mpv feh eog xclip maim rofi kitty nautilus dunst micro \
   libnotify imagemagick bc fzf bat brightnessctl \
   pipewire pipewire-pulse wireplumber playerctl pamixer pavucontrol \
-  qt6ct qt6-wayland dex \
+  qt6-wayland dex \
   polkit polkit-gnome gnome-keyring wl-clipboard wl-clip-persist cliphist \
   grim slurp jq waybar \
   cjson xdg-desktop-portal xdg-desktop-portal-gtk

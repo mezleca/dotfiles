@@ -71,8 +71,9 @@
         "arguments": [
           "-j=2",
           "--background-index",
-          "--background-index=false",
-          "--pch-storage=memory",
+          "--background-index-priority=low",
+          "--completion-style=bundled",
+          "--header-insertion=never",
           "--function-arg-placeholders=0"
         ]
       }

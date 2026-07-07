@@ -3,7 +3,6 @@ $HOME/.config/gtk-2.0/
 $HOME/.config/gtk-3.0/
 $HOME/.config/gtk-4.0/
 $HOME/.config/spicetify/
-$HOME/.config/qt6ct/
 $HOME/.config/labwc/
 $HOME/.config/mango/
 $HOME/.config/hypr/

@@ -46,6 +46,10 @@ restart_if_present() {
     "$command_name" "$@" >/dev/null 2>&1 &
 }
 
+# make qt luke cute 
+systemctl --user import-environment QT_QPA_PLATFORMTHEME
+dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME
+
 # copy and paste between apps
 # https://labwc.github.io/integration.html#clipboard
 if [ "$REFRESH_MODE" = "--refresh" ]; then
