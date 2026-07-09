@@ -23,7 +23,7 @@ $HOME/.config/picom/**
 $HOME/.config/rofi/**
 $HOME/.config/waybar/**
 $HOME/.local/bin/dot-screenshot.sh
-$HOME/.local/bin/install-common-gpg-keys.sh
+$HOME/.local/bin/android-tools.py
 $HOME/.local/share/sfx/**
 $HOME/.local/share/applications/feh.desktop
 $HOME/.local/share/applications/micro.desktop

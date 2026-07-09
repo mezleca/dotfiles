@@ -69,7 +69,7 @@
       "binary": {
         "path": "/usr/bin/clangd",
         "arguments": [
-          "-j=2",
+          "-j=1",
           "--background-index",
           "--background-index-priority=low",
           "--completion-style=bundled",
