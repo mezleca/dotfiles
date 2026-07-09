@@ -9,8 +9,6 @@ $HOME/.config/fontconfig/
 $HOME/.config/xdg-desktop-portal/**
 $HOME/.config/micro/bindings.json
 $HOME/.config/micro/colorschemes/**
-$HOME/.config/micro/palettero.cfg
-$HOME/.config/micro/plug/**
 $HOME/.config/micro/settings.json
 $HOME/.config/micro/syntax/**
 $HOME/.config/zed/settings.json
