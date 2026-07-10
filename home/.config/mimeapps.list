@@ -54,6 +54,7 @@ x-scheme-handler/hydralauncher=hydralauncher.desktop;
 x-scheme-handler/ror2mm=r2modman.desktop
 application/x-shellscript=micro.desktop;
 text/vnd.trolltech.linguist=micro.desktop;
+x-scheme-handler/bitwarden=bitwarden.desktop;
 
 [Default Applications]
 application/gzip=org.gnome.FileRoller.desktop
@@ -117,3 +118,4 @@ x-scheme-handler/ror2mm=r2modman.desktop
 x-scheme-handler/terminal=kitty.desktop
 application/x-shellscript=micro.desktop
 text/vnd.trolltech.linguist=micro.desktop
+x-scheme-handler/bitwarden=bitwarden.desktop
