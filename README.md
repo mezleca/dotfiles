@@ -41,7 +41,7 @@ dotfiles for labwc and mangowm
 ```bash
 # shared
 pacman -S --noconfirm --needed \
-  mpv feh eog xclip maim rofi kitty nautilus dunst micro \
+  go mpv feh eog xclip maim rofi kitty nautilus dunst micro \
   libnotify imagemagick bc fzf bat brightnessctl \
   pipewire pipewire-pulse wireplumber playerctl pamixer pavucontrol \
   qt6-wayland dex \
@@ -60,4 +60,10 @@ paru -S --noconfirm \
   mangowm-wlonly-git labwc-git \
   kora-icon-theme otf-commit-mono-nerd \
   opentabletdriver ttf-segoe-ui-variable
+
+# build dots helper
+cd lib && go build -o ../dots && cd .. && chmod +x ./dots
+
+# install
+./dots install
 ```
