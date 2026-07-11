@@ -21,7 +21,8 @@ $HOME/.config/picom/**
 $HOME/.config/rofi/**
 $HOME/.config/waybar/**
 $HOME/.local/bin/dot-screenshot.sh
-$HOME/.local/bin/android-tools.py
+$HOME/.local/bin/android-tool
+$HOME/.local/bin/android-tool-src
 $HOME/.local/share/sfx/**
 $HOME/.local/share/applications/feh.desktop
 $HOME/.local/share/applications/micro.desktop
