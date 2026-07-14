@@ -1,3 +1,3 @@
-module github.com/mezleca/android-tool
+module android-tools
 
-go 1.26.5
+go 1.22.2

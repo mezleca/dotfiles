@@ -30,8 +30,7 @@ dotfiles for labwc and mangowm
 
 - terminal text editor: micro
 - file manager: nautilus
-- screenshot: custom script x11 / wayland (grim, slurp, wl-copy, maim, xclip,
-  mpv)
+- screenshot: [rel-desktop-tool](https://github.com/mezleca/rel-desktop-tool)
 - screenlocker (labwc only): hyprlock
 - launcher and shit: rofi / yad
 - gtk theme: [rel-dark](https://github.com/mezleca/rel-gtk-theme) using "--theme dark --tweaks normal rimless"
@@ -61,8 +60,8 @@ paru -S --noconfirm \
   kora-icon-theme otf-commit-mono-nerd \
   opentabletdriver ttf-segoe-ui-variable
 
-# build dots helper
-cd lib && go build -o ../dots && cd .. && chmod +x ./dots
+# build rel-tools
+cd src && go build -o ../dots && cd .. && chmod +x ./dots
 
 # install
 ./dots install
