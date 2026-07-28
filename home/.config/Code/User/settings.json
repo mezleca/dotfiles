@@ -124,5 +124,6 @@
     "[go]": { "editor.formatOnSave": false },
     "[python]": { "editor.formatOnSave": false },
     "workbench.colorTheme": "Dark Modern",
-    "workbench.startupEditor": "none"
+    "workbench.startupEditor": "none",
+    "git.autofetch": true
 }

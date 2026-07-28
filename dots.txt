@@ -29,8 +29,8 @@ $HOME/.local/share/applications/micro.desktop
 $HOME/.config/mimeapps.list
 $HOME/.bashrc
 $HOME/.zshrc
+/etc/udev/rules.d/99-hid.rules
 /etc/X11/xorg.conf.d/00-keyboard.conf
 /etc/X11/xorg.conf.d/15-dmabuf.conf
 /etc/X11/xorg.conf.d/20-modesetting.conf
-/etc/X11/xorg.conf.d/20-nvidia.conf
 /etc/systemd/coredump.conf
