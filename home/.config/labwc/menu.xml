@@ -14,7 +14,7 @@
         </item>
 
         <item label="Wallpaper">
-            <action name="Execute" command="/home/rel/.config/mango/scripts/wallpaper.sh --select" />
+            <action name="Execute" command="/home/rel/.local/bin/wallpaper-manager.sh --select" />
         </item>
 
         <item label="Power">

@@ -39,7 +39,7 @@ text/x-c++=micro.desktop;
 text/x-makefile=micro.desktop;
 text/x-python=micro.desktop;
 text/x-shellscript=micro.desktop;
-video/mp4=mpv.desktop;vlc.desktop;
+video/mp4=mpv.desktop;vlc.desktop;org.kde.haruna.desktop;
 video/mpeg=mpv.desktop;vlc.desktop;
 video/webm=mpv.desktop;vlc.desktop;
 video/x-matroska=mpv.desktop;vlc.desktop;
@@ -55,6 +55,8 @@ x-scheme-handler/ror2mm=r2modman.desktop
 application/x-shellscript=micro.desktop;
 text/vnd.trolltech.linguist=micro.desktop;
 x-scheme-handler/bitwarden=bitwarden.desktop;
+x-scheme-handler/tg=userapp-AyuGram Desktop-RL8XT3.desktop;org.telegram.desktop.desktop;
+x-scheme-handler/tonsite=userapp-AyuGram Desktop-G3GYT3.desktop;org.telegram.desktop.desktop;
 
 [Default Applications]
 application/gzip=org.gnome.FileRoller.desktop
@@ -119,3 +121,5 @@ x-scheme-handler/terminal=kitty.desktop
 application/x-shellscript=micro.desktop
 text/vnd.trolltech.linguist=micro.desktop
 x-scheme-handler/bitwarden=bitwarden.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop
+x-scheme-handler/tonsite=org.telegram.desktop.desktop

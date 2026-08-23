@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
+readonly WALLPAPER_MANAGER_PATH="${HOME}/.local/bin/wallpaper-manager.sh"
 readonly WAYBAR_CONFIG_PATH="${HOME}/.config/waybar/labwc/config.jsonc"
 readonly WAYBAR_STYLE_PATH="${HOME}/.config/waybar/labwc/style.css"
 readonly HYPRLOCK_SCRIPT="${HOME}/.config/labwc/hyprlock.sh"
@@ -50,6 +51,14 @@ restart_if_present() {
 systemctl --user import-environment QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY
 dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY
 
+# waybar
+if [ "$REFRESH_MODE" = "--refresh" ]; then
+    restart_if_present "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
+else
+    start_if_missing "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
+    sleep 0.1
+fi
+
 # copy and paste between apps
 # https://labwc.github.io/integration.html#clipboard
 if [ "$REFRESH_MODE" = "--refresh" ]; then
@@ -72,30 +81,29 @@ fi
 
 printf '\n' | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
 
-# idle management, autolock after 10min and before suspend
+# polkit
+if [ -x /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 ] && ! pgrep -x "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1; then
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
+fi
+
+# idle management (10 min)
+wayland-pipewire-idle-inhibit &
 start_if_missing "swayidle" "swayidle" -w \
     timeout 600 "$HYPRLOCK_SCRIPT" \
     before-sleep "$HYPRLOCK_SCRIPT"
-
-# waybar
-if [ "$REFRESH_MODE" = "--refresh" ]; then
-    restart_if_present "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
-else
-    start_if_missing "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
-fi
 
 if command -v dunstctl >/dev/null 2>&1; then
     dunstctl set-paused false >/dev/null 2>&1 || true
 fi
 
-# screenshare
+# screenshare portal
 if [ -x /usr/lib/xdg-desktop-portal-wlr ] && ! pgrep -x "xdg-desktop-portal-wlr" >/dev/null 2>&1; then
     /usr/lib/xdg-desktop-portal-wlr >/dev/null 2>&1 &
 fi
 
-# custom wallpaper manager
-if [ -x "${HOME}/.config/mango/scripts/wallpaper.sh" ]; then
-    "${HOME}/.config/mango/scripts/wallpaper.sh" --restore >/dev/null 2>&1 &
+# restore last wallpaper
+if [ -x "$WALLPAPER_MANAGER_PATH" ]; then
+    $WALLPAPER_MANAGER_PATH --restore >/dev/null 2>&1 &
 fi
 
 if [ "$REFRESH_MODE" = "--refresh" ]; then

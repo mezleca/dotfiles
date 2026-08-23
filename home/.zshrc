@@ -189,6 +189,7 @@ alias git_log="git log --oneline"
 # config
 alias reload="source ~/.zshrc"
 alias zshconfig="$EDITOR ~/.zshrc"
+alias zshenv="$EDITOR ~/.zshrc"
 alias dotfiles="cd ~/dotfiles && $EDITOR ./dots.txt"
 
 # find process by name

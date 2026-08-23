@@ -1,0 +1,22 @@
+window {
+    width: 50%;
+    height: 70%;
+}
+
+listview {
+    columns: 3;
+    lines: 5;
+    scrollbar: false;
+    spacing: 10px;
+    background-color: @bg;
+    cycle: true;
+}
+
+element {
+    children: [ element-icon ];
+    padding: 8px;
+}
+
+element-icon {
+    size: 100%;
+}

@@ -39,7 +39,7 @@
 	</windowSwitcher>
 
 	<focus>
-		<followMouse>yes</followMouse>
+		<followMouse>no</followMouse>
 		<followMouseRequiresMovement>yes</followMouseRequiresMovement>
 		<raiseOnFocus>no</raiseOnFocus>
 	</focus>
@@ -101,7 +101,7 @@
 
 		<!-- wallpaper picker -->
 		<keybind key="W-S-w">
-			<action name="Execute" command="/home/rel/.config/mango/scripts/wallpaper.sh --select" />
+			<action name="Execute" command="/home/rel/.local/bin/wallpaper-manager.sh --select" />
 		</keybind>
 
 		<!-- window management -->

@@ -28,11 +28,12 @@ dotfiles for labwc and mangowm
 
 ## apps / tools used
 
-- terminal text editor: micro
+- text editor: micro
 - file manager: nautilus
 - screenshot: custom script
-- screenlocker (labwc only): hyprlock
-- launcher and shit: rofi / yad
+- screenlocker: hyprlock
+- launcher/powermenu: rofi
+- wallpaper selector: yad
 - gtk theme: [rel-dark](https://github.com/mezleca/rel-gtk-theme) using "--theme dark --tweaks normal rimless"
 
 ## installation
@@ -41,7 +42,7 @@ dotfiles for labwc and mangowm
 # shared
 pacman -S --noconfirm --needed \
   go mpv feh eog xclip maim rofi kitty nautilus dunst micro \
-  libnotify imagemagick bc fzf bat brightnessctl \
+  libnotify imagemagick bc fzf bat brightnessctl satty \
   pipewire pipewire-pulse wireplumber playerctl pamixer pavucontrol \
   qt6-wayland dex \
   polkit polkit-gnome gnome-keyring wl-clipboard wl-clip-persist cliphist \
