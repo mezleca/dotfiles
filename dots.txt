@@ -16,6 +16,8 @@ $HOME/.config/Code/User/settings.json
 $HOME/.config/VSCodium/User/settings.json
 $HOME/.config/dunst/**
 $HOME/.config/kitty/**
+$HOME/.config/alacritty/**
+$HOME/.config/tmux/tmux.conf
 $HOME/.config/Kvantum/**
 $HOME/.config/picom/**
 $HOME/.config/rofi/**

@@ -199,6 +199,11 @@ alias pgrep="ps aux | grep"
 alias myip="curl -s ifconfig.me"
 alias clip="xclip -selection clipboard"
 
+# get error's from gigantic cpp output
+fe() {
+    "$@" 2>&1 | grep -C 3 --color=always -E "error:|fatal error:"
+}
+
 unsetopt xtrace
 
 export PATH=$PATH:/home/rel/.spicetify

@@ -1,6 +1,7 @@
 {
     "Alt-/": "lua:comment.comment",
     "CtrlUnderscore": "lua:comment.comment",
+    "\u001b[13;2u": "InsertNewline",
     "buffer": {
         "Ctrl-J": "FindNext",
         "Ctrl-K": "FindPrevious"
