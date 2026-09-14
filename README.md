@@ -30,10 +30,11 @@ dotfiles for labwc and mangowm
 
 - text editor: micro
 - file manager: nautilus
-- screenshot: custom script
-- screenlocker: hyprlock
-- launcher/powermenu: rofi
-- wallpaper selector: yad
+- desktop shell: Noctalia
+- screenshot: Noctalia
+- screenlocker: Noctalia
+- launcher/powermenu: Noctalia
+- wallpaper selector: Noctalia
 - gtk theme: [rel-dark](https://github.com/mezleca/rel-gtk-theme) using "--theme dark --tweaks normal rimless"
 
 ## installation
@@ -41,19 +42,12 @@ dotfiles for labwc and mangowm
 ```bash
 # shared
 pacman -S --noconfirm --needed \
-  go mpv feh eog xclip maim rofi kitty nautilus dunst micro \
-  libnotify imagemagick bc fzf bat brightnessctl satty \
-  pipewire pipewire-pulse wireplumber playerctl pamixer pavucontrol \
+  go mpv feh eog kitty nautilus micro \
+  libnotify imagemagick bc fzf bat \
+  pipewire pipewire-pulse wireplumber pamixer pavucontrol \
   qt6-wayland dex \
-  polkit polkit-gnome gnome-keyring wl-clipboard wl-clip-persist cliphist \
-  grim slurp jq waybar \
-  cjson xdg-desktop-portal xdg-desktop-portal-gtk
-
-# labwc
-pacman -S --noconfirm --needed hyprlock swayidle swaybg xorg-xwayland xdg-desktop-portal-wlr
-
-# mango
-pacman -S --noconfirm --needed yad awww
+  polkit gnome-keyring noctalia wayland-pipewire-idle-inhibit \
+  xorg-xwayland xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
 
 # aur stuff
 paru -S --noconfirm \

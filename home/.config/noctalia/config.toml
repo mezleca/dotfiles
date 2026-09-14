@@ -1,0 +1,42 @@
+[bar]
+order = ["default"]
+
+[bar.default]
+enabled = true
+position = "bottom"
+thickness = 40
+start = ["launcher", "wallpaper", "workspaces", "active_window"]
+center = ["clock"]
+end = ["media", "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "cpu", "ram", "control-center", "session"]
+
+[notification]
+enable_daemon = true
+
+[shell]
+clipboard_enabled = true
+polkit_agent = true
+screen_time_enabled = true
+
+[shell.screenshot]
+copy_to_clipboard = true
+freeze_screen = true
+save_to_file = true
+
+[lockscreen]
+enabled = true
+lock_before_suspend = true
+
+[idle]
+behavior_order = ["lock"]
+
+[idle.behavior.lock]
+action = "lock"
+enabled = true
+timeout = 600
+
+[theme]
+source = "wallpaper"
+
+[wallpaper]
+directory = "/home/rel/wallpapers"
+enabled = true

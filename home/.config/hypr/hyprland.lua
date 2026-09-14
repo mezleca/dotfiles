@@ -1,11 +1,5 @@
 -- https://wiki.hypr.land/Configuring/Start/
 
--- TODO/TOFIX:
--- fullscreen keybinds should toggle
--- replace noctalia-shell with my own quickshell shit (wip)
--- use viscinae for launcher / power / etc...
--- floating instead of scrolling
-
 --------------------
 ---- MONITORS ------
 --------------------
@@ -23,7 +17,6 @@ hl.monitor({
 
 local terminal     = "kitty"
 local file_manager = "nautilus"
-local ipc          = "qs -c noctalia-shell ipc call"
 
 --------------------
 ---- AUTOSTART -----
@@ -32,8 +25,7 @@ local ipc          = "qs -c noctalia-shell ipc call"
 hl.on("hyprland.start", function()
     hl.exec_cmd("otd-daemon")
     hl.exec_cmd("nm-applet")
-    hl.exec_cmd("/home/rel/.config/hypr/scripts/notifications.sh")
-    hl.exec_cmd("qs -c noctalia-shell --no-duplicate")
+    hl.exec_cmd("noctalia --daemon")
 end)
 
 -------------------------------
@@ -184,16 +176,16 @@ hl.bind(main_mod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(main_mod .. " + M",      hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit"))
 hl.bind(main_mod .. " + E",      hl.dsp.exec_cmd(file_manager))
 hl.bind(main_mod .. " + V",      hl.dsp.window.float({ action = "toggle" }))
-hl.bind(main_mod .. " + P",      hl.dsp.exec_cmd(ipc .. " powermenu toggle"))
+hl.bind(main_mod .. " + P",      hl.dsp.exec_cmd("noctalia msg panel-toggle session"))
 
--- qs ipc
-hl.bind(main_mod .. " + W",         hl.dsp.exec_cmd(ipc .. " wallpaper toggle"))
-hl.bind(main_mod .. " + D",         hl.dsp.exec_cmd(ipc .. " launcher toggle"))
-hl.bind(main_mod .. " + SHIFT + W", hl.dsp.exec_cmd(ipc .. " settings toggle"))
+-- noctalia ipc
+hl.bind(main_mod .. " + W",         hl.dsp.exec_cmd("noctalia msg panel-toggle wallpaper"))
+hl.bind(main_mod .. " + D",         hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
+hl.bind(main_mod .. " + SHIFT + W", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
 
 -- screenshots
-hl.bind(main_mod .. " + S",         hl.dsp.exec_cmd("~/.local/bin/dot-screenshot.sh"))
-hl.bind(main_mod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.local/bin/dot-screenshot.sh --selection"))
+hl.bind(main_mod .. " + S",         hl.dsp.exec_cmd("noctalia msg screenshot-fullscreen"))
+hl.bind(main_mod .. " + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
 
 -- scrolling layout
 hl.bind(main_mod .. " + J",         hl.dsp.layout("focus l"))
@@ -241,18 +233,16 @@ hl.bind(main_mod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(main_mod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(main_mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- volume/brightness via qs ipc
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(ipc .. " volume increase"),    { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(ipc .. " volume decrease"),    { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(ipc .. " volume muteOutput"),  { locked = true })
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(ipc .. " brightness increase"),{ locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. " brightness decrease"),{ locked = true, repeating = true })
-
--- playerctl
-hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+-- volume, brightness, and media via noctalia
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("noctalia msg volume-up"),       { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("noctalia msg volume-down"),     { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("noctalia msg volume-mute"),     { locked = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("noctalia msg brightness-up"),   { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("noctalia msg brightness-down"), { locked = true, repeating = true })
+hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("noctalia msg media next"),       { locked = true })
+hl.bind("XF86AudioPause",        hl.dsp.exec_cmd("noctalia msg media toggle"),     { locked = true })
+hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd("noctalia msg media toggle"),     { locked = true })
+hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd("noctalia msg media previous"),   { locked = true })
 
 --------------------------
 ---- WINDOW RULES ---------

@@ -91,17 +91,17 @@
 			<action name="Execute" command="nautilus" />
 		</keybind>
 		<keybind key="W-d">
-			<action name="Execute" command="/home/rel/.config/rofi/launch.sh launcher" />
+			<action name="Execute" command="noctalia msg panel-toggle launcher" />
 		</keybind>
 
 		<!-- power menu (two binds, same target) -->
 		<keybind key="W-p">
-			<action name="Execute" command="/home/rel/.config/rofi/launch.sh powermenu" />
+			<action name="Execute" command="noctalia msg panel-toggle session" />
 		</keybind>
 
 		<!-- wallpaper picker -->
 		<keybind key="W-S-w">
-			<action name="Execute" command="/home/rel/.local/bin/wallpaper-manager.sh --select" />
+			<action name="Execute" command="noctalia msg panel-toggle wallpaper" />
 		</keybind>
 
 		<!-- window management -->
@@ -120,10 +120,10 @@
 
 		<!-- screenshot -->
 		<keybind key="W-s">
-			<action name="Execute" command="/home/rel/.local/bin/dot-screenshot.sh" />
+			<action name="Execute" command="noctalia msg screenshot-fullscreen" />
 		</keybind>
 		<keybind key="W-S-s">
-			<action name="Execute" command="/home/rel/.local/bin/dot-screenshot.sh --selection" />
+			<action name="Execute" command="noctalia msg screenshot-region" />
 		</keybind>
 
 		<!-- reload labwc + autostart -->
@@ -166,33 +166,33 @@
 
 		<!-- volume -->
 		<keybind key="XF86AudioRaiseVolume" allowWhenLocked="yes">
-			<action name="Execute" command="pactl set-sink-volume @DEFAULT_SINK@ +5%" />
+			<action name="Execute" command="noctalia msg volume-up" />
 		</keybind>
 		<keybind key="XF86AudioLowerVolume" allowWhenLocked="yes">
-			<action name="Execute" command="pactl set-sink-volume @DEFAULT_SINK@ -5%" />
+			<action name="Execute" command="noctalia msg volume-down" />
 		</keybind>
 		<keybind key="XF86AudioMute" allowWhenLocked="yes">
-			<action name="Execute" command="pactl set-sink-mute @DEFAULT_SINK@ toggle" />
+			<action name="Execute" command="noctalia msg volume-mute" />
 		</keybind>
 
 		<!-- brightness -->
 		<keybind key="XF86MonBrightnessUp" allowWhenLocked="yes">
-			<action name="Execute" command="sh -c 'command -v brightnessctl &gt;/dev/null 2&gt;&amp;1 &amp;&amp; brightnessctl set +5%'" />
+			<action name="Execute" command="noctalia msg brightness-up" />
 		</keybind>
 		<keybind key="XF86MonBrightnessDown" allowWhenLocked="yes">
-			<action name="Execute" command="sh -c 'command -v brightnessctl &gt;/dev/null 2&gt;&amp;1 &amp;&amp; brightnessctl set 5%-'" />
+			<action name="Execute" command="noctalia msg brightness-down" />
 		</keybind>
 
 		<!-- lockscreen -->
 		<keybind key="W-l">
-		   <action name="Execute" command="/home/rel/.config/labwc/hyprlock.sh"/>
+		   <action name="Execute" command="noctalia msg session lock"/>
 		</keybind> 
 
 		<!-- media controls -->
-		<keybind key="XF86AudioNext"  allowWhenLocked="yes"><action name="Execute" command="playerctl next" /></keybind>
-		<keybind key="XF86AudioPrev"  allowWhenLocked="yes"><action name="Execute" command="playerctl previous" /></keybind>
-		<keybind key="XF86AudioPlay"  allowWhenLocked="yes"><action name="Execute" command="playerctl play-pause" /></keybind>
-		<keybind key="XF86AudioPause" allowWhenLocked="yes"><action name="Execute" command="playerctl play-pause" /></keybind>
+		<keybind key="XF86AudioNext"  allowWhenLocked="yes"><action name="Execute" command="noctalia msg media next" /></keybind>
+		<keybind key="XF86AudioPrev"  allowWhenLocked="yes"><action name="Execute" command="noctalia msg media previous" /></keybind>
+		<keybind key="XF86AudioPlay"  allowWhenLocked="yes"><action name="Execute" command="noctalia msg media toggle" /></keybind>
+		<keybind key="XF86AudioPause" allowWhenLocked="yes"><action name="Execute" command="noctalia msg media toggle" /></keybind>
 	</keyboard>
 
 	<mouse>

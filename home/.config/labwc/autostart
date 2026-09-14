@@ -1,113 +1,37 @@
 #!/usr/bin/env sh
 set -eu
 
-readonly WALLPAPER_MANAGER_PATH="${HOME}/.local/bin/wallpaper-manager.sh"
-readonly WAYBAR_CONFIG_PATH="${HOME}/.config/waybar/labwc/config.jsonc"
-readonly WAYBAR_STYLE_PATH="${HOME}/.config/waybar/labwc/style.css"
-readonly HYPRLOCK_SCRIPT="${HOME}/.config/labwc/hyprlock.sh"
 readonly REFRESH_MODE="${1:-}"
-
-start_if_present() {
-    command_name="$1"
-    
-    shift
-    if ! command -v "$command_name" >/dev/null 2>&1; then
-        return 0
-    fi
-    
-    "$@" >/dev/null 2>&1 &
-}
 
 start_if_missing() {
     process_name="$1"
     command_name="$2"
-    
+
     shift 2
     if ! command -v "$command_name" >/dev/null 2>&1; then
         return 0
     fi
-    
+
     if pgrep -x "$process_name" >/dev/null 2>&1; then
         return 0
     fi
-    
+
     "$command_name" "$@" >/dev/null 2>&1 &
 }
 
-restart_if_present() {
-    process_name="$1"
-    command_name="$2"
-    
-    shift 2
-    if ! command -v "$command_name" >/dev/null 2>&1; then
-        return 0
+systemctl --user import-environment QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY \
+    >/dev/null 2>&1 || true
+dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY \
+    >/dev/null 2>&1 || true
+
+if [ "$REFRESH_MODE" = "--refresh" ]; then
+    if pgrep -x noctalia >/dev/null 2>&1; then
+        noctalia msg config-reload >/dev/null 2>&1 || true
+    else
+        start_if_missing noctalia noctalia --daemon
     fi
-    
-    pkill -x "$process_name" >/dev/null 2>&1 || true
-    "$command_name" "$@" >/dev/null 2>&1 &
-}
-
-# import some env vars
-systemctl --user import-environment QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY
-dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME XDG_CURRENT_DESKTOP XDG_SESSION_TYPE WAYLAND_DISPLAY
-
-# waybar
-if [ "$REFRESH_MODE" = "--refresh" ]; then
-    restart_if_present "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
 else
-    start_if_missing "waybar" "waybar" -c "$WAYBAR_CONFIG_PATH" -s "$WAYBAR_STYLE_PATH"
-    sleep 0.1
+    start_if_missing noctalia noctalia --daemon
 fi
 
-# copy and paste between apps
-# https://labwc.github.io/integration.html#clipboard
-if [ "$REFRESH_MODE" = "--refresh" ]; then
-    start_if_missing "wl-paste" "wl-paste" cliphist --watch
-else
-    restart_if_present "wl-paste" "wl-paste" cliphist --watch
-fi
-
-# wallpaper daemon
-start_if_missing "awww-daemon" "awww-daemon"
-
-# notifications
-start_if_missing "dunst" "dunst"
-
-# keyring
-if command -v gnome-keyring-daemon >/dev/null 2>&1 && ! pgrep -x gnome-keyring-daemon >/dev/null 2>&1; then
-    eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
-    export GNOME_KEYRING_CONTROL
-fi
-
-printf '\n' | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
-
-# polkit
-if [ -x /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 ] && ! pgrep -x "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1; then
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
-fi
-
-# idle management (10 min)
-wayland-pipewire-idle-inhibit &
-start_if_missing "swayidle" "swayidle" -w \
-    timeout 600 "$HYPRLOCK_SCRIPT" \
-    before-sleep "$HYPRLOCK_SCRIPT"
-
-if command -v dunstctl >/dev/null 2>&1; then
-    dunstctl set-paused false >/dev/null 2>&1 || true
-fi
-
-# screenshare portal
-if [ -x /usr/lib/xdg-desktop-portal-wlr ] && ! pgrep -x "xdg-desktop-portal-wlr" >/dev/null 2>&1; then
-    /usr/lib/xdg-desktop-portal-wlr >/dev/null 2>&1 &
-fi
-
-# restore last wallpaper
-if [ -x "$WALLPAPER_MANAGER_PATH" ]; then
-    $WALLPAPER_MANAGER_PATH --restore >/dev/null 2>&1 &
-fi
-
-if [ "$REFRESH_MODE" = "--refresh" ]; then
-    :
-else
-    kitty &
-fi
+start_if_missing "wayland-pipewir" wayland-pipewire-idle-inhibit

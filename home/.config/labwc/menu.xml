@@ -2,7 +2,7 @@
 <openbox_menu>
     <menu id="root-menu">
         <item label="Launcher">
-            <action name="Execute" command="/home/rel/.config/rofi/launch.sh launcher" />
+            <action name="Execute" command="noctalia msg panel-toggle launcher" />
         </item>
 
         <item label="Terminal">
@@ -14,11 +14,11 @@
         </item>
 
         <item label="Wallpaper">
-            <action name="Execute" command="/home/rel/.local/bin/wallpaper-manager.sh --select" />
+            <action name="Execute" command="noctalia msg panel-toggle wallpaper" />
         </item>
 
         <item label="Power">
-            <action name="Execute" command="/home/rel/.config/rofi/launch.sh powermenu" />
+            <action name="Execute" command="noctalia msg panel-toggle session" />
         </item>
 
         <separator />

@@ -5,6 +5,7 @@ $HOME/.config/gtk-4.0/
 $HOME/.config/labwc/
 $HOME/.config/mango/
 $HOME/.config/hypr/
+$HOME/.config/noctalia/
 $HOME/.config/fontconfig/
 $HOME/.config/xdg-desktop-portal/**
 $HOME/.config/micro/bindings.json
@@ -14,15 +15,11 @@ $HOME/.config/micro/syntax/**
 $HOME/.config/zed/settings.json
 $HOME/.config/Code/User/settings.json
 $HOME/.config/VSCodium/User/settings.json
-$HOME/.config/dunst/**
 $HOME/.config/kitty/**
 $HOME/.config/alacritty/**
 $HOME/.config/tmux/tmux.conf
 $HOME/.config/Kvantum/**
 $HOME/.config/picom/**
-$HOME/.config/rofi/**
-$HOME/.config/waybar/**
-$HOME/.local/bin/dot-screenshot.sh
 $HOME/.local/bin/android-tool
 $HOME/.local/share/sfx/**
 $HOME/.local/share/applications/feh.desktop
